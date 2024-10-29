@@ -12,7 +12,7 @@ using Proyecto_Final_Aplicada.DAL;
 namespace Proyecto_Final_Aplicada.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20241025045013_initial")]
+    [Migration("20241029210243_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -96,6 +96,68 @@ namespace Proyecto_Final_Aplicada.Migrations
                     b.HasKey("TaxistaId");
 
                     b.ToTable("Taxistas");
+
+                    b.HasData(
+                        new
+                        {
+                            TaxistaId = 1,
+                            Correo = "federicoLiranzo01@gmail.com",
+                            ExisteLicencia = true,
+                            ExisteVehiculo = true,
+                            FechaNacimiento = new DateTime(1985, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NickName = "El compa",
+                            Nombres = "Federico Liranzo",
+                            Password = "elcompa1985",
+                            Status = 1
+                        },
+                        new
+                        {
+                            TaxistaId = 2,
+                            Correo = "cesarpolanco1@gmail.com",
+                            ExisteLicencia = true,
+                            ExisteVehiculo = true,
+                            FechaNacimiento = new DateTime(1995, 7, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NickName = "Sorollo",
+                            Nombres = "Cesar Polanco",
+                            Password = "sorollo1995",
+                            Status = 1
+                        },
+                        new
+                        {
+                            TaxistaId = 3,
+                            Correo = "martinperez90@gmail.com",
+                            ExisteLicencia = true,
+                            ExisteVehiculo = false,
+                            FechaNacimiento = new DateTime(1990, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NickName = "El Tino",
+                            Nombres = "Martin Perez",
+                            Password = "eltino1990",
+                            Status = 1
+                        },
+                        new
+                        {
+                            TaxistaId = 4,
+                            Correo = "juanrodriguez87@gmail.com",
+                            ExisteLicencia = false,
+                            ExisteVehiculo = true,
+                            FechaNacimiento = new DateTime(1987, 3, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NickName = "El Rápido",
+                            Nombres = "Juan Rodríguez",
+                            Password = "rapido1987",
+                            Status = 1
+                        },
+                        new
+                        {
+                            TaxistaId = 5,
+                            Correo = "carlosherrera92@gmail.com",
+                            ExisteLicencia = true,
+                            ExisteVehiculo = true,
+                            FechaNacimiento = new DateTime(1992, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NickName = "Chico",
+                            Nombres = "Carlos Herrera",
+                            Password = "chico1992",
+                            Status = 1
+                        });
                 });
 #pragma warning restore 612, 618
         }
