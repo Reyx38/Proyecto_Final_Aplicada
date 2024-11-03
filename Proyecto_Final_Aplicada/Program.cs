@@ -1,15 +1,13 @@
-using Microsoft.EntityFrameworkCore;
 using Proyecto_Final_Aplicada.Components;
-using Proyecto_Final_Aplicada.DAL;
+using Proyecto_Final.Services.DI;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.RegistarService();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-var ConStr = builder.Configuration.GetConnectionString("SqlConStr");
-builder.Services.AddDbContextFactory<Contexto>(o => o.UseSqlServer(ConStr));
 
 var app = builder.Build();
 
