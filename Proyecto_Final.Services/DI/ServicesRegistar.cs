@@ -11,6 +11,7 @@ namespace Proyecto_Final.Services.DI
         {
             services.RegisterDbContextFactory();
             services.AddScoped<IClienteServices, ClienteServices>();
+            services.AddScoped<ITaxistaServices, TaxistaServices>();
             return services;
         }
     }
