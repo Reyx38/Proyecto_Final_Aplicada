@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Proyecto_Final_Aplicada.DAL;
+using Proyecto_Final.Data.Contexto;
 
 #nullable disable
 
-namespace Proyecto_Final_Aplicada.Migrations
+namespace Proyecto_Final.Data.Migrations
 {
-    [DbContext(typeof(Contexto))]
-    [Migration("20241029210243_initial")]
-    partial class initial
+    [DbContext(typeof(Context))]
+    [Migration("20241103161104_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Proyecto_Final_Aplicada.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Proyecto_Final_Aplicada.Models.Clientes", b =>
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Clientes", b =>
                 {
                     b.Property<int>("ClienteId")
                         .ValueGeneratedOnAdd()
@@ -52,18 +52,28 @@ namespace Proyecto_Final_Aplicada.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Provicia")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ClienteId");
 
                     b.ToTable("Clientes");
                 });
 
-            modelBuilder.Entity("Proyecto_Final_Aplicada.Models.Taxistas", b =>
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Taxistas", b =>
                 {
                     b.Property<int>("TaxistaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TaxistaId"));
+
+                    b.Property<int?>("ClientesClienteId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Correo")
                         .IsRequired()
@@ -90,10 +100,19 @@ namespace Proyecto_Final_Aplicada.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Provicia")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("TaxistaId");
+
+                    b.HasIndex("ClientesClienteId");
 
                     b.ToTable("Taxistas");
 
@@ -108,6 +127,8 @@ namespace Proyecto_Final_Aplicada.Migrations
                             NickName = "El compa",
                             Nombres = "Federico Liranzo",
                             Password = "elcompa1985",
+                            Provicia = 0,
+                            Role = "Taxista",
                             Status = 1
                         },
                         new
@@ -120,6 +141,8 @@ namespace Proyecto_Final_Aplicada.Migrations
                             NickName = "Sorollo",
                             Nombres = "Cesar Polanco",
                             Password = "sorollo1995",
+                            Provicia = 0,
+                            Role = "Taxista",
                             Status = 1
                         },
                         new
@@ -132,6 +155,8 @@ namespace Proyecto_Final_Aplicada.Migrations
                             NickName = "El Tino",
                             Nombres = "Martin Perez",
                             Password = "eltino1990",
+                            Provicia = 0,
+                            Role = "Taxista",
                             Status = 1
                         },
                         new
@@ -144,6 +169,8 @@ namespace Proyecto_Final_Aplicada.Migrations
                             NickName = "El Rápido",
                             Nombres = "Juan Rodríguez",
                             Password = "rapido1987",
+                            Provicia = 0,
+                            Role = "Taxista",
                             Status = 1
                         },
                         new
@@ -156,8 +183,22 @@ namespace Proyecto_Final_Aplicada.Migrations
                             NickName = "Chico",
                             Nombres = "Carlos Herrera",
                             Password = "chico1992",
+                            Provicia = 0,
+                            Role = "Taxista",
                             Status = 1
                         });
+                });
+
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Taxistas", b =>
+                {
+                    b.HasOne("Proyecto_Final.Data.Models.Clientes", null)
+                        .WithMany("Favoritos")
+                        .HasForeignKey("ClientesClienteId");
+                });
+
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Clientes", b =>
+                {
+                    b.Navigation("Favoritos");
                 });
 #pragma warning restore 612, 618
         }
