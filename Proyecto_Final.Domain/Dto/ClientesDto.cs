@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Proyecto_Final.Domain.Enum;
+using System.ComponentModel.DataAnnotations;
 
 namespace Proyecto_Final.Domain.Dto
 {
@@ -20,8 +21,6 @@ namespace Proyecto_Final.Domain.Dto
 
         [Required(ErrorMessage = "La contraseña es requerida.")]
         public string Password { get; set; }
-
-        public string Role { get; set; }
 
         public ICollection<TaxistaDto> Favoritos { get; set; } = new List<TaxistaDto>();
     }
