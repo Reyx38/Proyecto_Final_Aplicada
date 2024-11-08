@@ -186,11 +186,73 @@ namespace Proyecto_Final.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Viajes", b =>
+                {
+                    b.Property<int>("ViajeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ViajeId"));
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Destino")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Precio")
+                        .HasColumnType("float");
+
+                    b.Property<int>("TaxistaId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("Tiempo")
+                        .HasColumnType("time");
+
+                    b.Property<string>("UbicacionInicial")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ViajeId");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("TaxistaId");
+
+                    b.ToTable("Viajes");
+                });
+
             modelBuilder.Entity("Proyecto_Final.Data.Models.Taxistas", b =>
                 {
                     b.HasOne("Proyecto_Final.Data.Models.Clientes", null)
                         .WithMany("Favoritos")
                         .HasForeignKey("ClientesClienteId");
+                });
+
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Viajes", b =>
+                {
+                    b.HasOne("Proyecto_Final.Data.Models.Clientes", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Proyecto_Final.Data.Models.Taxistas", "Taxista")
+                        .WithMany()
+                        .HasForeignKey("TaxistaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Taxista");
                 });
 
             modelBuilder.Entity("Proyecto_Final.Data.Models.Clientes", b =>
