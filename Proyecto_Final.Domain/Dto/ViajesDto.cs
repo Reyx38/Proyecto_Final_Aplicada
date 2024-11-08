@@ -17,9 +17,11 @@ public class ViajesDto
 
     public DateTime Fecha { get; set; }
 
-    public TimeOnly Tiempo { get; set; }
+    public TimeSpan Tiempo { get; set; }
 
     public EstadosViajes Estado { get; set; }
+
+    public double Precio { get; set; }
 
     public int ClienteId { get; set; }
 

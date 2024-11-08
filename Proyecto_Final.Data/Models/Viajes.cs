@@ -24,10 +24,13 @@ public class Viajes
     public DateTime Fecha { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
-    public TimeOnly Tiempo { get; set; }
+    public TimeSpan Tiempo { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
     public EstadosViajes Estado { get; set; } = EstadosViajes.Pendiente;
+
+    [Required]
+    public double Precio { get; set; }
 
     [ForeignKey("Cliente")]
     public int ClienteId { get; set; }
