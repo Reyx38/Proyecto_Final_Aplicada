@@ -29,6 +29,7 @@ public class ViajeServices(IDbContextFactory<Context> DbFactory) : IViajeService
            Fecha = p.Fecha,
            Tiempo = p.Tiempo,
            Estado = p.Estado,
+           Precio = p.Precio,
            ClienteId = p.ClienteId,
            TaxistaId = p.TaxistaId
        })
@@ -60,6 +61,7 @@ public class ViajeServices(IDbContextFactory<Context> DbFactory) : IViajeService
             ClienteId = viajeDto.ClienteId,
             TaxistaId = viajeDto.TaxistaId
         };
+        viaje.Precio = CalcularPrecio(viajeDto.Tiempo);
         contexto.Viajes.Add(viaje);
         var guardo = await contexto.SaveChangesAsync() > 0;
         viajeDto.ViajeId = viaje.ViajeId;
@@ -80,6 +82,7 @@ public class ViajeServices(IDbContextFactory<Context> DbFactory) : IViajeService
             ClienteId = viajeDto.ClienteId,
             TaxistaId = viajeDto.TaxistaId
         };
+        viaje.Precio = CalcularPrecio(viajeDto.Tiempo);
         contexto.Update(viaje);
         var modificado = await contexto.SaveChangesAsync() > 0;
         return modificado;
@@ -110,6 +113,7 @@ public class ViajeServices(IDbContextFactory<Context> DbFactory) : IViajeService
             Fecha = p.Fecha,
             Tiempo = p.Tiempo,
             Estado = p.Estado,
+            Precio = p.Precio,
             ClienteId = p.ClienteId,
             TaxistaId = p.TaxistaId
         })
@@ -126,5 +130,14 @@ public class ViajeServices(IDbContextFactory<Context> DbFactory) : IViajeService
         viaje.Estado = estado;
         var modificado = await contexto.SaveChangesAsync() > 0;
         return modificado;
+    }
+
+    public double CalcularPrecio(TimeSpan tiempo)
+    {
+        //tarifa por minutos seria en pesos dominicanos
+        double tarifaPorMinutos = 20;
+
+        double precio = tarifaPorMinutos * tiempo.TotalMinutes;
+        return precio;
     }
 }
