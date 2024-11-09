@@ -8,6 +8,8 @@ public class Clientes : Usuarios
     [Key]
     public int ClienteId { get; set; }
 
+    public ICollection<Viajes> Viajes { get; set; } = new List<Viajes>();
+
     public ICollection<Taxistas> Favoritos { get; set; } = new List<Taxistas>();
 
     [ForeignKey("Billetera")]
