@@ -15,12 +15,17 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configurar la relación entre Taxistas y Billeteras
-        modelBuilder.Entity<Taxistas>()
-            .HasOne(t => t.Billetera)
-            .WithOne()
-            .HasForeignKey<Taxistas>(t => t.BilleteraId)
-            .IsRequired();
+        modelBuilder.Entity<Viajes>()
+            .HasOne(v => v.Cliente)
+            .WithMany(c => c.Viajes)
+            .HasForeignKey(v => v.ClienteId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Viajes>()
+            .HasOne(v => v.Taxista)
+            .WithMany(t => t.Viajes)
+            .HasForeignKey(v => v.TaxistaId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<Taxistas>().HasData(new List<Taxistas>()
     {
