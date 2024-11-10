@@ -3,6 +3,7 @@ using Proyecto_Final.Abstracions.Interface;
 using Proyecto_Final.Data.Contexto;
 using Proyecto_Final.Data.Models;
 using Proyecto_Final.Domain.Dto;
+using Proyecto_Final.Domain.Enum;
 using System.Linq.Expressions;
 
 namespace Proyecto_Final.Services.Services;
@@ -18,16 +19,13 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
        {
            ClienteId = p.ClienteId,
            NickName = p.NickName,
-           Nombres = p.Nombres,
            FechaNacimiento = p.FechaNacimiento,
            Correo = p.Correo,
            Password = p.Password,
-           Role = p.Role,
            Favoritos = p.Favoritos.Select(f => new TaxistaDto
            {
                TaxistaId = f.TaxistaId,
                NickName = f.NickName,
-               Nombres = f.Nombres,
                Correo = f.Correo,
                ExisteVehiculo = f.ExisteVehiculo,
                ExisteLicencia = f.ExisteLicencia,
@@ -52,7 +50,7 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Clientes
             .AnyAsync(e => e.ClienteId != id
-            && e.Nombres.ToLower().Equals(nombre.ToLower()) 
+            && e.NickName.ToLower().Equals(nombre.ToLower()) 
             && e.Correo.ToLower().Equals(correo.ToLower()));
     }
 
@@ -63,16 +61,14 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
         {
             ClienteId = clienteDto.ClienteId,
             NickName = clienteDto.NickName,
-            Nombres = clienteDto.Nombres,
             FechaNacimiento = clienteDto.FechaNacimiento,
             Correo = clienteDto.Correo,
             Password = clienteDto.Password,
-            Role = clienteDto.Role,
+            Role = Roles.Cliente,
             Favoritos = clienteDto.Favoritos.Select(f => new Taxistas
             {
                 TaxistaId = f.TaxistaId,
                 NickName = f.NickName,
-                Nombres = f.Nombres,
                 Correo = f.Correo,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
@@ -92,16 +88,13 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
         {
             ClienteId = clienteDto.ClienteId,
             NickName = clienteDto.NickName,
-            Nombres = clienteDto.Nombres,
             FechaNacimiento = clienteDto.FechaNacimiento,
             Correo = clienteDto.Correo,
             Password = clienteDto.Password,
-            Role = clienteDto.Role,
             Favoritos = clienteDto.Favoritos.Select(f => new Taxistas
             {
                 TaxistaId = f.TaxistaId,
                 NickName = f.NickName,
-                Nombres = f.Nombres,
                 Correo = f.Correo,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
@@ -135,16 +128,13 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
         {
             ClienteId = p.ClienteId,
             NickName = p.NickName,
-            Nombres = p.Nombres,
             FechaNacimiento = p.FechaNacimiento,
             Correo = p.Correo,
             Password = p.Password,
-            Role = p.Role,
             Favoritos = p.Favoritos.Select(f => new TaxistaDto
             {
                 TaxistaId = f.TaxistaId,
                 NickName = f.NickName,
-                Nombres = f.Nombres,
                 Correo = f.Correo,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
@@ -156,4 +146,16 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
         .ToListAsync();
     }
 
+    public async Task<bool> SingIn(string nickName, string password)
+    {
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        var Cliente = await contexto.Clientes
+            .Where(c => c.NickName == nickName)
+            .FirstOrDefaultAsync();
+        //Evitando entrada a cliente nulos o Password diferentes
+        if (!(Cliente == null && Cliente.Password != password))
+             return false;
+       
+        return true;
+    }
 }

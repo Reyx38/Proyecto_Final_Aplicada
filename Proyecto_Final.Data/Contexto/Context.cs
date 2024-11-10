@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Proyecto_Final.Data.Models;
+using Proyecto_Final.Domain.Enum;
 
 namespace Proyecto_Final.Data.Contexto;
 
@@ -33,8 +34,7 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
             {TaxistaId = 1,
             ExisteLicencia = true,
             ExisteVehiculo = true,
-            NickName = "El compa",
-            Nombres = "Federico Liranzo",
+            NickName = "Federico Liranzo",
             FechaNacimiento = new DateTime(1985, 4, 15),
             Correo = "federicoLiranzo01@gmail.com",
             Password = "elcompa1985",
@@ -46,8 +46,7 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
             TaxistaId = 2,
             ExisteLicencia = true,
             ExisteVehiculo = true,
-            NickName = "Sorollo",
-            Nombres = "Cesar Polanco",
+            NickName = "Cesar Polanco",
             FechaNacimiento = new DateTime(1995, 7, 25),
             Correo = "cesarpolanco1@gmail.com",
             Password = "sorollo1995",
@@ -59,8 +58,7 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
             TaxistaId = 3,
             ExisteLicencia = true,
             ExisteVehiculo = false,
-            NickName = "El Tino",
-            Nombres = "Martin Perez",
+            NickName = "Martin Perez",
             FechaNacimiento = new DateTime(1990, 12, 5),
             Correo = "martinperez90@gmail.com",
             Password = "eltino1990",
@@ -72,8 +70,7 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
             TaxistaId = 4,
             ExisteLicencia = false,
             ExisteVehiculo = true,
-            NickName = "El Rápido",
-            Nombres = "Juan Rodríguez",
+            NickName = "Juan Rodríguez",
             FechaNacimiento = new DateTime(1987, 3, 17),
             Correo = "juanrodriguez87@gmail.com",
             Password = "rapido1987",
@@ -85,13 +82,12 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
             TaxistaId = 5,
             ExisteLicencia = true,
             ExisteVehiculo = true,
-            NickName = "Chico",
-            Nombres = "Carlos Herrera",
+            NickName = "Carlos Herrera",
             FechaNacimiento = new DateTime(1992, 8, 30),
             Correo = "carlosherrera92@gmail.com",
             Password = "chico1992",
-            Role = "Taxista",
-            BilleteraId = 5
+            Role = "Taxista"
+
         }
     });
         modelBuilder.Entity<Billeteras>().HasData(new List<Billeteras>()

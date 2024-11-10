@@ -1,0 +1,6 @@
+@Proyecto_Final_API.Login_HostAddress = http://localhost:5137
+
+GET {{Proyecto_Final_API.Login_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
