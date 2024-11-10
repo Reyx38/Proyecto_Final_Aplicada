@@ -15,7 +15,7 @@ namespace Proyecto_Final.Domain.Dto
         public bool ExisteVehiculo { get; set; }
 
         public bool ExisteLicencia { get; set; }
-
+        
         public EstadosTaxistas Status { get; set; }
     }
 }
