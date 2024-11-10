@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Proyecto_Final.Abstracions.Interface;
+using Proyecto_Final.Abstracions.Interfaces;
 using Proyecto_Final.Data.DI;
 using Proyecto_Final.Services.Services;
 
@@ -12,6 +13,9 @@ namespace Proyecto_Final.Services.DI
             services.RegisterDbContextFactory();
             services.AddScoped<IClienteServices, ClienteServices>();
             services.AddScoped<ITaxistaServices, TaxistaServices>();
+            services.AddScoped<IViajeServices, ViajeServices>();
+            services.AddScoped<IBilleteraService, BilleteraServices>();
+            services.AddScoped<ITransaccionServices, TransaccionServices>();
             return services;
         }
     }
