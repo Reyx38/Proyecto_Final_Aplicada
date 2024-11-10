@@ -12,7 +12,7 @@ using Proyecto_Final.Data.Contexto;
 namespace Proyecto_Final.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20241108202234_Initial")]
+    [Migration("20241110052308_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,6 +25,49 @@ namespace Proyecto_Final.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Billeteras", b =>
+                {
+                    b.Property<int>("BilleteraId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BilleteraId"));
+
+                    b.Property<double>("Saldo")
+                        .HasColumnType("float");
+
+                    b.HasKey("BilleteraId");
+
+                    b.ToTable("Billeteras");
+
+                    b.HasData(
+                        new
+                        {
+                            BilleteraId = 1,
+                            Saldo = 450.0
+                        },
+                        new
+                        {
+                            BilleteraId = 2,
+                            Saldo = 450.0
+                        },
+                        new
+                        {
+                            BilleteraId = 3,
+                            Saldo = 450.0
+                        },
+                        new
+                        {
+                            BilleteraId = 4,
+                            Saldo = 450.0
+                        },
+                        new
+                        {
+                            BilleteraId = 5,
+                            Saldo = 450.0
+                        });
+                });
+
             modelBuilder.Entity("Proyecto_Final.Data.Models.Clientes", b =>
                 {
                     b.Property<int>("ClienteId")
@@ -32,6 +75,9 @@ namespace Proyecto_Final.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClienteId"));
+
+                    b.Property<int>("BilleteraId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Correo")
                         .IsRequired()
@@ -44,22 +90,19 @@ namespace Proyecto_Final.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Nombres")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Provicia")
+                    b.Property<int?>("Provicia")
                         .HasColumnType("int");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.HasKey("ClienteId");
+
+                    b.HasIndex("BilleteraId");
 
                     b.ToTable("Clientes");
                 });
@@ -71,6 +114,9 @@ namespace Proyecto_Final.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TaxistaId"));
+
+                    b.Property<int>("BilleteraId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ClientesClienteId")
                         .HasColumnType("int");
@@ -92,25 +138,22 @@ namespace Proyecto_Final.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Nombres")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Provicia")
+                    b.Property<int?>("Provicia")
                         .HasColumnType("int");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("TaxistaId");
+
+                    b.HasIndex("BilleteraId");
 
                     b.HasIndex("ClientesClienteId");
 
@@ -120,73 +163,87 @@ namespace Proyecto_Final.Data.Migrations
                         new
                         {
                             TaxistaId = 1,
+                            BilleteraId = 1,
                             Correo = "federicoLiranzo01@gmail.com",
                             ExisteLicencia = true,
                             ExisteVehiculo = true,
                             FechaNacimiento = new DateTime(1985, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NickName = "El compa",
-                            Nombres = "Federico Liranzo",
+                            NickName = "Federico Liranzo",
                             Password = "elcompa1985",
-                            Provicia = 0,
-                            Role = "Taxista",
+                            Role = 1,
                             Status = 1
                         },
                         new
                         {
                             TaxistaId = 2,
+                            BilleteraId = 2,
                             Correo = "cesarpolanco1@gmail.com",
                             ExisteLicencia = true,
                             ExisteVehiculo = true,
                             FechaNacimiento = new DateTime(1995, 7, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NickName = "Sorollo",
-                            Nombres = "Cesar Polanco",
+                            NickName = "Cesar Polanco",
                             Password = "sorollo1995",
-                            Provicia = 0,
-                            Role = "Taxista",
+                            Role = 1,
                             Status = 1
                         },
                         new
                         {
                             TaxistaId = 3,
+                            BilleteraId = 3,
                             Correo = "martinperez90@gmail.com",
                             ExisteLicencia = true,
                             ExisteVehiculo = false,
                             FechaNacimiento = new DateTime(1990, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NickName = "El Tino",
-                            Nombres = "Martin Perez",
+                            NickName = "Martin Perez",
                             Password = "eltino1990",
-                            Provicia = 0,
-                            Role = "Taxista",
+                            Role = 1,
                             Status = 1
                         },
                         new
                         {
                             TaxistaId = 4,
+                            BilleteraId = 4,
                             Correo = "juanrodriguez87@gmail.com",
                             ExisteLicencia = false,
                             ExisteVehiculo = true,
                             FechaNacimiento = new DateTime(1987, 3, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NickName = "El Rápido",
-                            Nombres = "Juan Rodríguez",
+                            NickName = "Juan Rodríguez",
                             Password = "rapido1987",
-                            Provicia = 0,
-                            Role = "Taxista",
+                            Role = 1,
                             Status = 1
                         },
                         new
                         {
                             TaxistaId = 5,
+                            BilleteraId = 5,
                             Correo = "carlosherrera92@gmail.com",
                             ExisteLicencia = true,
                             ExisteVehiculo = true,
                             FechaNacimiento = new DateTime(1992, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NickName = "Chico",
-                            Nombres = "Carlos Herrera",
+                            NickName = "Carlos Herrera",
                             Password = "chico1992",
-                            Provicia = 0,
-                            Role = "Taxista",
+                            Role = 1,
                             Status = 1
                         });
+                });
+
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Transacciones", b =>
+                {
+                    b.Property<int>("TransaccionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Monto")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
+
+                    b.HasKey("TransaccionId");
+
+                    b.ToTable("Transacciones");
                 });
 
             modelBuilder.Entity("Proyecto_Final.Data.Models.Viajes", b =>
@@ -232,25 +289,53 @@ namespace Proyecto_Final.Data.Migrations
                     b.ToTable("Viajes");
                 });
 
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Clientes", b =>
+                {
+                    b.HasOne("Proyecto_Final.Data.Models.Billeteras", "Billetera")
+                        .WithMany()
+                        .HasForeignKey("BilleteraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Billetera");
+                });
+
             modelBuilder.Entity("Proyecto_Final.Data.Models.Taxistas", b =>
                 {
+                    b.HasOne("Proyecto_Final.Data.Models.Billeteras", "Billetera")
+                        .WithMany()
+                        .HasForeignKey("BilleteraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Proyecto_Final.Data.Models.Clientes", null)
                         .WithMany("Favoritos")
                         .HasForeignKey("ClientesClienteId");
+
+                    b.Navigation("Billetera");
+                });
+
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Transacciones", b =>
+                {
+                    b.HasOne("Proyecto_Final.Data.Models.Billeteras", null)
+                        .WithMany("Transacciones")
+                        .HasForeignKey("TransaccionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Proyecto_Final.Data.Models.Viajes", b =>
                 {
                     b.HasOne("Proyecto_Final.Data.Models.Clientes", "Cliente")
-                        .WithMany()
+                        .WithMany("Viajes")
                         .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Proyecto_Final.Data.Models.Taxistas", "Taxista")
-                        .WithMany()
+                        .WithMany("Viajes")
                         .HasForeignKey("TaxistaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Cliente");
@@ -258,9 +343,21 @@ namespace Proyecto_Final.Data.Migrations
                     b.Navigation("Taxista");
                 });
 
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Billeteras", b =>
+                {
+                    b.Navigation("Transacciones");
+                });
+
             modelBuilder.Entity("Proyecto_Final.Data.Models.Clientes", b =>
                 {
                     b.Navigation("Favoritos");
+
+                    b.Navigation("Viajes");
+                });
+
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Taxistas", b =>
+                {
+                    b.Navigation("Viajes");
                 });
 #pragma warning restore 612, 618
         }

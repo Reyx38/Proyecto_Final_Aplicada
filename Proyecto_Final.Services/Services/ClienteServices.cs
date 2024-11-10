@@ -29,7 +29,6 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
                Correo = f.Correo,
                ExisteVehiculo = f.ExisteVehiculo,
                ExisteLicencia = f.ExisteLicencia,
-               Status = f.Status
            }).ToList()
        })
        .FirstOrDefaultAsync();
@@ -72,7 +71,6 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
                 Correo = f.Correo,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
-                Status = f.Status
             }).ToList()
         };
         contexto.Clientes.Add(cliente);
@@ -98,7 +96,6 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
                 Correo = f.Correo,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
-                Status = f.Status
             }).ToList()
         };
         contexto.Update(cliente);
@@ -138,24 +135,10 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
                 Correo = f.Correo,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
-                Status = f.Status
             }).ToList()
         })
         .Include(p => p.Favoritos)
         .Where(criterio)
         .ToListAsync();
-    }
-
-    public async Task<bool> SingIn(string nickName, string password)
-    {
-        await using var contexto = await DbFactory.CreateDbContextAsync();
-        var Cliente = await contexto.Clientes
-            .Where(c => c.NickName == nickName)
-            .FirstOrDefaultAsync();
-        //Evitando entrada a cliente nulos o Password diferentes
-        if (!(Cliente == null && Cliente.Password != password))
-             return false;
-       
-        return true;
     }
 }
