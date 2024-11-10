@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace Proyecto_Final.Data.Migrations
 {
@@ -59,6 +60,38 @@ namespace Proyecto_Final.Data.Migrations
                         principalColumn: "ClienteId");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Viajes",
+                columns: table => new
+                {
+                    ViajeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UbicacionInicial = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Destino = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Tiempo = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false),
+                    Precio = table.Column<double>(type: "float", nullable: false),
+                    ClienteId = table.Column<int>(type: "int", nullable: false),
+                    TaxistaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Viajes", x => x.ViajeId);
+                    table.ForeignKey(
+                        name: "FK_Viajes_Clientes_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "Clientes",
+                        principalColumn: "ClienteId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Viajes_Taxistas_TaxistaId",
+                        column: x => x.TaxistaId,
+                        principalTable: "Taxistas",
+                        principalColumn: "TaxistaId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Taxistas",
                 columns: new[] { "TaxistaId", "ClientesClienteId", "Correo", "ExisteLicencia", "ExisteVehiculo", "FechaNacimiento", "NickName", "Nombres", "Password", "Provicia", "Role", "Status" },
@@ -75,11 +108,24 @@ namespace Proyecto_Final.Data.Migrations
                 name: "IX_Taxistas_ClientesClienteId",
                 table: "Taxistas",
                 column: "ClientesClienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Viajes_ClienteId",
+                table: "Viajes",
+                column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Viajes_TaxistaId",
+                table: "Viajes",
+                column: "TaxistaId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Viajes");
+
             migrationBuilder.DropTable(
                 name: "Taxistas");
 

@@ -8,10 +8,26 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
 {
     public DbSet<Clientes> Clientes { get; set; }
     public DbSet<Taxistas> Taxistas { get; set; }
+    public DbSet<Viajes> Viajes { get; set; }
+    public DbSet<Billeteras> Billeteras { get; set; }
+    public DbSet<Transacciones> Transacciones { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Viajes>()
+            .HasOne(v => v.Cliente)
+            .WithMany(c => c.Viajes)
+            .HasForeignKey(v => v.ClienteId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Viajes>()
+            .HasOne(v => v.Taxista)
+            .WithMany(t => t.Viajes)
+            .HasForeignKey(v => v.TaxistaId)
+            .OnDelete(DeleteBehavior.NoAction);
+
         modelBuilder.Entity<Taxistas>().HasData(new List<Taxistas>()
     {
         new Taxistas()
@@ -22,7 +38,8 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
             FechaNacimiento = new DateTime(1985, 4, 15),
             Correo = "federicoLiranzo01@gmail.com",
             Password = "elcompa1985",
-            Role = Roles.Empleado
+            Role = "Taxista",
+            BilleteraId = 1
             },
         new Taxistas()
         {
@@ -33,7 +50,8 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
             FechaNacimiento = new DateTime(1995, 7, 25),
             Correo = "cesarpolanco1@gmail.com",
             Password = "sorollo1995",
-            Role = Roles.Empleado
+            Role = "Taxista",
+            BilleteraId = 2
         },
         new Taxistas()
         {
@@ -44,8 +62,8 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
             FechaNacimiento = new DateTime(1990, 12, 5),
             Correo = "martinperez90@gmail.com",
             Password = "eltino1990",
-            Role = Roles.Empleado
-
+            Role = "Taxista",
+            BilleteraId = 3
         },
         new Taxistas()
         {
@@ -56,7 +74,8 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
             FechaNacimiento = new DateTime(1987, 3, 17),
             Correo = "juanrodriguez87@gmail.com",
             Password = "rapido1987",
-            Role = Roles.Empleado
+            Role = "Taxista",
+            BilleteraId = 4
         },
         new Taxistas()
         {
@@ -67,8 +86,17 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
             FechaNacimiento = new DateTime(1992, 8, 30),
             Correo = "carlosherrera92@gmail.com",
             Password = "chico1992",
-            Role = Roles.Empleado
+            Role = "Taxista"
+
         }
     });
+        modelBuilder.Entity<Billeteras>().HasData(new List<Billeteras>()
+        {
+            new Billeteras() { BilleteraId = 1, Saldo = 450 },
+            new Billeteras() { BilleteraId = 2, Saldo = 450 },
+            new Billeteras() { BilleteraId = 3, Saldo = 450 },
+            new Billeteras() { BilleteraId = 4, Saldo = 450 },
+            new Billeteras() { BilleteraId = 5, Saldo = 450 }
+        });
     }
 }
