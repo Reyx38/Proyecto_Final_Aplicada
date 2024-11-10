@@ -19,7 +19,6 @@ namespace Proyecto_Final.Services.Services
            {
                TaxistaId = p.TaxistaId,
                NickName = p.NickName,
-               Nombres = p.Nombres,
                Correo = p.Correo,
                ExisteVehiculo = p.ExisteVehiculo,
                ExisteLicencia = p.ExisteLicencia,
@@ -42,7 +41,7 @@ namespace Proyecto_Final.Services.Services
             await using var contexto = await DbFactory.CreateDbContextAsync();
             return await contexto.Taxistas
                 .AnyAsync(e => e.TaxistaId != id
-                && e.Nombres.ToLower().Equals(nombre.ToLower())
+                && e.NickName.ToLower().Equals(nombre.ToLower())
                 && e.Correo.ToLower().Equals(correo.ToLower()));
         }
 
@@ -53,7 +52,6 @@ namespace Proyecto_Final.Services.Services
             {
                 TaxistaId = taxistaDto.TaxistaId,
                 NickName = taxistaDto.NickName,
-                Nombres = taxistaDto.Nombres,
                 Correo = taxistaDto.Correo,
                 ExisteVehiculo = taxistaDto.ExisteVehiculo,
                 ExisteLicencia = taxistaDto.ExisteLicencia,
@@ -72,7 +70,6 @@ namespace Proyecto_Final.Services.Services
             {
                 TaxistaId = taxistaDto.TaxistaId,
                 NickName = taxistaDto.NickName,
-                Nombres = taxistaDto.Nombres,
                 Correo = taxistaDto.Correo,
                 ExisteVehiculo = taxistaDto.ExisteVehiculo,
                 ExisteLicencia = taxistaDto.ExisteLicencia,
@@ -105,7 +102,6 @@ namespace Proyecto_Final.Services.Services
             {
                 TaxistaId = f.TaxistaId,
                 NickName = f.NickName,
-                Nombres = f.Nombres,
                 Correo = f.Correo,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,

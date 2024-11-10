@@ -11,4 +11,5 @@ namespace Proyecto_Final.Abstracions.Interface
         Task<List<TaxistaDto>> Listar(Expression<Func<TaxistaDto, bool>> criterio);
         Task<bool> ExisteTaxista(string nombre, int id, string correo);
     }
+
 }

@@ -1,5 +1,6 @@
 using Proyecto_Final_Aplicada.Components;
 using Proyecto_Final.Services.DI;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,17 @@ builder.Services.RegistarService();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+//Agregando services de Authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(o =>
+    {
+        o.Cookie.Name = "auth_token";
+        o.LoginPath = "/StartSession";
+        o.Cookie.MaxAge = TimeSpan.FromMinutes(45);
+        o.AccessDeniedPath = "/access-denied";
+    });
+builder.Services.AddAuthentication();
+builder.Services.AddCascadingAuthenticationState();
 
 var app = builder.Build();
 
@@ -23,6 +35,10 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+// Middlewares
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

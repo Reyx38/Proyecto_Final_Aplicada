@@ -1,17 +1,16 @@
-﻿
-namespace Proyecto_Final.Domain.Enum
+﻿namespace Proyecto_Final.Domain.Enum
 {
-    public enum Provicias
+	public enum Provincias
     {
         SantoDomingo,
         DistritoNacional,
-        Santiago,
         LaVega,
         LaAltagracia,
         SanCristobal,
         SanPedroDeMacoris,
         PuertoPlata,
-        Duarte,
+        SanJuan,
         Peravia
     }
 }
+

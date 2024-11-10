@@ -9,17 +9,14 @@ namespace Proyecto_Final.Domain.Dto
 
         public string NickName { get; set; }
 
-        [Required(ErrorMessage = "Los nombres son requerido.")]
-        [RegularExpression("^[a-zA-ZÀ-ÿ\\s]+$", ErrorMessage = "Solo se permiten letras.")]
         public string Nombres { get; set; }
 
-        [Required(ErrorMessage = "La fecha de nacimiento es requerida.")]
-        public DateTime FechaNacimiento { get; set; }
+        public DateTime FechaNacimiento { get; set; } 
 
-        [Required(ErrorMessage = "El correo es requerido.")]
         public string Correo { get; set; }
 
-        [Required(ErrorMessage = "La contraseña es requerida.")]
+        public Provincias Provincia { get; set; }
+
         public string Password { get; set; }
 
         public ICollection<TaxistaDto> Favoritos { get; set; } = new List<TaxistaDto>();
