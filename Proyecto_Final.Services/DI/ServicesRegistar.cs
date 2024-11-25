@@ -14,8 +14,6 @@ namespace Proyecto_Final.Services.DI
             services.AddScoped<IClienteServices, ClienteServices>();
             services.AddScoped<ITaxistaServices, TaxistaServices>();
             services.AddScoped<IViajeServices, ViajeServices>();
-            services.AddScoped<IBilleteraService, BilleteraServices>();
-            services.AddScoped<ITransaccionServices, TransaccionServices>();
             return services;
         }
     }

@@ -12,7 +12,4 @@ public class Clientes : Usuarios
 
     public ICollection<Taxistas> Favoritos { get; set; } = new List<Taxistas>();
 
-    [ForeignKey("Billetera")]
-    public int BilleteraId { get; set; }
-    public Billeteras? Billetera { get; set; }
 }

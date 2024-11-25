@@ -4,13 +4,7 @@ using Proyecto_Final.Data.Contexto;
 using Proyecto_Final.Data.Models;
 using Proyecto_Final.Domain.Dto;
 using Proyecto_Final.Domain.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Proyecto_Final.Services.Services;
 
@@ -20,30 +14,33 @@ public class ViajeServices(IDbContextFactory<Context> DbFactory) : IViajeService
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         var viaje = await contexto.Viajes
+       .Include(p => p.Imagenes)
        .Where(e => e.ViajeId == id)
        .Select(p => new ViajesDto()
        {
            ViajeId = p.ViajeId,
-           UbicacionInicial = p.UbicacionInicial,
            Destino = p.Destino,
            Fecha = p.Fecha,
-           Tiempo = p.Tiempo,
            Estado = p.Estado,
            Precio = p.Precio,
-           ClienteId = p.ClienteId,
-           TaxistaId = p.TaxistaId
+           TaxistaId = p.TaxistaId,
+           Imagenes = p.Imagenes.Select(p => new ImagenDto()
+           {
+               ImagenUrl = p.ImagenUrl,
+               Titulo = p.Titulo,
+               Alt = p.Alt,
+           }).ToList()
        })
        .FirstOrDefaultAsync();
         return viaje ?? new ViajesDto();
     }
 
-    public async Task<bool> ExisteViaje(string destino, int id, int idCliente, int idTaxista)
+    public async Task<bool> ExisteViaje(string destino, int id, int idTaxista)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Viajes
             .AnyAsync(e => e.ViajeId != id
             && e.Destino.ToLower().Equals(destino.ToLower())
-            && e.Cliente.ClienteId == idCliente
             && e.Taxista.TaxistaId == idTaxista);
     }
 
@@ -53,15 +50,12 @@ public class ViajeServices(IDbContextFactory<Context> DbFactory) : IViajeService
         var viaje = new Viajes()
         {
             ViajeId = viajeDto.ViajeId,
-            UbicacionInicial = viajeDto.UbicacionInicial,
             Destino = viajeDto.Destino,
             Fecha = viajeDto.Fecha,
-            Tiempo = viajeDto.Tiempo,
             Estado = viajeDto.Estado,
-            ClienteId = viajeDto.ClienteId,
-            TaxistaId = viajeDto.TaxistaId
+            TaxistaId = viajeDto.TaxistaId,
+            Precio = viajeDto.Precio
         };
-        viaje.Precio = CalcularPrecio(viajeDto.Tiempo);
         contexto.Viajes.Add(viaje);
         var guardo = await contexto.SaveChangesAsync() > 0;
         viajeDto.ViajeId = viaje.ViajeId;
@@ -74,15 +68,12 @@ public class ViajeServices(IDbContextFactory<Context> DbFactory) : IViajeService
         var viaje = new Viajes()
         {
             ViajeId = viajeDto.ViajeId,
-            UbicacionInicial = viajeDto.UbicacionInicial,
             Destino = viajeDto.Destino,
             Fecha = viajeDto.Fecha,
-            Tiempo = viajeDto.Tiempo,
             Estado = viajeDto.Estado,
-            ClienteId = viajeDto.ClienteId,
-            TaxistaId = viajeDto.TaxistaId
+            TaxistaId = viajeDto.TaxistaId,
+            Precio = viajeDto.Precio
         };
-        viaje.Precio = CalcularPrecio(viajeDto.Tiempo);
         contexto.Update(viaje);
         var modificado = await contexto.SaveChangesAsync() > 0;
         return modificado;
@@ -108,13 +99,10 @@ public class ViajeServices(IDbContextFactory<Context> DbFactory) : IViajeService
         return await contexto.Viajes.Select(p => new ViajesDto()
         {
             ViajeId = p.ViajeId,
-            UbicacionInicial = p.UbicacionInicial,
             Destino = p.Destino,
             Fecha = p.Fecha,
-            Tiempo = p.Tiempo,
             Estado = p.Estado,
             Precio = p.Precio,
-            ClienteId = p.ClienteId,
             TaxistaId = p.TaxistaId
         })
         .Where(criterio)
@@ -132,12 +120,4 @@ public class ViajeServices(IDbContextFactory<Context> DbFactory) : IViajeService
         return modificado;
     }
 
-    public double CalcularPrecio(TimeSpan tiempo)
-    {
-        //tarifa por minutos seria en pesos dominicanos
-        double tarifaPorMinutos = 20;
-
-        double precio = tarifaPorMinutos * tiempo.TotalMinutes;
-        return precio;
-    }
 }

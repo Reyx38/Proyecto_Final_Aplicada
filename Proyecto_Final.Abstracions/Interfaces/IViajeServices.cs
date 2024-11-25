@@ -13,5 +13,5 @@ public interface IViajeServices
     Task<bool> Guardar(ViajesDto viajeDto);
     Task<ViajesDto> Buscar(int id);
     Task<List<ViajesDto>> Listar(Expression<Func<ViajesDto, bool>> criterio);
-    Task<bool> ExisteViaje(string destino, int id, int idCliente, int idTaxista);
+    Task<bool> ExisteViaje(string destino, int id, int idTaxista);
 }

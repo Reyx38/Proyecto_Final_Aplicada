@@ -15,11 +15,5 @@ public class Taxistas : Usuarios
     [Required(ErrorMessage = "Debe llenar este campo.")]
     public bool ExisteLicencia { get; set; }
 
-    public ICollection<Viajes> Viajes { get; set; } = new List<Viajes>();
-
     public EstadosTaxistas Status { get; set; } = EstadosTaxistas.Disponible;
-
-    [ForeignKey("Billetera")]
-    public int BilleteraId { get; set; }
-    public Billeteras? Billetera { get; set; }
 }

@@ -15,28 +15,27 @@ public class Viajes
     public int ViajeId { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
-    public string UbicacionInicial { get; set; }
-
-    [Required(ErrorMessage = "Campo obligatorio")]
     public string Destino { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
     public DateTime Fecha { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
-    public TimeSpan Tiempo { get; set; }
-
-    [Required(ErrorMessage = "Campo obligatorio")]
-    public EstadosViajes Estado { get; set; } = EstadosViajes.Pendiente;
+    public EstadosViajes Estado { get; set; } = EstadosViajes.EnCurso;
 
     [Required]
     public double Precio { get; set; }
 
-    [ForeignKey("Cliente")]
-    public int ClienteId { get; set; }
-    public Clientes? Cliente { get; set; }
+    [Required]
+    public int personas { get; set; }
+
+    public ICollection<Imagen> Imagenes { get; set; } = new List<Imagen>();
 
     [ForeignKey("Taxista")]
     public int TaxistaId { get; set; }
     public Taxistas? Taxista { get; set; }
+
+    [ForeignKey("Cliente")]
+    public int ClienteId { get; set; }
+    public Clientes? Clientes { get; set; }
 }

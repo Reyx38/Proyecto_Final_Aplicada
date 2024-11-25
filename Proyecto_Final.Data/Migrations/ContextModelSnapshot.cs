@@ -22,49 +22,6 @@ namespace Proyecto_Final.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Proyecto_Final.Data.Models.Billeteras", b =>
-                {
-                    b.Property<int>("BilleteraId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BilleteraId"));
-
-                    b.Property<double>("Saldo")
-                        .HasColumnType("float");
-
-                    b.HasKey("BilleteraId");
-
-                    b.ToTable("Billeteras");
-
-                    b.HasData(
-                        new
-                        {
-                            BilleteraId = 1,
-                            Saldo = 450.0
-                        },
-                        new
-                        {
-                            BilleteraId = 2,
-                            Saldo = 450.0
-                        },
-                        new
-                        {
-                            BilleteraId = 3,
-                            Saldo = 450.0
-                        },
-                        new
-                        {
-                            BilleteraId = 4,
-                            Saldo = 450.0
-                        },
-                        new
-                        {
-                            BilleteraId = 5,
-                            Saldo = 450.0
-                        });
-                });
-
             modelBuilder.Entity("Proyecto_Final.Data.Models.Clientes", b =>
                 {
                     b.Property<int>("ClienteId")
@@ -72,9 +29,6 @@ namespace Proyecto_Final.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClienteId"));
-
-                    b.Property<int>("BilleteraId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Correo")
                         .IsRequired()
@@ -99,9 +53,63 @@ namespace Proyecto_Final.Data.Migrations
 
                     b.HasKey("ClienteId");
 
-                    b.HasIndex("BilleteraId");
-
                     b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Imagen", b =>
+                {
+                    b.Property<int>("ImagenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImagenId"));
+
+                    b.Property<string>("Alt")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagenUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ViajeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ImagenId");
+
+                    b.HasIndex("ViajeId");
+
+                    b.ToTable("Imagenes");
+
+                    b.HasData(
+                        new
+                        {
+                            ImagenId = 1,
+                            Alt = "Imagen 1",
+                            ImagenUrl = "Images/Bahia-Aguilas.jpg",
+                            Titulo = "Bahia de las aguilas",
+                            ViajeId = 1
+                        },
+                        new
+                        {
+                            ImagenId = 2,
+                            Alt = "Imagen 2",
+                            ImagenUrl = "Images/camino-rocoso.jpg",
+                            Titulo = "Camino roscoso",
+                            ViajeId = 1
+                        },
+                        new
+                        {
+                            ImagenId = 3,
+                            Alt = "Imagen 3",
+                            ImagenUrl = "Images/Punta-Cana.jpg",
+                            Titulo = "Punta cana",
+                            ViajeId = 2
+                        });
                 });
 
             modelBuilder.Entity("Proyecto_Final.Data.Models.Taxistas", b =>
@@ -111,9 +119,6 @@ namespace Proyecto_Final.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TaxistaId"));
-
-                    b.Property<int>("BilleteraId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("ClientesClienteId")
                         .HasColumnType("int");
@@ -150,8 +155,6 @@ namespace Proyecto_Final.Data.Migrations
 
                     b.HasKey("TaxistaId");
 
-                    b.HasIndex("BilleteraId");
-
                     b.HasIndex("ClientesClienteId");
 
                     b.ToTable("Taxistas");
@@ -160,7 +163,6 @@ namespace Proyecto_Final.Data.Migrations
                         new
                         {
                             TaxistaId = 1,
-                            BilleteraId = 1,
                             Correo = "federicoLiranzo01@gmail.com",
                             ExisteLicencia = true,
                             ExisteVehiculo = true,
@@ -173,7 +175,6 @@ namespace Proyecto_Final.Data.Migrations
                         new
                         {
                             TaxistaId = 2,
-                            BilleteraId = 2,
                             Correo = "cesarpolanco1@gmail.com",
                             ExisteLicencia = true,
                             ExisteVehiculo = true,
@@ -186,7 +187,6 @@ namespace Proyecto_Final.Data.Migrations
                         new
                         {
                             TaxistaId = 3,
-                            BilleteraId = 3,
                             Correo = "martinperez90@gmail.com",
                             ExisteLicencia = true,
                             ExisteVehiculo = false,
@@ -199,7 +199,6 @@ namespace Proyecto_Final.Data.Migrations
                         new
                         {
                             TaxistaId = 4,
-                            BilleteraId = 4,
                             Correo = "juanrodriguez87@gmail.com",
                             ExisteLicencia = false,
                             ExisteVehiculo = true,
@@ -212,7 +211,6 @@ namespace Proyecto_Final.Data.Migrations
                         new
                         {
                             TaxistaId = 5,
-                            BilleteraId = 5,
                             Correo = "carlosherrera92@gmail.com",
                             ExisteLicencia = true,
                             ExisteVehiculo = true,
@@ -224,25 +222,6 @@ namespace Proyecto_Final.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Proyecto_Final.Data.Models.Transacciones", b =>
-                {
-                    b.Property<int>("TransaccionId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("Monto")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Tipo")
-                        .HasColumnType("int");
-
-                    b.HasKey("TransaccionId");
-
-                    b.ToTable("Transacciones");
-                });
-
             modelBuilder.Entity("Proyecto_Final.Data.Models.Viajes", b =>
                 {
                     b.Property<int>("ViajeId")
@@ -251,7 +230,7 @@ namespace Proyecto_Final.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ViajeId"));
 
-                    b.Property<int>("ClienteId")
+                    b.Property<int?>("ClientesClienteId")
                         .HasColumnType("int");
 
                     b.Property<string>("Destino")
@@ -270,79 +249,71 @@ namespace Proyecto_Final.Data.Migrations
                     b.Property<int>("TaxistaId")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("Tiempo")
-                        .HasColumnType("time");
-
-                    b.Property<string>("UbicacionInicial")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("personas")
+                        .HasColumnType("int");
 
                     b.HasKey("ViajeId");
 
-                    b.HasIndex("ClienteId");
+                    b.HasIndex("ClientesClienteId");
 
                     b.HasIndex("TaxistaId");
 
                     b.ToTable("Viajes");
+
+                    b.HasData(
+                        new
+                        {
+                            ViajeId = 1,
+                            Destino = " Bania de las aguilas",
+                            Estado = 2,
+                            Fecha = new DateTime(2024, 11, 25, 11, 46, 21, 250, DateTimeKind.Local).AddTicks(9638),
+                            Precio = 2500.0,
+                            TaxistaId = 1,
+                            personas = 5
+                        },
+                        new
+                        {
+                            ViajeId = 2,
+                            Destino = "Punta Cana",
+                            Estado = 2,
+                            Fecha = new DateTime(2024, 11, 25, 11, 46, 21, 250, DateTimeKind.Local).AddTicks(9659),
+                            Precio = 3500.0,
+                            TaxistaId = 3,
+                            personas = 5
+                        });
                 });
 
-            modelBuilder.Entity("Proyecto_Final.Data.Models.Clientes", b =>
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Imagen", b =>
                 {
-                    b.HasOne("Proyecto_Final.Data.Models.Billeteras", "Billetera")
-                        .WithMany()
-                        .HasForeignKey("BilleteraId")
+                    b.HasOne("Proyecto_Final.Data.Models.Viajes", "Viaje")
+                        .WithMany("Imagenes")
+                        .HasForeignKey("ViajeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Billetera");
+                    b.Navigation("Viaje");
                 });
 
             modelBuilder.Entity("Proyecto_Final.Data.Models.Taxistas", b =>
                 {
-                    b.HasOne("Proyecto_Final.Data.Models.Billeteras", "Billetera")
-                        .WithMany()
-                        .HasForeignKey("BilleteraId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Proyecto_Final.Data.Models.Clientes", null)
                         .WithMany("Favoritos")
                         .HasForeignKey("ClientesClienteId");
-
-                    b.Navigation("Billetera");
-                });
-
-            modelBuilder.Entity("Proyecto_Final.Data.Models.Transacciones", b =>
-                {
-                    b.HasOne("Proyecto_Final.Data.Models.Billeteras", null)
-                        .WithMany("Transacciones")
-                        .HasForeignKey("TransaccionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Proyecto_Final.Data.Models.Viajes", b =>
                 {
-                    b.HasOne("Proyecto_Final.Data.Models.Clientes", "Cliente")
+                    b.HasOne("Proyecto_Final.Data.Models.Clientes", null)
                         .WithMany("Viajes")
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("ClientesClienteId");
 
                     b.HasOne("Proyecto_Final.Data.Models.Taxistas", "Taxista")
-                        .WithMany("Viajes")
+                        .WithMany()
                         .HasForeignKey("TaxistaId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Cliente");
-
                     b.Navigation("Taxista");
-                });
-
-            modelBuilder.Entity("Proyecto_Final.Data.Models.Billeteras", b =>
-                {
-                    b.Navigation("Transacciones");
                 });
 
             modelBuilder.Entity("Proyecto_Final.Data.Models.Clientes", b =>
@@ -352,9 +323,9 @@ namespace Proyecto_Final.Data.Migrations
                     b.Navigation("Viajes");
                 });
 
-            modelBuilder.Entity("Proyecto_Final.Data.Models.Taxistas", b =>
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Viajes", b =>
                 {
-                    b.Navigation("Viajes");
+                    b.Navigation("Imagenes");
                 });
 #pragma warning restore 612, 618
         }
