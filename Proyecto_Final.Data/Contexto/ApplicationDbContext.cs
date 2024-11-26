@@ -14,6 +14,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	public DbSet<Viajes> Viajes { get; set; }
 	public DbSet<Imagen> Imagen { get; set; }
 	public DbSet<Reservaciones> Reservaciones { get; set; }
+	public DbSet<EstadosViajes> EstadosViajes { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        builder.Entity<EstadosViajes>().HasData(
+        new EstadosViajes { EstadosVId = 1, Descripcion = "Pendiente" },
+        new EstadosViajes { EstadosVId = 2, Descripcion = "En Curso" },
+        new EstadosViajes { EstadosVId = 3, Descripcion = "Completado" },
+        new EstadosViajes { EstadosVId = 4, Descripcion = "Cancelado" }
+        );
+    }
 }
 
 
