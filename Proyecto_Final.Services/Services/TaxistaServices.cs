@@ -1,25 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Proyecto_Final.Abstracions.Interface;
-using Proyecto_Final.Data.Contexto;
-using Proyecto_Final.Data.Models;
-using Proyecto_Final.Domain.Dto;
-using System.Linq;
+using ReyAI_Trasport.Abstracions.Interface;
+using ReyAI_Trasport.Data.Contexto;
+using ReyAI_Trasport.Domain.Dto;
+using ReyAI_Trasport.Domain.Models;
 using System.Linq.Expressions;
 
-namespace Proyecto_Final.Services.Services
+namespace ReyAI_Trasport.Services.Services
 {
-    public class TaxistaServices(IDbContextFactory<Context> DbFactory) : ITaxistaServices
+	public class TaxistaServices(IDbContextFactory<ApplicationDbContext> DbFactory) : ITaxistaServices
     {
-        public async Task<TaxistaDto> Buscar(int id)
+        public async Task<TaxistaDto> Buscar(string id)
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
             var taxista = await contexto.Taxistas
-           .Where(e => e.TaxistaId == id)
+           .Where(e => e.Id == id)
            .Select(p => new TaxistaDto()
            {
-               TaxistaId = p.TaxistaId,
-               NickName = p.NickName,
-               Correo = p.Correo,
+               TaxistaId = p.Id,
+               NickName = p.UserName,
+               Correo = p.Email,
                ExisteVehiculo = p.ExisteVehiculo,
                ExisteLicencia = p.ExisteLicencia,
                Status = p.Status
@@ -28,21 +27,21 @@ namespace Proyecto_Final.Services.Services
             return taxista ?? new TaxistaDto();
         }
 
-        public async Task<bool> Eliminar(int id)
+        public async Task<bool> Eliminar(string id)
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
             return await contexto.Taxistas
-                .Where(e => e.TaxistaId == id)
+                .Where(e => e.Id == id)
                 .ExecuteDeleteAsync() > 0;
         }
 
-        public async Task<bool> ExisteTaxista(string nombre, int id, string correo)
+        public async Task<bool> ExisteTaxista(string nombre, string id, string correo)
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
             return await contexto.Taxistas
-                .AnyAsync(e => e.TaxistaId != id
-                && e.NickName.ToLower().Equals(nombre.ToLower())
-                && e.Correo.ToLower().Equals(correo.ToLower()));
+                .AnyAsync(e => e.Id != id
+                && e.UserName.ToLower().Equals(nombre.ToLower())
+                && e.Email.ToLower().Equals(correo.ToLower()));
         }
 
         private async Task<bool> Insertar(TaxistaDto taxistaDto)
@@ -50,16 +49,16 @@ namespace Proyecto_Final.Services.Services
             await using var contexto = await DbFactory.CreateDbContextAsync();
             var taxista = new Taxistas()
             {
-                TaxistaId = taxistaDto.TaxistaId,
-                NickName = taxistaDto.NickName,
-                Correo = taxistaDto.Correo,
+                Id = taxistaDto.TaxistaId,
+                UserName = taxistaDto.NickName,
+                Email = taxistaDto.Correo,
                 ExisteVehiculo = taxistaDto.ExisteVehiculo,
                 ExisteLicencia = taxistaDto.ExisteLicencia,
                 Status = taxistaDto.Status
             };
             contexto.Taxistas.Add(taxista);
             var guardo = await contexto.SaveChangesAsync() > 0;
-            taxistaDto.TaxistaId = taxista.TaxistaId;
+            taxistaDto.TaxistaId = taxista.Id;
             return guardo;
         }
 
@@ -68,9 +67,9 @@ namespace Proyecto_Final.Services.Services
             await using var contexto = await DbFactory.CreateDbContextAsync();
             var taxista = new Taxistas()
             {
-                TaxistaId = taxistaDto.TaxistaId,
-                NickName = taxistaDto.NickName,
-                Correo = taxistaDto.Correo,
+				Id = taxistaDto.TaxistaId,
+                UserName = taxistaDto.NickName,
+                Email = taxistaDto.Correo,
                 ExisteVehiculo = taxistaDto.ExisteVehiculo,
                 ExisteLicencia = taxistaDto.ExisteLicencia,
                 Status = taxistaDto.Status
@@ -80,11 +79,11 @@ namespace Proyecto_Final.Services.Services
             return modificado;
         }
 
-        private async Task<bool> Existe(int id)
+        private async Task<bool> Existe(string id)
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
             return await contexto.Taxistas
-                .AnyAsync(e => e.TaxistaId == id);
+                .AnyAsync(e => e.Id == id);
         }
 
         public async Task<bool> Guardar(TaxistaDto taxistaDto)
@@ -100,9 +99,9 @@ namespace Proyecto_Final.Services.Services
             await using var contexto = await DbFactory.CreateDbContextAsync();
             return await contexto.Taxistas.Select(f => new TaxistaDto()
             {
-                TaxistaId = f.TaxistaId,
-                NickName = f.NickName,
-                Correo = f.Correo,
+                TaxistaId = f.Id,
+                NickName = f.UserName,
+                Correo = f.Email,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
                 Status = f.Status

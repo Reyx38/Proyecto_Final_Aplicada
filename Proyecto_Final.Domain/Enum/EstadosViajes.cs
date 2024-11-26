@@ -1,4 +1,4 @@
-﻿namespace Proyecto_Final.Domain.Enum;
+﻿namespace ReyAI_Trasport.Domain.Enum;
 
 public enum EstadosViajes
 {

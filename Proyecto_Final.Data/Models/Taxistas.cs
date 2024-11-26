@@ -1,25 +1,19 @@
-﻿using Proyecto_Final.Domain.Enum;
+﻿using ReyAI_Trasport.Domain.Enum;
+using ReyAI_Trasport.Data;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Proyecto_Final.Data.Models;
+namespace ReyAI_Trasport.Domain.Models;
 
-public class Taxistas : Usuarios
+public class Taxistas : ApplicationUser
 {
     [Key]
-    public int TaxistaId { get; set; }
+	public string Id { get; set; }
 
-    [Required(ErrorMessage = "Debe llenar este campo.")]
+	[Required(ErrorMessage = "Debe llenar este campo.")]
     public bool ExisteVehiculo { get; set; }
 
     [Required(ErrorMessage = "Debe llenar este campo.")]
     public bool ExisteLicencia { get; set; }
 
-    public ICollection<Viajes> Viajes { get; set; } = new List<Viajes>();
-
     public EstadosTaxistas Status { get; set; } = EstadosTaxistas.Disponible;
-
-    [ForeignKey("Billetera")]
-    public int BilleteraId { get; set; }
-    public Billeteras? Billetera { get; set; }
 }

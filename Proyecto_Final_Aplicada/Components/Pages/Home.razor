@@ -1,7 +1,25 @@
-﻿@page "/0"
+﻿@page "/9"
+@rendermode InteractiveServer
+@inject ViajeServices ViajeService
 
-<PageTitle>Home</PageTitle>
+<div class="hero-section">
+    @if (!Viajes.Imagenes.Any())
+    {
+        var imagenes = Viajes.Imagenes.FirstOrDefault();
+        <img src="@imagenes.ImagenUrl" alt="@imagenes.Alt" class="img-fluid" />
+        <div class="overlay">
+            <h1>@imagenes.Titulo</h1>
+            <button>Suscribirse</button>
+        </div>
+    }
+</div>
 
-<h1>Hello, world!</h1>
+@code {
+    public ViajesDto Viajes { get; set; } = new ViajesDto();
 
-Welcome to your new app.
+    protected override async Task OnInitializedAsync()
+    {
+        Viajes = await ViajeService.Buscar(1);
+    }
+
+}  

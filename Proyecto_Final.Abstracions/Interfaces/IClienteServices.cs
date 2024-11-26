@@ -1,14 +1,14 @@
-﻿using Proyecto_Final.Domain.Dto;
+﻿using ReyAI_Trasport.Domain.Dto;
 using System.Linq.Expressions;
 
-namespace Proyecto_Final.Abstracions.Interface
+namespace ReyAI_Trasport.Abstracions.Interface
 {
     public interface IClienteServices
     {
         Task<bool> Guardar( ClientesDto clienteDto);
-        Task<bool> Eliminar(int id);
-        Task<ClientesDto> Buscar(int id);
+        Task<bool> Eliminar(string id);
+        Task<ClientesDto> Buscar(string id);
         Task<List<ClientesDto>> Listar(Expression<Func<ClientesDto, bool>> criterio);
-        Task<bool> ExisteCliente(string nombre, int id, string correo);
+        Task<bool> ExisteCliente(string nombre, string id, string correo);
     }
 }

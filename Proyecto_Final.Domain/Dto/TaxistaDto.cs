@@ -1,21 +1,20 @@
-﻿using Proyecto_Final.Domain.Enum;
+﻿using ReyAI_Trasport.Domain.Enum;
 
-namespace Proyecto_Final.Domain.Dto
+namespace ReyAI_Trasport.Domain.Dto;
+
+public class TaxistaDto
 {
-    public class TaxistaDto
-    {
-        public int TaxistaId { get; set; }
+    public string TaxistaId { get; set; }
 
-        public string NickName { get; set; }
+    public string NickName { get; set; }
 
-        public string Nombres { get; set; }
+    public string Nombres { get; set; }
 
-        public string Correo { get; set; }
+    public string Correo { get; set; }
 
-        public bool ExisteVehiculo { get; set; }
+    public bool ExisteVehiculo { get; set; }
 
-        public bool ExisteLicencia { get; set; }
-        
-        public EstadosTaxistas Status { get; set; }
-    }
+    public bool ExisteLicencia { get; set; }
+    
+    public EstadosTaxistas Status { get; set; }
 }

@@ -1,21 +1,14 @@
-﻿using Proyecto_Final.Domain.Enum;
-using System;
-using System.Collections.Generic;
+﻿using ReyAI_Trasport.Data;
+using ReyAI_Trasport.Domain.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Proyecto_Final.Data.Models;
+namespace ReyAI_Trasport.Domain.Models;
 
 public class Viajes
 {
     [Key]
     public int ViajeId { get; set; }
-
-    [Required(ErrorMessage = "Campo obligatorio")]
-    public string UbicacionInicial { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
     public string Destino { get; set; }
@@ -24,19 +17,21 @@ public class Viajes
     public DateTime Fecha { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
-    public TimeSpan Tiempo { get; set; }
-
-    [Required(ErrorMessage = "Campo obligatorio")]
-    public EstadosViajes Estado { get; set; } = EstadosViajes.Pendiente;
+    public EstadosViajes Estado { get; set; } = EstadosViajes.EnCurso;
 
     [Required]
     public double Precio { get; set; }
 
-    [ForeignKey("Cliente")]
-    public int ClienteId { get; set; }
-    public Clientes? Cliente { get; set; }
+    [Required]
+    public int personas { get; set; }
+
+    public ICollection<Imagen> Imagen { get; set; } = new List<Imagen>();
 
     [ForeignKey("Taxista")]
-    public int TaxistaId { get; set; }
-    public Taxistas? Taxista { get; set; }
+	public string? TaxistaId { get; set; } 
+	public ApplicationUser? Taxista { get; set; }
+
+	[ForeignKey("Cliente")]
+    public string? ClienteId { get; set; }
+    public ApplicationUser? Cliente { get; set; }
 }
