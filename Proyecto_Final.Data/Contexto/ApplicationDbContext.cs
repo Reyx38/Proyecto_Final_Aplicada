@@ -15,6 +15,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	public DbSet<Imagen> Imagen { get; set; }
 	public DbSet<Reservaciones> Reservaciones { get; set; }
 	public DbSet<EstadosViajes> EstadosViajes { get; set; }
+    public DbSet<MetodosPagos> MetodosPagos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -24,6 +25,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         new EstadosViajes { EstadosVId = 2, Descripcion = "En Curso" },
         new EstadosViajes { EstadosVId = 3, Descripcion = "Completado" },
         new EstadosViajes { EstadosVId = 4, Descripcion = "Cancelado" }
+        );
+
+        builder.Entity<MetodosPagos>().HasData(
+        new MetodosPagos { MetodoPagoId = 1, Descripcion = "Efectivo"},
+        new MetodosPagos { MetodoPagoId = 2, Descripcion = "Tarjeta de credito"}
         );
     }
 }
