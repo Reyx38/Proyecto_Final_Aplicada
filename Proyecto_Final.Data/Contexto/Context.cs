@@ -100,12 +100,5 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
 
               }
         });
-
-        modelBuilder.Entity<Imagen>().HasData(new List<Imagen>
-        {
-            new Imagen { ImagenId = 1, ImagenUrl = "Images/Bahia-Aguilas.jpg", Alt = "Imagen 1", Titulo="Bahia de las aguilas", ViajeId = 1 },
-            new Imagen { ImagenId = 2, ImagenUrl = "Images/camino-rocoso.jpg", Alt = "Imagen 2", Titulo="Camino roscoso", ViajeId = 1 },
-            new Imagen { ImagenId = 3, ImagenUrl = "Images/Punta-Cana.jpg", Alt = "Imagen 3",  Titulo="Punta cana", ViajeId = 2 }
-        });
     }
 }

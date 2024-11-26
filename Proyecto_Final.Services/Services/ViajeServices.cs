@@ -24,12 +24,6 @@ public class ViajeServices(IDbContextFactory<Context> DbFactory) : IViajeService
            Estado = p.Estado,
            Precio = p.Precio,
            TaxistaId = p.TaxistaId,
-           Imagenes = p.Imagenes.Select(p => new ImagenDto()
-           {
-               ImagenUrl = p.ImagenUrl,
-               Titulo = p.Titulo,
-               Alt = p.Alt,
-           }).ToList()
        })
        .FirstOrDefaultAsync();
         return viaje ?? new ViajesDto();
