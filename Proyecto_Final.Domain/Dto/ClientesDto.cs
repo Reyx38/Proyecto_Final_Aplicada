@@ -1,17 +1,14 @@
-﻿using Proyecto_Final.Domain.Enum;
-using System.ComponentModel.DataAnnotations;
+﻿using ReyAI_Trasport.Domain.Enum;
 
-namespace Proyecto_Final.Domain.Dto;
+namespace ReyAI_Trasport.Domain.Dto;
 
 public class ClientesDto
 {
-    public int ClienteId { get; set; }
+    public string ClienteId { get; set; }
 
     public string NickName { get; set; }
 
     public string Nombres { get; set; }
-
-    public DateTime FechaNacimiento { get; set; } 
 
     public string Correo { get; set; }
 

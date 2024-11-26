@@ -1,12 +1,6 @@
-﻿using Proyecto_Final.Domain.Enum;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReyAI_Trasport.Domain.Enum;
 
-namespace Proyecto_Final.Domain.Dto;
+namespace ReyAI_Trasport.Domain.Dto;
 
 public class ViajesDto
 {
@@ -23,7 +17,7 @@ public class ViajesDto
     public int personas { get; set; }
 
     public List<ImagenDto> Imagenes { get; set; } = new List<ImagenDto>();
-    public int ClienteId { get; set; }
+    public string ClienteId { get; set; }
 
-    public int TaxistaId { get; set; }
+    public string TaxistaId { get; set; }
 }

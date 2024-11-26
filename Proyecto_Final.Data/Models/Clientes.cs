@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using ReyAI_Trasport.Data;
+using System.ComponentModel.DataAnnotations;
 
-namespace Proyecto_Final.Data.Models;
+namespace ReyAI_Trasport.Domain.Models;
 
-public class Clientes : Usuarios
+public class Clientes : ApplicationUser
 {
     [Key]
-    public int ClienteId { get; set; }
-
+    public string Id {  get; set; } 
     public ICollection<Viajes> Viajes { get; set; } = new List<Viajes>();
 
     public ICollection<Taxistas> Favoritos { get; set; } = new List<Taxistas>();

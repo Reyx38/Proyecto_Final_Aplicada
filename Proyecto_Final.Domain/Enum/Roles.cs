@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto_Final.Domain.Enum
+namespace ReyAI_Trasport.Domain.Enum
 {
     public enum Roles
     {

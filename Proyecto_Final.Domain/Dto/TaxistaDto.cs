@@ -1,10 +1,10 @@
-﻿using Proyecto_Final.Domain.Enum;
+﻿using ReyAI_Trasport.Domain.Enum;
 
-namespace Proyecto_Final.Domain.Dto;
+namespace ReyAI_Trasport.Domain.Dto;
 
 public class TaxistaDto
 {
-    public int TaxistaId { get; set; }
+    public string TaxistaId { get; set; }
 
     public string NickName { get; set; }
 

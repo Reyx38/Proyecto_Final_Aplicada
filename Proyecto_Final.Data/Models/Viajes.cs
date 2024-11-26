@@ -1,13 +1,9 @@
-﻿using Proyecto_Final.Domain.Enum;
-using System;
-using System.Collections.Generic;
+﻿using ReyAI_Trasport.Data;
+using ReyAI_Trasport.Domain.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Proyecto_Final.Data.Models;
+namespace ReyAI_Trasport.Domain.Models;
 
 public class Viajes
 {
@@ -29,13 +25,13 @@ public class Viajes
     [Required]
     public int personas { get; set; }
 
-    public ICollection<Imagen> Imagenes { get; set; } = new List<Imagen>();
+    public ICollection<Imagen> Imagen { get; set; } = new List<Imagen>();
 
     [ForeignKey("Taxista")]
-    public int TaxistaId { get; set; }
-    public Taxistas? Taxista { get; set; }
+	public string? TaxistaId { get; set; } 
+	public ApplicationUser? Taxista { get; set; }
 
-    [ForeignKey("Cliente")]
-    public int ClienteId { get; set; }
-    public Clientes? Clientes { get; set; }
+	[ForeignKey("Cliente")]
+    public string? ClienteId { get; set; }
+    public ApplicationUser? Cliente { get; set; }
 }
