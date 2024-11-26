@@ -13,7 +13,7 @@ namespace ReyAI_Trasport.Services.Services
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
             var taxista = await contexto.Taxistas
-           .Where(e => e.Id == id)
+           .Where(e => e.Id.ToLower().Equals(id.ToLower()))
            .Select(p => new TaxistaDto()
            {
                TaxistaId = p.Id,
