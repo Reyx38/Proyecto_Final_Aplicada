@@ -32,7 +32,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
         return reserva ?? new ReservacionesDto();
     }
 
-    public async Task<bool> ExisteViaje(int clienteId, int reservacionId, int ViajeId)
+    public async Task<bool> ExisteReservacion(int clienteId, int reservacionId, int ViajeId)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Reservaciones
