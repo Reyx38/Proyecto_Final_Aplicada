@@ -1,32 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Proyecto_Final.Abstracions.Interface;
-using Proyecto_Final.Data.Contexto;
-using Proyecto_Final.Data.Models;
-using Proyecto_Final.Domain.Dto;
-using Proyecto_Final.Domain.Enum;
+using ReyAI_Trasport.Abstracions.Interface;
+using ReyAI_Trasport.Data.Contexto;
+using ReyAI_Trasport.Domain.Dto;
+using ReyAI_Trasport.Domain.Models;
 using System.Linq.Expressions;
 
-namespace Proyecto_Final.Services.Services;
+namespace ReyAI_Trasport.Services.Services;
 
-public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteServices
+public class ClienteServices(IDbContextFactory<ApplicationDbContext> DbFactory) : IClienteServices
 {
-    public async Task<ClientesDto> Buscar(int id)
+    public async Task<ClientesDto> Buscar(string id)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         var cliente = await contexto.Clientes
-       .Where(e => e.ClienteId == id)
+       .Where(e => e.Id == id)
        .Select(p => new ClientesDto()
        {
-           ClienteId = p.ClienteId,
-           NickName = p.NickName,
-           FechaNacimiento = p.FechaNacimiento,
-           Correo = p.Correo,
-           Password = p.Password,
+           ClienteId = p.Id,
+           NickName = p.UserName,
+           Correo = p.Email,
            Favoritos = p.Favoritos.Select(f => new TaxistaDto
            {
-               TaxistaId = f.TaxistaId,
-               NickName = f.NickName,
-               Correo = f.Correo,
+               TaxistaId = f.Id,
+               NickName = f.UserName,
+               Correo = f.Email,
                ExisteVehiculo = f.ExisteVehiculo,
                ExisteLicencia = f.ExisteLicencia,
            }).ToList()
@@ -35,22 +32,22 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
         return cliente ?? new ClientesDto();
     }
 
-    public async Task<bool> Eliminar(int id)
+    public async Task<bool> Eliminar(string id)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Clientes
-            .Where(e => e.ClienteId == id)
+            .Where(e => e.Id == id)
             .Include(p => p.Favoritos)
             .ExecuteDeleteAsync() > 0;
     }
 
-    public async Task<bool> ExisteCliente(string nombre, int id, string correo)
+    public async Task<bool> ExisteCliente(string nombre, string id, string correo)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Clientes
-            .AnyAsync(e => e.ClienteId != id
-            && e.NickName.ToLower().Equals(nombre.ToLower()) 
-            && e.Correo.ToLower().Equals(correo.ToLower()));
+            .AnyAsync(e => e.Id != id
+            && e.UserName.ToLower().Equals(nombre.ToLower()) 
+            && e.Email.ToLower().Equals(correo.ToLower()));
     }
 
     private async Task<bool> Insertar(ClientesDto clienteDto)
@@ -58,24 +55,22 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
         await using var contexto = await DbFactory.CreateDbContextAsync();
         var cliente = new Clientes()
         {
-            ClienteId = clienteDto.ClienteId,
-            NickName = clienteDto.NickName,
-            FechaNacimiento = clienteDto.FechaNacimiento,
-            Correo = clienteDto.Correo,
-            Password = clienteDto.Password,
-            Role = Roles.Cliente,
+			Id = clienteDto.ClienteId,
+            UserName = clienteDto.NickName,
+            Email = clienteDto.Correo,
+            PasswordHash = clienteDto.Password,
             Favoritos = clienteDto.Favoritos.Select(f => new Taxistas
             {
-                TaxistaId = f.TaxistaId,
-                NickName = f.NickName,
-                Correo = f.Correo,
+				Id = f.TaxistaId,
+                UserName = f.NickName,
+                Email = f.Correo,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
             }).ToList()
         };
         contexto.Clientes.Add(cliente);
         var guardo = await contexto.SaveChangesAsync() > 0;
-        clienteDto.ClienteId = cliente.ClienteId;
+        clienteDto.ClienteId = cliente.Id;
         return guardo;
     }
 
@@ -84,16 +79,15 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
         await using var contexto = await DbFactory.CreateDbContextAsync();
         var cliente = new Clientes()
         {
-            ClienteId = clienteDto.ClienteId,
-            NickName = clienteDto.NickName,
-            FechaNacimiento = clienteDto.FechaNacimiento,
-            Correo = clienteDto.Correo,
-            Password = clienteDto.Password,
+            Id = clienteDto.ClienteId,
+            UserName = clienteDto.NickName,
+            Email = clienteDto.Correo,
+            PasswordHash = clienteDto.Password,
             Favoritos = clienteDto.Favoritos.Select(f => new Taxistas
             {
-                TaxistaId = f.TaxistaId,
-                NickName = f.NickName,
-                Correo = f.Correo,
+                Id = f.TaxistaId,
+                UserName = f.NickName,
+                Email = f.Correo,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
             }).ToList()
@@ -103,11 +97,11 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
         return modificado;
     }
 
-    private async Task<bool> Existe(int id)
+    private async Task<bool> Existe(string id)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Clientes
-            .AnyAsync(e => e.ClienteId == id);
+            .AnyAsync(e => e.Id == id);
     }
 
     public async Task<bool> Guardar(ClientesDto clienteDto)
@@ -123,16 +117,15 @@ public class ClienteServices(IDbContextFactory<Context> DbFactory) : IClienteSer
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Clientes.Select(p => new ClientesDto()
         {
-            ClienteId = p.ClienteId,
-            NickName = p.NickName,
-            FechaNacimiento = p.FechaNacimiento,
-            Correo = p.Correo,
-            Password = p.Password,
+            ClienteId = p.Id,
+            NickName = p.UserName,
+            Correo = p.Email,
+            Password = p.PasswordHash,
             Favoritos = p.Favoritos.Select(f => new TaxistaDto
             {
-                TaxistaId = f.TaxistaId,
-                NickName = f.NickName,
-                Correo = f.Correo,
+                TaxistaId = f.Id,
+                NickName = f.UserName,
+                Correo = f.Email,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
             }).ToList()
