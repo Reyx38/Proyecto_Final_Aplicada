@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Proyecto_Final.Data.Models;
 using Proyecto_Final.Domain.Dto;
 using ReyAI_Trasport.Abstracions.Interface;
 using ReyAI_Trasport.Abstracions.Interfaces;
