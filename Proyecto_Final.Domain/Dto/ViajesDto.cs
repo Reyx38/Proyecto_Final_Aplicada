@@ -6,7 +6,7 @@ public class ViajesDto
 {
     public int ViajeId { get; set; }
 
-    public string Destino { get; set; }
+    public int CiudadId { get; set; }
 
     public DateTime Fecha { get; set; }
 

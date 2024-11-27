@@ -11,8 +11,9 @@ public class Viajes
     [Key]
     public int ViajeId { get; set; }
 
-    [Required(ErrorMessage = "Campo obligatorio")]
-    public string Destino { get; set; }
+    [ForeignKey("Ciudad")]
+    public int CiudadId { get; set; }
+    public Ciudades? Ciudad { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
     public DateTime Fecha { get; set; }
