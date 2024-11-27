@@ -49,16 +49,36 @@
                         <InputNumber class="form-control" @bind-Value="@Viajes.personas" placeholder="20"></InputNumber>
                         <ValidationMessage For="@(() => Viajes.personas)" />
                     </div>
+                 </div>
                     <div class="row">
+                        <label class="form-label">Insertar Imagenes del sitio</label>
+
                         <InputFile class="form-select" multiple OnChange="AgregarImagenes"></InputFile>
 
+                    <table class="table table-hover text-center mt-3">
+                        <thead class="table  table-striped text-black ">
+                            <tr>
+                                <th><strong>Articulo Id</strong></th>
+                                <th><strong>Cantidad</strong></th>
+                                <th><strong>Precio</strong></th>
+                                <th><strong>Opciones</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var detalles in Viajes.Imagenes)
+                            {
+                                <tr>
+                                    
+
+                                    <td class="text-center">
+                                        <button @onclick="RemoverDetalle" class="btn btn-danger bi bi-trash">Remover</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                     </div>
-                    @foreach (var im in Viajes.Imagenes)
-                    {
-                        <img src="@im.Base64" alt="@im.Alt" title="@im.Titulo" style="max-width: 200px; margin: 5px;" />
-                    }
-                </div>
-                </div>
+                   
             </div>
         </div>
     </div>
@@ -77,4 +97,34 @@
 	// }
 
 	public void Guardar(){}
+	public async Task AgregarImagenes(InputFileChangeEventArgs e)
+	{
+		foreach (var f in e.GetMultipleFiles())
+		{
+			using var stream = f.OpenReadStream();
+			using var memoryStream = new MemoryStream();
+			await stream.CopyToAsync(memoryStream);
+
+			var base64 = Convert.ToBase64String(memoryStream.ToArray());
+			var tipo = f.ContentType;
+
+			var base64Url = $"data:{tipo};base64,{base64}";
+
+
+			var nuevaImagen = new ImagenDto
+                {
+                    ImagenUrl = f.Name,
+                    Base64 = base64Url,
+                    Alt = "Imagen subida",
+                    Titulo = f.Name
+                };
+
+			Viajes.Imagenes.Add(nuevaImagen);
+
+		}
+	}
+	private void RemoverDetalle(MouseEventArgs e)
+	{
+		throw new NotImplementedException();
+	}
 }
