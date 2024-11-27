@@ -1,4 +1,5 @@
-﻿using ReyAI_Trasport.Domain.Enum;
+﻿using Proyecto_Final.Domain.Dto;
+using ReyAI_Trasport.Domain.Enum;
 
 namespace ReyAI_Trasport.Domain.Dto;
 
@@ -10,7 +11,7 @@ public class ViajesDto
 
     public DateTime Fecha { get; set; }
 
-    public EstadosViajes Estado { get; set; } = EstadosViajes.EnCurso;
+    public int EstadoVId { get; set; }
 
     public double Precio { get; set; }
 
