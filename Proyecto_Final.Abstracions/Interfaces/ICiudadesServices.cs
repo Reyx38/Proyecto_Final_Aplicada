@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto_Final.Abstracions.Interfaces;
+namespace ReyAI_Trasport.Abstracions.Interfaces;
 
 public interface ICiudadesServices
 {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Proyecto_Final.Domain.Dto;
 using ReyAI_Trasport.Domain.Models;
 
-namespace Proyecto_Final.Data.Models;
+namespace ReyAI_Trasport.Data.Models;
 
 public class Reservaciones
 {

@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Proyecto_Final.Abstracions.Interfaces;
 using Proyecto_Final.Data.Models;
 using Proyecto_Final.Domain.Dto;
 using ReyAI_Trasport.Abstracions.Interface;
+using ReyAI_Trasport.Abstracions.Interfaces;
 using ReyAI_Trasport.Data.Contexto;
+using ReyAI_Trasport.Data.Models;
+using ReyAI_Trasport.Domain.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto_Final.Services.Services;
+namespace ReyAI_Trasport.Services.Services;
 
 public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFactory) : IReservacionesServices
 {
@@ -37,8 +39,9 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Reservaciones
             .AnyAsync(e => e.ReservacionId != reservacionId
-            && e.Viaje.ClienteId == clienteId
-            && e.Viaje.TaxistaId == ViajeId);
+            //&& e.Viaje.ClienteId == clienteId
+            //&& e.Viaje.TaxistaId == ViajeId
+            );
     }
 
     private async Task<bool> Insertar(ReservacionesDto reservacionDto)
@@ -83,7 +86,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
 
     public async Task<bool> Guardar(ReservacionesDto reservacionDto)
     {
-        if (!await Existe(reservacionDto.ViajeId))
+        if (!await Existe(reservacionDto.ReservacionId))
             return await Insertar(reservacionDto);
         else
             return await Modificar(reservacionDto);
@@ -103,4 +106,6 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
         .Where(criterio)
         .ToListAsync();
     }
+
+    
 }

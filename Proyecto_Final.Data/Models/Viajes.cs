@@ -1,6 +1,6 @@
 ﻿using Proyecto_Final.Data.Models;
 using ReyAI_Trasport.Data;
-using ReyAI_Trasport.Domain.Enum;
+using ReyAI_Trasport.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

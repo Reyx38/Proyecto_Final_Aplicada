@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Proyecto_Final.Abstracions.Interfaces;
-using Proyecto_Final.Services.Services;
 using ReyAI_Trasport.Abstracions.Interface;
 using ReyAI_Trasport.Abstracions.Interfaces;
 using ReyAI_Trasport.Data.DI;
