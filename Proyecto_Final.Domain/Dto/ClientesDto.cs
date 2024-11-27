@@ -1,5 +1,4 @@
-﻿using ReyAI_Trasport.Domain.Enum;
-
+﻿
 namespace ReyAI_Trasport.Domain.Dto;
 
 public class ClientesDto
@@ -11,8 +10,6 @@ public class ClientesDto
     public string Nombres { get; set; }
 
     public string Correo { get; set; }
-
-    public Provincias Provincia { get; set; }
 
     public string Password { get; set; }
 

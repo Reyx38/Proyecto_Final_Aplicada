@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Proyecto_Final.Data.Models;
 using ReyAI_Trasport.Abstracions.Interfaces;
 using ReyAI_Trasport.Data.Contexto;
 using ReyAI_Trasport.Domain.Dto;
-using ReyAI_Trasport.Domain.Enum;
 using ReyAI_Trasport.Domain.Models;
 using System.Linq.Expressions;
 
@@ -21,7 +21,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
            ViajeId = p.ViajeId,
            Destino = p.Destino,
            Fecha = p.Fecha,
-           Estado = p.Estado,
+           EstadoVId = p.EstadoVId,
            Precio = p.Precio,
            TaxistaId = p.TaxistaId,
        })
@@ -46,7 +46,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
             ViajeId = viajeDto.ViajeId,
             Destino = viajeDto.Destino,
             Fecha = viajeDto.Fecha,
-            Estado = viajeDto.Estado,
+            EstadoVId = viajeDto.EstadoVId,
             TaxistaId = viajeDto.TaxistaId,
             Precio = viajeDto.Precio
         };
@@ -59,16 +59,16 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
 private async Task<bool> Modificar(ViajesDto viajeDto)
 {
     await using var contexto = await DbFactory.CreateDbContextAsync();
-var viaje = new Viajes()
-{
-    ViajeId = viajeDto.ViajeId,
-    Destino = viajeDto.Destino,
-    Fecha = viajeDto.Fecha,
-    Estado = viajeDto.Estado,
-    TaxistaId = viajeDto.TaxistaId,
-    Precio = viajeDto.Precio
-};
-contexto.Update(viaje);
+    var viaje = new Viajes()
+    {
+        ViajeId = viajeDto.ViajeId,
+        Destino = viajeDto.Destino,
+        Fecha = viajeDto.Fecha,
+        EstadoVId = viajeDto.EstadoVId,
+        TaxistaId = viajeDto.TaxistaId,
+        Precio = viajeDto.Precio
+    };
+    contexto.Update(viaje);
     var modificado = await contexto.SaveChangesAsync() > 0;
     return modificado;
 }
@@ -95,7 +95,7 @@ public async Task<List<ViajesDto>> Listar(Expression<Func<ViajesDto, bool>> crit
         ViajeId = p.ViajeId,
         Destino = p.Destino,
         Fecha = p.Fecha,
-        Estado = p.Estado,
+        EstadoVId = p.EstadoVId,
         Precio = p.Precio,
         TaxistaId = p.TaxistaId
     })
@@ -103,13 +103,13 @@ public async Task<List<ViajesDto>> Listar(Expression<Func<ViajesDto, bool>> crit
     .ToListAsync();
 }
 
-public async Task<bool> ActualizarEstado(ViajesDto viajeDto, EstadosViajes estado)
+public async Task<bool> ActualizarEstado(ViajesDto viajeDto, int estado)
 {
     await using var contexto = await DbFactory.CreateDbContextAsync();
     var viaje = await contexto.Viajes.FindAsync(viajeDto.ViajeId);
     if (viaje == null) return false;
 
-    viaje.Estado = estado;
+    viaje.EstadoVId = estado;
     var modificado = await contexto.SaveChangesAsync() > 0;
     return modificado;
 }

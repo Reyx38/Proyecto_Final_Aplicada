@@ -1,5 +1,6 @@
-﻿using ReyAI_Trasport.Data;
-using ReyAI_Trasport.Domain.Enum;
+﻿using Proyecto_Final.Data.Models;
+using ReyAI_Trasport.Data;
+using ReyAI_Trasport.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,8 +17,9 @@ public class Viajes
     [Required(ErrorMessage = "Campo obligatorio")]
     public DateTime Fecha { get; set; }
 
-    [Required(ErrorMessage = "Campo obligatorio")]
-    public EstadosViajes Estado { get; set; } = EstadosViajes.EnCurso;
+    [ForeignKey("EstadoViaje")]
+    public int EstadoVId { get; set; }  
+    public EstadosViajes? EstadoViaje { get; set; }
 
     [Required]
     public double Precio { get; set; }

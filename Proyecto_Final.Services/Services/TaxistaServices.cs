@@ -13,7 +13,7 @@ namespace ReyAI_Trasport.Services.Services
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
             var taxista = await contexto.Taxistas
-           .Where(e => e.Id == id)
+           .Where(e => e.Id.ToLower().Equals(id.ToLower()))
            .Select(p => new TaxistaDto()
            {
                TaxistaId = p.Id,
@@ -21,7 +21,7 @@ namespace ReyAI_Trasport.Services.Services
                Correo = p.Email,
                ExisteVehiculo = p.ExisteVehiculo,
                ExisteLicencia = p.ExisteLicencia,
-               Status = p.Status
+               EstadoTId = p.EstadoTId
            })
            .FirstOrDefaultAsync();
             return taxista ?? new TaxistaDto();
@@ -54,7 +54,7 @@ namespace ReyAI_Trasport.Services.Services
                 Email = taxistaDto.Correo,
                 ExisteVehiculo = taxistaDto.ExisteVehiculo,
                 ExisteLicencia = taxistaDto.ExisteLicencia,
-                Status = taxistaDto.Status
+                EstadoTId = taxistaDto.EstadoTId
             };
             contexto.Taxistas.Add(taxista);
             var guardo = await contexto.SaveChangesAsync() > 0;
@@ -72,7 +72,7 @@ namespace ReyAI_Trasport.Services.Services
                 Email = taxistaDto.Correo,
                 ExisteVehiculo = taxistaDto.ExisteVehiculo,
                 ExisteLicencia = taxistaDto.ExisteLicencia,
-                Status = taxistaDto.Status
+                EstadoTId = taxistaDto.EstadoTId
             };
             contexto.Update(taxista);
             var modificado = await contexto.SaveChangesAsync() > 0;
@@ -104,7 +104,7 @@ namespace ReyAI_Trasport.Services.Services
                 Correo = f.Email,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
-                Status = f.Status
+                EstadoTId = f.EstadoTId
             })
             .Where(criterio)
             .ToListAsync();
