@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Final.Data.Models;
+using ReyAI_Trasport.Data.Models;
 using ReyAI_Trasport.Domain.Models;
 
 namespace ReyAI_Trasport.Data.Contexto;
@@ -17,6 +18,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	public DbSet<EstadosViajes> EstadosViajes { get; set; }
     public DbSet<MetodosPagos> MetodosPagos { get; set; }
     public DbSet<Ciudades> Ciudades { get; set; }
+    public DbSet<EstadosTaxistas> EstadosTaxistas { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -39,6 +41,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             new Ciudades { CiudadId = 3, Nombre = "Santigo"},
             new Ciudades { CiudadId = 4, Nombre = "Samana"},
             new Ciudades { CiudadId = 4, Nombre = "Puerto Plata"}
+        );
+
+        builder.Entity<EstadosTaxistas>().HasData(
+            new EstadosTaxistas { EstadoTId = 1, Descripcion = "Disponible" },
+            new EstadosTaxistas { EstadoTId = 2, Descripcion = "Ocupado" }
         );
     }
 }
