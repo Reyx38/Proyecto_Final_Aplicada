@@ -12,7 +12,7 @@ public class Viajes
     public int ViajeId { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
-    public string Destino { get; set; }
+    public int Destino { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
     public DateTime Fecha { get; set; }
