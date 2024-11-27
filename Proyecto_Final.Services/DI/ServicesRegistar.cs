@@ -18,6 +18,7 @@ public static class ServicesRegistar
         services.AddScoped<ITaxistaServices, TaxistaServices>();
         services.AddScoped<IViajeServices, ViajeServices>();
         services.AddScoped<IReservacionesServices, ReservacionesServices>();
+        services.AddScoped<ICiudadesServices, CiudadServices>();
         return services;
     }
 }

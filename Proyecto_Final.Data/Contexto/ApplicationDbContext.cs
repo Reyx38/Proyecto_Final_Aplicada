@@ -16,6 +16,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	public DbSet<Reservaciones> Reservaciones { get; set; }
 	public DbSet<EstadosViajes> EstadosViajes { get; set; }
     public DbSet<MetodosPagos> MetodosPagos { get; set; }
+    public DbSet<Ciudades> Ciudades { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -30,6 +31,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<MetodosPagos>().HasData(
         new MetodosPagos { MetodoPagoId = 1, Descripcion = "Efectivo"},
         new MetodosPagos { MetodoPagoId = 2, Descripcion = "Tarjeta de credito"}
+        );
+
+        builder.Entity<Ciudades>().HasData(
+            new Ciudades { CiudadId = 1, Nombre = "San Francisco de Macoris"},
+            new Ciudades { CiudadId = 2, Nombre = "Santo Domingo"},
+            new Ciudades { CiudadId = 3, Nombre = "Santigo"},
+            new Ciudades { CiudadId = 4, Nombre = "Samana"},
+            new Ciudades { CiudadId = 4, Nombre = "Puerto Plata"}
         );
     }
 }
