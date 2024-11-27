@@ -101,6 +101,26 @@ namespace Proyecto_Final.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DestinosCerca",
+                columns: table => new
+                {
+                    DestinoCercaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CiudadId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DestinosCerca", x => x.DestinoCercaId);
+                    table.ForeignKey(
+                        name: "FK_DestinosCerca_Ciudades_CiudadId",
+                        column: x => x.CiudadId,
+                        principalTable: "Ciudades",
+                        principalColumn: "CiudadId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -232,7 +252,7 @@ namespace Proyecto_Final.Data.Migrations
                 {
                     ViajeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Destino = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CiudadId = table.Column<int>(type: "int", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EstadoVId = table.Column<int>(type: "int", nullable: false),
                     Precio = table.Column<double>(type: "float", nullable: false),
@@ -260,7 +280,54 @@ namespace Proyecto_Final.Data.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
+                        name: "FK_Viajes_Ciudades_CiudadId",
+                        column: x => x.CiudadId,
+                        principalTable: "Ciudades",
+                        principalColumn: "CiudadId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Viajes_EstadosViajes_EstadoVId",
+                        column: x => x.EstadoVId,
+                        principalTable: "EstadosViajes",
+                        principalColumn: "EstadosVId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ViajesRapidos",
+                columns: table => new
+                {
+                    ViajeRapidoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DestinoCercaId = table.Column<int>(type: "int", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EstadoVId = table.Column<int>(type: "int", nullable: false),
+                    Precio = table.Column<double>(type: "float", nullable: false),
+                    personas = table.Column<int>(type: "int", nullable: false),
+                    TaxistaId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ViajesRapidos", x => x.ViajeRapidoId);
+                    table.ForeignKey(
+                        name: "FK_ViajesRapidos_AspNetUsers_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ViajesRapidos_AspNetUsers_TaxistaId",
+                        column: x => x.TaxistaId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ViajesRapidos_DestinosCerca_DestinoCercaId",
+                        column: x => x.DestinoCercaId,
+                        principalTable: "DestinosCerca",
+                        principalColumn: "DestinoCercaId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ViajesRapidos_EstadosViajes_EstadoVId",
                         column: x => x.EstadoVId,
                         principalTable: "EstadosViajes",
                         principalColumn: "EstadosVId",
@@ -313,6 +380,16 @@ namespace Proyecto_Final.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "61ac1ee4-f19c-4d5b-b3a5-b423c9acf789", null, "Cliente", "CLIENTE" },
+                    { "9e3c6d40-73ff-415b-8c00-a528e98df8d8", null, "Admin", "ADMIN" },
+                    { "d78aa974-b730-4518-b6b7-305d09cd0c7a", null, "Taxista", "TAXISTA" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Ciudades",
                 columns: new[] { "CiudadId", "Nombre" },
                 values: new object[,]
@@ -351,6 +428,29 @@ namespace Proyecto_Final.Data.Migrations
                 {
                     { 1, "Efectivo" },
                     { 2, "Tarjeta de credito" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ClientesId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "EstadoTId", "ExisteLicencia", "ExisteVehiculo", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "213bc89e-9d7c-4e34-8e3c-971be29b83c4", 0, null, "f35e838e-dfce-4a4e-825a-84519d0382aa", "Taxistas", "carlosmendoza@example.com", false, 1, true, false, false, null, null, null, "hashedpassword789", null, false, "eb1e7ad1-f43d-4314-99bd-189f6aeb8681", false, "carlosmendoza" },
+                    { "7957b032-a729-46c4-a0f1-601603975d74", 0, null, "0d26b17d-c16b-4a57-9df1-07d92c9f4609", "Taxistas", "anafernandez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword102", null, false, "a9dd5a79-7caf-402c-b5df-3a60c460ebc7", false, "anafernandez" },
+                    { "9a0173c0-3f70-406e-b5d7-ad6b4c1588a0", 0, null, "f5e497a7-8789-488a-8fcf-7513e99006c8", "Taxistas", "juanperez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword123", null, false, "7a7734bf-8f6c-4e3a-bb0c-cfcf9a438292", false, "juanperez" },
+                    { "c9218998-828a-4e7e-82f4-720fcde4a0fd", 0, null, "15fbd967-efc9-40af-8ad3-aed47b6d0cbc", "Taxistas", "mariagonzalez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword456", null, false, "ccf516eb-239e-4976-8af1-2c2e6717e195", false, "mariagonzalez" },
+                    { "de7009aa-f3ff-4c86-9cff-62b835d333cf", 0, null, "a897116a-a930-42dc-91c8-50dca0a0216a", "Taxistas", "luismartinez@example.com", false, 1, false, true, false, null, null, null, "hashedpassword101", null, false, "34311908-a926-4c59-9007-5776ab296653", false, "luismartinez" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "DestinosCerca",
+                columns: new[] { "DestinoCercaId", "CiudadId", "Descripcion" },
+                values: new object[,]
+                {
+                    { 1, 1, "Parque Duarte" },
+                    { 2, 1, "La sirena" },
+                    { 3, 1, "Supermercado Bravo" },
+                    { 4, 1, "El mercado" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -403,6 +503,11 @@ namespace Proyecto_Final.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DestinosCerca_CiudadId",
+                table: "DestinosCerca",
+                column: "CiudadId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Imagen_ViajeId",
                 table: "Imagen",
                 column: "ViajeId");
@@ -411,6 +516,11 @@ namespace Proyecto_Final.Data.Migrations
                 name: "IX_Reservaciones_ViajeId",
                 table: "Reservaciones",
                 column: "ViajeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Viajes_CiudadId",
+                table: "Viajes",
+                column: "CiudadId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Viajes_ClienteId",
@@ -430,6 +540,26 @@ namespace Proyecto_Final.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Viajes_TaxistaId",
                 table: "Viajes",
+                column: "TaxistaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ViajesRapidos_ClienteId",
+                table: "ViajesRapidos",
+                column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ViajesRapidos_DestinoCercaId",
+                table: "ViajesRapidos",
+                column: "DestinoCercaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ViajesRapidos_EstadoVId",
+                table: "ViajesRapidos",
+                column: "EstadoVId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ViajesRapidos_TaxistaId",
+                table: "ViajesRapidos",
                 column: "TaxistaId");
         }
 
@@ -452,9 +582,6 @@ namespace Proyecto_Final.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Ciudades");
-
-            migrationBuilder.DropTable(
                 name: "Imagen");
 
             migrationBuilder.DropTable(
@@ -464,16 +591,25 @@ namespace Proyecto_Final.Data.Migrations
                 name: "Reservaciones");
 
             migrationBuilder.DropTable(
+                name: "ViajesRapidos");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Viajes");
 
             migrationBuilder.DropTable(
+                name: "DestinosCerca");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "EstadosViajes");
+
+            migrationBuilder.DropTable(
+                name: "Ciudades");
 
             migrationBuilder.DropTable(
                 name: "EstadosTaxistas");
