@@ -155,6 +155,50 @@ namespace Proyecto_Final.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Proyecto_Final.Data.Models.Ciudades", b =>
+                {
+                    b.Property<int>("CiudadId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CiudadId"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CiudadId");
+
+                    b.ToTable("Ciudades");
+
+                    b.HasData(
+                        new
+                        {
+                            CiudadId = 1,
+                            Nombre = "San Francisco de Macoris"
+                        },
+                        new
+                        {
+                            CiudadId = 2,
+                            Nombre = "Santo Domingo"
+                        },
+                        new
+                        {
+                            CiudadId = 3,
+                            Nombre = "Santigo"
+                        },
+                        new
+                        {
+                            CiudadId = 4,
+                            Nombre = "Samana"
+                        },
+                        new
+                        {
+                            CiudadId = 5,
+                            Nombre = "Puerto Plata"
+                        });
+                });
+
             modelBuilder.Entity("ReyAI_Trasport.Data.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -229,6 +273,131 @@ namespace Proyecto_Final.Data.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("ReyAI_Trasport.Data.Models.EstadosTaxistas", b =>
+                {
+                    b.Property<int>("EstadoTId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EstadoTId"));
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EstadoTId");
+
+                    b.ToTable("EstadosTaxistas");
+
+                    b.HasData(
+                        new
+                        {
+                            EstadoTId = 1,
+                            Descripcion = "Disponible"
+                        },
+                        new
+                        {
+                            EstadoTId = 2,
+                            Descripcion = "Ocupado"
+                        });
+                });
+
+            modelBuilder.Entity("ReyAI_Trasport.Data.Models.EstadosViajes", b =>
+                {
+                    b.Property<int>("EstadosVId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EstadosVId"));
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EstadosVId");
+
+                    b.ToTable("EstadosViajes");
+
+                    b.HasData(
+                        new
+                        {
+                            EstadosVId = 1,
+                            Descripcion = "Pendiente"
+                        },
+                        new
+                        {
+                            EstadosVId = 2,
+                            Descripcion = "En Curso"
+                        },
+                        new
+                        {
+                            EstadosVId = 3,
+                            Descripcion = "Completado"
+                        },
+                        new
+                        {
+                            EstadosVId = 4,
+                            Descripcion = "Cancelado"
+                        });
+                });
+
+            modelBuilder.Entity("ReyAI_Trasport.Data.Models.MetodosPagos", b =>
+                {
+                    b.Property<int>("MetodoPagoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MetodoPagoId"));
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MetodoPagoId");
+
+                    b.ToTable("MetodosPagos");
+
+                    b.HasData(
+                        new
+                        {
+                            MetodoPagoId = 1,
+                            Descripcion = "Efectivo"
+                        },
+                        new
+                        {
+                            MetodoPagoId = 2,
+                            Descripcion = "Tarjeta de credito"
+                        });
+                });
+
+            modelBuilder.Entity("ReyAI_Trasport.Data.Models.Reservaciones", b =>
+                {
+                    b.Property<int>("ReservacionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservacionId"));
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Pago")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Recibo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ViajeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReservacionId");
+
+                    b.HasIndex("ViajeId");
+
+                    b.ToTable("Reservaciones");
+                });
+
             modelBuilder.Entity("ReyAI_Trasport.Domain.Models.Imagen", b =>
                 {
                     b.Property<int>("ImagenId")
@@ -280,7 +449,7 @@ namespace Proyecto_Final.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Estado")
+                    b.Property<int>("EstadoVId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Fecha")
@@ -301,6 +470,8 @@ namespace Proyecto_Final.Data.Migrations
 
                     b.HasIndex("ClientesId");
 
+                    b.HasIndex("EstadoVId");
+
                     b.HasIndex("TaxistaId");
 
                     b.ToTable("Viajes");
@@ -320,16 +491,18 @@ namespace Proyecto_Final.Data.Migrations
                     b.Property<string>("ClientesId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("EstadoTId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("ExisteLicencia")
                         .HasColumnType("bit");
 
                     b.Property<bool>("ExisteVehiculo")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.HasIndex("ClientesId");
+
+                    b.HasIndex("EstadoTId");
 
                     b.HasDiscriminator().HasValue("Taxistas");
                 });
@@ -385,6 +558,17 @@ namespace Proyecto_Final.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ReyAI_Trasport.Data.Models.Reservaciones", b =>
+                {
+                    b.HasOne("ReyAI_Trasport.Domain.Models.Viajes", "Viaje")
+                        .WithMany()
+                        .HasForeignKey("ViajeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Viaje");
+                });
+
             modelBuilder.Entity("ReyAI_Trasport.Domain.Models.Imagen", b =>
                 {
                     b.HasOne("ReyAI_Trasport.Domain.Models.Viajes", "Viaje")
@@ -406,11 +590,19 @@ namespace Proyecto_Final.Data.Migrations
                         .WithMany("Viajes")
                         .HasForeignKey("ClientesId");
 
+                    b.HasOne("ReyAI_Trasport.Data.Models.EstadosViajes", "EstadoViaje")
+                        .WithMany()
+                        .HasForeignKey("EstadoVId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ReyAI_Trasport.Data.ApplicationUser", "Taxista")
                         .WithMany()
                         .HasForeignKey("TaxistaId");
 
                     b.Navigation("Cliente");
+
+                    b.Navigation("EstadoViaje");
 
                     b.Navigation("Taxista");
                 });
@@ -420,6 +612,14 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasOne("ReyAI_Trasport.Domain.Models.Clientes", null)
                         .WithMany("Favoritos")
                         .HasForeignKey("ClientesId");
+
+                    b.HasOne("ReyAI_Trasport.Data.Models.EstadosTaxistas", "EstadoTaxista")
+                        .WithMany()
+                        .HasForeignKey("EstadoTId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EstadoTaxista");
                 });
 
             modelBuilder.Entity("ReyAI_Trasport.Domain.Models.Viajes", b =>

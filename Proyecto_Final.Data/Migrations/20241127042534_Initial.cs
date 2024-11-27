@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Proyecto_Final.Data.Migrations
 {
     /// <inheritdoc />
@@ -26,6 +28,79 @@ namespace Proyecto_Final.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Ciudades",
+                columns: table => new
+                {
+                    CiudadId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ciudades", x => x.CiudadId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EstadosTaxistas",
+                columns: table => new
+                {
+                    EstadoTId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EstadosTaxistas", x => x.EstadoTId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EstadosViajes",
+                columns: table => new
+                {
+                    EstadosVId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EstadosViajes", x => x.EstadosVId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MetodosPagos",
+                columns: table => new
+                {
+                    MetodoPagoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MetodosPagos", x => x.MetodoPagoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -33,7 +108,7 @@ namespace Proyecto_Final.Data.Migrations
                     Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
                     ExisteVehiculo = table.Column<bool>(type: "bit", nullable: true),
                     ExisteLicencia = table.Column<bool>(type: "bit", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: true),
+                    EstadoTId = table.Column<int>(type: "int", nullable: true),
                     ClientesId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -58,26 +133,11 @@ namespace Proyecto_Final.Data.Migrations
                         column: x => x.ClientesId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
+                        name: "FK_AspNetUsers_EstadosTaxistas_EstadoTId",
+                        column: x => x.EstadoTId,
+                        principalTable: "EstadosTaxistas",
+                        principalColumn: "EstadoTId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -174,7 +234,7 @@ namespace Proyecto_Final.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Destino = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Estado = table.Column<int>(type: "int", nullable: false),
+                    EstadoVId = table.Column<int>(type: "int", nullable: false),
                     Precio = table.Column<double>(type: "float", nullable: false),
                     personas = table.Column<int>(type: "int", nullable: false),
                     TaxistaId = table.Column<string>(type: "nvarchar(450)", nullable: true),
@@ -199,6 +259,12 @@ namespace Proyecto_Final.Data.Migrations
                         column: x => x.TaxistaId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Viajes_EstadosViajes_EstadoVId",
+                        column: x => x.EstadoVId,
+                        principalTable: "EstadosViajes",
+                        principalColumn: "EstadosVId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -222,6 +288,69 @@ namespace Proyecto_Final.Data.Migrations
                         principalTable: "Viajes",
                         principalColumn: "ViajeId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reservaciones",
+                columns: table => new
+                {
+                    ReservacionId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ViajeId = table.Column<int>(type: "int", nullable: false),
+                    Pago = table.Column<bool>(type: "bit", nullable: false),
+                    Recibo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservaciones", x => x.ReservacionId);
+                    table.ForeignKey(
+                        name: "FK_Reservaciones_Viajes_ViajeId",
+                        column: x => x.ViajeId,
+                        principalTable: "Viajes",
+                        principalColumn: "ViajeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Ciudades",
+                columns: new[] { "CiudadId", "Nombre" },
+                values: new object[,]
+                {
+                    { 1, "San Francisco de Macoris" },
+                    { 2, "Santo Domingo" },
+                    { 3, "Santigo" },
+                    { 4, "Samana" },
+                    { 5, "Puerto Plata" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EstadosTaxistas",
+                columns: new[] { "EstadoTId", "Descripcion" },
+                values: new object[,]
+                {
+                    { 1, "Disponible" },
+                    { 2, "Ocupado" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EstadosViajes",
+                columns: new[] { "EstadosVId", "Descripcion" },
+                values: new object[,]
+                {
+                    { 1, "Pendiente" },
+                    { 2, "En Curso" },
+                    { 3, "Completado" },
+                    { 4, "Cancelado" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MetodosPagos",
+                columns: new[] { "MetodoPagoId", "Descripcion" },
+                values: new object[,]
+                {
+                    { 1, "Efectivo" },
+                    { 2, "Tarjeta de credito" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -262,6 +391,11 @@ namespace Proyecto_Final.Data.Migrations
                 column: "ClientesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_EstadoTId",
+                table: "AspNetUsers",
+                column: "EstadoTId");
+
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
@@ -274,6 +408,11 @@ namespace Proyecto_Final.Data.Migrations
                 column: "ViajeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reservaciones_ViajeId",
+                table: "Reservaciones",
+                column: "ViajeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Viajes_ClienteId",
                 table: "Viajes",
                 column: "ClienteId");
@@ -282,6 +421,11 @@ namespace Proyecto_Final.Data.Migrations
                 name: "IX_Viajes_ClientesId",
                 table: "Viajes",
                 column: "ClientesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Viajes_EstadoVId",
+                table: "Viajes",
+                column: "EstadoVId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Viajes_TaxistaId",
@@ -308,7 +452,16 @@ namespace Proyecto_Final.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Ciudades");
+
+            migrationBuilder.DropTable(
                 name: "Imagen");
+
+            migrationBuilder.DropTable(
+                name: "MetodosPagos");
+
+            migrationBuilder.DropTable(
+                name: "Reservaciones");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -318,6 +471,12 @@ namespace Proyecto_Final.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "EstadosViajes");
+
+            migrationBuilder.DropTable(
+                name: "EstadosTaxistas");
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using ReyAI_Trasport.Domain.Enum;
-
+﻿
 namespace ReyAI_Trasport.Domain.Dto;
 
 public class TaxistaDto
@@ -16,5 +15,5 @@ public class TaxistaDto
 
     public bool ExisteLicencia { get; set; }
     
-    public EstadosTaxistas Status { get; set; }
+    public int EstadoTId { get; set; }
 }

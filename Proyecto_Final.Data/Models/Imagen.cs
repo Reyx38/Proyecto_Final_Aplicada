@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Proyecto_Final.Data.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReyAI_Trasport.Domain.Models;
@@ -11,7 +12,8 @@ public class Imagen
     public string Alt { get; set; }
     public string Titulo { get; set; }
     public string? Base64 { get; set; }
-    public int ViajeId { get; set; }
+
 	[ForeignKey("ViajeId")]
+    public int ViajeId { get; set; }
     public Viajes? Viaje { get; set; }
 }

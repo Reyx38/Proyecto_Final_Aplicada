@@ -1,6 +1,7 @@
-﻿using ReyAI_Trasport.Domain.Enum;
-using ReyAI_Trasport.Data;
+﻿using ReyAI_Trasport.Data;
+using ReyAI_Trasport.Data.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReyAI_Trasport.Domain.Models;
 
@@ -15,5 +16,7 @@ public class Taxistas : ApplicationUser
     [Required(ErrorMessage = "Debe llenar este campo.")]
     public bool ExisteLicencia { get; set; }
 
-    public EstadosTaxistas Status { get; set; } = EstadosTaxistas.Disponible;
+    [ForeignKey("EstadoTaxista")]
+    public int EstadoTId { get; set; }
+    public EstadosTaxistas? EstadoTaxista { get; set; }
 }
