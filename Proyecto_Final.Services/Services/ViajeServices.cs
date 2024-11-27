@@ -19,7 +19,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
        .Select(p => new ViajesDto()
        {
            ViajeId = p.ViajeId,
-           Destino = p.Destino,
+           CiudadId = p.CiudadId,
            Fecha = p.Fecha,
            EstadoVId = p.EstadoVId,
            Precio = p.Precio,
@@ -29,12 +29,12 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         return viaje ?? new ViajesDto();
     }
 
-    public async Task<bool> ExisteViaje(string destino, int id, string idTaxista)
+    public async Task<bool> ExisteViaje(int destino, int id, string idTaxista)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Viajes
             .AnyAsync(e => e.ViajeId != id
-            && e.Destino.ToLower().Equals(destino.ToLower())
+            && e.CiudadId == destino
             && e.Taxista.Id == idTaxista);
     }
 
@@ -44,7 +44,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         var viaje = new Viajes()
         {
             ViajeId = viajeDto.ViajeId,
-            Destino = viajeDto.Destino,
+            CiudadId = viajeDto.CiudadId,
             Fecha = viajeDto.Fecha,
             EstadoVId = viajeDto.EstadoVId,
             TaxistaId = viajeDto.TaxistaId,
@@ -62,7 +62,7 @@ private async Task<bool> Modificar(ViajesDto viajeDto)
     var viaje = new Viajes()
     {
         ViajeId = viajeDto.ViajeId,
-        Destino = viajeDto.Destino,
+        CiudadId = viajeDto.CiudadId,
         Fecha = viajeDto.Fecha,
         EstadoVId = viajeDto.EstadoVId,
         TaxistaId = viajeDto.TaxistaId,
@@ -93,7 +93,7 @@ public async Task<List<ViajesDto>> Listar(Expression<Func<ViajesDto, bool>> crit
     return await contexto.Viajes.Select(p => new ViajesDto()
     {
         ViajeId = p.ViajeId,
-        Destino = p.Destino,
+        CiudadId = p.CiudadId,
         Fecha = p.Fecha,
         EstadoVId = p.EstadoVId,
         Precio = p.Precio,
