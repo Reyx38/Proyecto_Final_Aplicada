@@ -1,0 +1,71 @@
+﻿@page "/Viajes/Create"
+@using ReyAI_Trasport.Domain.Dto
+@using ReyAI_Trasport.Services.Services
+<link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
+@rendermode InteractiveServer
+@* @inject ViajeServices ViajeService
+@inject TaxistaServices TaxistaService*@ 
+ <EditForm Model="@Viajes" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>Crear Viaje</h2>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <label class="form-label">Seleccionar conductor:</label>
+                        <InputSelect class="form-select" @bind-Value="Viajes.TaxistaId">
+                            @foreach (var taxista in ListTaxista)
+                            {
+                                <option value="@taxista.TaxistaId">@taxista.NickName</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => Viajes.TaxistaId)" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <label class="form-label">Destino</label>
+                        <InputText class="form-control" @bind-Value="@Viajes.Destino" placeholder="Santo Domingo - Zona Colonial"></InputText>
+                        <ValidationMessage For="@(() => Viajes.Destino)" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Fecha</label>
+                        <InputDate class="form-control" @bind-Value="Viajes.Fecha" />
+                        <ValidationMessage For="@(() => Viajes.Fecha)" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Costo de viaje</label>
+                        <InputNumber class="form-control" @bind-Value="@Viajes.Precio" placeholder="80000.00$"></InputNumber>
+                        <ValidationMessage For="@(() => Viajes.Precio)" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Cantidad de personas</label>
+                        <InputNumber class="form-control" @bind-Value="@Viajes.personas" placeholder="20"></InputNumber>
+                        <ValidationMessage For="@(() => Viajes.personas)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+
+
+@code {
+	public List<TaxistaDto> ListTaxista { get; set; } = new List<TaxistaDto>();
+	public ViajesDto Viajes { get; set; } = new ViajesDto();
+
+	// protected override async Task OnInitializedAsync()
+	// {
+	// 	ListTaxista = await TaxistaService.Listar(T => true);
+	// }
+
+	public void Guardar(){}
+}

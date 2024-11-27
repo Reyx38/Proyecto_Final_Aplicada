@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proyecto_Final.Services", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proyecto_Final.Abstracions", "Proyecto_Final.Abstracions\Proyecto_Final.Abstracions.csproj", "{D5895255-7842-4888-8B2D-9E528ACEE5A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReyAi_Transport", "ReyAi_Transport\ReyAi_Transport.csproj", "{86303DF2-E09F-46EA-9E82-5CD23B3EBAAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReyAi_Transport", "ReyAi_Transport\ReyAi_Transport.csproj", "{86303DF2-E09F-46EA-9E82-5CD23B3EBAAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
