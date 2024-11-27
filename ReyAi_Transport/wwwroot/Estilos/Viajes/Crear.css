@@ -75,6 +75,9 @@
 
 .btn {
     border-radius: 5px;
+    width: 150px; 
+    padding: 10px; 
+    margin: 5px; 
 }
 
 .btn-danger {
