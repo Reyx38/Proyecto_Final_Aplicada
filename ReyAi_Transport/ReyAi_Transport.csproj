@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\NewFolder\" />
+    <Folder Include="Components\Menus\" />
   </ItemGroup>
 
 </Project>

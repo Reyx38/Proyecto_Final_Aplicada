@@ -49,6 +49,15 @@
                         <InputNumber class="form-control" @bind-Value="@Viajes.personas" placeholder="20"></InputNumber>
                         <ValidationMessage For="@(() => Viajes.personas)" />
                     </div>
+                    <div class="row">
+                        <InputFile class="form-select" multiple OnChange="AgregarImagenes"></InputFile>
+
+                    </div>
+                    @foreach (var im in Viajes.Imagenes)
+                    {
+                        <img src="@im.Base64" alt="@im.Alt" title="@im.Titulo" style="max-width: 200px; margin: 5px;" />
+                    }
+                </div>
                 </div>
             </div>
         </div>
