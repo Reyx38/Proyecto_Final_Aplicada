@@ -1,33 +1,60 @@
 ﻿@inject AuthenticationStateProvider AuthenticationStateProvider
-<div>
-    <div>
-        <div class="col-auto input-group align-items-center">
-            @* Destino *@
-            <label class="col-form-label input-group-text">Destino</label>
-            <InputText class="form-control" @bind-Value="Destino" placeholder="Ingrese destino"></InputText>
+<link rel="stylesheet" href="/Estilos/CrearViaje/StyleCrearViajes.css" />
+<div class="cont glass-effect">
+    <div class="row">
 
-            @* Precio *@
-            <label class="col-form-label input-group-text">Precio</label>
-            <InputNumber class="form-control" @bind-Value="Precio"></InputNumber>
-
-            @* Número de personas *@
-            <label class="col-form-label input-group-text">Personas</label>
-            <InputNumber class="form-control" @bind-Value="Personas"></InputNumber>
-
-            @* Taxista *@
-            <label class="col-form-label input-group-text">Taxista</label>
-            <InputSelect class="form-select" @bind-Value="TaxistaId">
-                <option disabled value="">Seleccione un taxista</option>
-                @foreach (var taxista in ListaTaxistas)
-                {
-                    <option value="@taxista.Id">@taxista.UserName</option>
-                }
-            </InputSelect>
-
-            <button type="button" class="btn btn-success bi bi-plus-square" @onclick="RegistrarViaje">Registrar Viaje</button>
+        <div class="col-3">
+            <label class="form-label" for="Destino"><strong>Destino</strong></label>
+        </div>
+        <div class="col-2">
+            <label class="form-label" for="Precio"><strong>Precio</strong></label>
+        </div>
+        <div class="col-2">
+            <label class="form-label" for="Personas"><strong>Personas</strong></label>
+        </div>
+        <div class="col-3">
+            <label class="form-label" for="TaxistaId"><strong>Taxista</strong></label>
         </div>
     </div>
+    <div class="row align-items-center">
+        <!-- Destino -->
+        <div class="col-3">
+            
+            <InputText id="Destino" class="form-control" @bind-Value="Destino" placeholder="Ingrese destino"></InputText>
+        </div>
+
+        <!-- Precio -->
+        <div class="col-2">
+            
+            <InputNumber id="Precio" class="form-control" @bind-Value="Precio"></InputNumber>
+        </div>
+
+        <!-- Número de personas -->
+        <div class="col-2">
+            
+            <InputNumber id="Personas" class="form-control" @bind-Value="Personas"></InputNumber>
+        </div>
+
+        <!-- Taxista -->
+        <div class="col-3">
+           
+            <InputSelect id="TaxistaId" class="form-select" @bind-Value="TaxistaId">
+                <option disabled value="0">Seleccione un taxista</option>
+                @foreach (var taxista in ListaTaxistas)
+                {
+                        <option value="@taxista.Id">@taxista.UserName</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="col-auto">
+            <button type="button" class="btn btn-success bi bi-plus-square" @onclick="RegistrarViaje">Registrar</button>
+        </div>
+        
+    </div>
 </div>
+
+
 @if (!string.IsNullOrEmpty(Mensaje))
 {
     <div class="alert alert-danger">@Mensaje</div>
