@@ -1,5 +1,104 @@
-﻿<h3>CrearViajeRapido</h3>
+﻿@inject AuthenticationStateProvider AuthenticationStateProvider
+<div class="col-auto input-group align-items-center">
+    @* Destino *@
+    <label class="col-form-label input-group-text">Destino</label>
+    <InputText class="form-control" @bind-Value="Destino" placeholder="Ingrese destino"></InputText>
+
+    @* Fecha *@
+    <label class="col-form-label input-group-text">Fecha</label>
+    <InputDate class="form-control" @bind-Value="Fecha"></InputDate>
+
+
+    @* Precio *@
+    <label class="col-form-label input-group-text">Precio</label>
+    <InputNumber class="form-control" @bind-Value="Precio"></InputNumber>
+
+    @* Número de personas *@
+    <label class="col-form-label input-group-text">Personas</label>
+    <InputNumber class="form-control" @bind-Value="Personas"></InputNumber>
+
+    @* Taxista *@
+    <label class="col-form-label input-group-text">Taxista</label>
+    <InputSelect class="form-select" @bind-Value="TaxistaId">
+        <option disabled value="">Seleccione un taxista</option>
+        @foreach (var taxista in ListaTaxistas)
+        {
+            <option value="@taxista.Id">@taxista.UserName</option>
+        }
+    </InputSelect>
+
+    <button type="button" class="btn btn-success bi bi-plus-square" @onclick="RegistrarViaje">Registrar Viaje</button>
+</div>
+@if (!string.IsNullOrEmpty(Mensaje))
+{
+    <div class="alert alert-danger">@Mensaje</div>
+}
+
 
 @code {
-    
+    [Parameter]
+    public List<Ciudades> ListaCiudades { get; set; } = [];
+
+    [Parameter]
+    public List<Taxistas> ListaTaxistas { get; set; } = [];
+
+    [Parameter]
+    public ViajesDto ViajeDto { get; set; } 
+
+    [Parameter]
+    public EventCallback<ViajesDto> ViajeRegistrado { get; set; }
+
+    public string? ClienteId { get; set; }
+    public string? Destino { get; set; }
+    public DateTime Fecha { get; set; } = DateTime.Now;
+    public int EstadoVId { get; set; }
+    public double Precio { get; set; }
+    public int Personas { get; set; }
+    public string? TaxistaId { get; set; }
+
+    public string Mensaje { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await AsignarClienteLogueado();
+    }
+
+    private async Task AsignarClienteLogueado()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated ?? false)
+        {
+            ClienteId = user.FindFirst("sub")?.Value; // Obtiene el ID del cliente logueado
+        }
+        else
+        {
+            Mensaje = "No se encontró un cliente logueado.";
+        }
+    }
+
+    private async Task RegistrarViaje()
+    {
+        if (string.IsNullOrWhiteSpace(Destino) || string.IsNullOrWhiteSpace(TaxistaId) || Precio <= 0 || Personas <= 0)
+        {
+            Mensaje = "Todos los campos son obligatorios.";
+            return;
+        }
+
+        var nuevoViaje = new ViajesDto
+            {
+                Destino = Destino,
+                Fecha = Fecha,
+                EstadoVId = 1,
+                Precio = Precio,
+                personas = Personas,
+                TaxistaId = TaxistaId,
+                ClienteId = ClienteId
+            };
+
+        Mensaje = string.Empty;
+        await ViajeRegistrado.InvokeAsync(nuevoViaje);
+    }
+
 }
