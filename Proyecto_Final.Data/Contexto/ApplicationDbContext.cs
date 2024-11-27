@@ -40,7 +40,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             new Ciudades { CiudadId = 2, Nombre = "Santo Domingo"},
             new Ciudades { CiudadId = 3, Nombre = "Santigo"},
             new Ciudades { CiudadId = 4, Nombre = "Samana"},
-            new Ciudades { CiudadId = 4, Nombre = "Puerto Plata"}
+            new Ciudades { CiudadId = 5, Nombre = "Puerto Plata"}
         );
 
         builder.Entity<EstadosTaxistas>().HasData(
