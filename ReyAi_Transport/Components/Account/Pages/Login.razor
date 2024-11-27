@@ -1,18 +1,15 @@
 ﻿@page "/Account/Login"
 @using System.ComponentModel.DataAnnotations
+<link rel="stylesheet" href="/Estilos/IniciarSesion/SingIn.css" />
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
-<link rel="stylesheet" href="/Estilos/IniciarSesion/SingIn.css" />
 
 
 <PageTitle>Log in</PageTitle>
 
-<h1>Log in</h1>
-
-            <StatusMessage Message="@errorMessage" />
 <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
     <DataAnnotationsValidator />
     <div class="container shadow-lg">
@@ -23,19 +20,17 @@
                 <div class="line-decorator"></div>
             </div>
         </div>
-        <div class="card shadow-lg" style="width: 800px">
+        <div class="card shadow-lg" style="width: 700px">
             <div class="form-section">
                 <div class="line-decorator"></div>
                 <div class="image-top">
-                    <img src="/Imagenes/SingIn/ImagenSuperiorLogin.png" width="193" />
+                    <img src="/Imagenes/SignIn/ImagenSuperiorLogin.png" width="193" />
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Username</label>
                     <InputText class="form-control" @bind-Value="Input.username" placeholder="Nickname"></InputText>
                     <ValidationMessage For="@(() => Input.username)" />
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Contraseña</label>
                     <InputText type="password" class="form-control" @bind-Value="Input.Password" placeholder="Contraseña"></InputText>
                     <ValidationMessage For="@(() => Input.Password)" />
                 </div>
@@ -44,7 +39,6 @@
                 </button>
                    <a href="Account/ForgotPassword">Olvidaste tu contraseña?</a>
                    <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Registrar nuevo usuario</a>
-                   <a href="Account/ResendEmailConfirmation">Resend email confirmation</a>
                 <div class="line-decorator"></div>
             </div>
         </div>
