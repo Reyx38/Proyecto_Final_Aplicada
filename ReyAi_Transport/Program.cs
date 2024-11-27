@@ -5,6 +5,7 @@ using ReyAI_Trasport.Components.Account;
 using ReyAI_Trasport.Data;
 using ReyAI_Trasport.Data.Contexto;
 using ReyAI_Trasport.Services.DI;
+using ReyAI_Trasport.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.RegistarService();
+builder.Services.AddScoped<TaxistaServices>();
+builder.Services.AddScoped<CiudadServices>();
+builder.Services.AddScoped<ViajeServices>();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
