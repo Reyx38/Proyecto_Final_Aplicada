@@ -445,9 +445,8 @@ namespace Proyecto_Final.Data.Migrations
                     b.Property<string>("ClientesId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Destino")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Destino")
+                        .HasColumnType("int");
 
                     b.Property<int>("EstadoVId")
                         .HasColumnType("int");
