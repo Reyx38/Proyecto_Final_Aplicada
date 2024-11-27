@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto_Final.Data.Models;
+namespace ReyAI_Trasport.Data.Models;
 
 public class Ciudades
 {
