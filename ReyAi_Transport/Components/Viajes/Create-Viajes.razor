@@ -1,11 +1,12 @@
 ﻿@page "/Viajes/Create"
-@using ReyAI_Trasport.Domain.Dto
-@using ReyAI_Trasport.Services.Services
+
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 @rendermode InteractiveServer
-@* @inject ViajeServices ViajeService
-@inject TaxistaServices TaxistaService*@
-<EditForm Model="@Viajes" OnValidSubmit="Guardar">
+@inject ViajeServices ViajeService
+@inject TaxistaServices TaxistaServices
+@inject CiudadServices CiudadService
+@inject NavigationManager NavigationManager
+<EditForm Model="@Viajes" OnValidSubmit="Guardar" FormName="CrearViajes">
 	<DataAnnotationsValidator />
 	<div class="overlay"></div>
 	<div class="container">
@@ -31,8 +32,15 @@
 				<div class="row mb-3">
 					<div class="col-12">
 						<label class="form-label">Destino</label>
-						<InputText class="form-control" @bind-Value="@Viajes.Destino" placeholder="Santo Domingo - Zona Colonial"></InputText>
-						<ValidationMessage For="@(() => Viajes.Destino)" />
+						<InputSelect class="form-select" @bind-Value="Viajes.Destino">
+							<option selected disabled value="0">-- Seleccione un Destino --</option>
+
+							@foreach (var Ciudades in ListCiudades)
+							{
+								<option value="@Ciudades.CiudadId">@Ciudades.Nombre</option>
+							}
+						</InputSelect>
+						<ValidationMessage For="@(() => Viajes.TaxistaId)" />
 					</div>
 				</div>
 				<div class="row mb-3">
@@ -42,12 +50,12 @@
 						<ValidationMessage For="@(() => Viajes.Fecha)" />
 					</div>
 					<div class="col-md-4">
-						<label class="form-label">Costo de viaje</label>
+						<label class="form-label">Costo por persona</label>
 						<InputNumber class="form-control" @bind-Value="@Viajes.Precio" placeholder="80000.00$"></InputNumber>
 						<ValidationMessage For="@(() => Viajes.Precio)" />
 					</div>
 					<div class="col-md-4">
-						<label class="form-label">Cantidad de personas</label>
+						<label class="form-label">Cantidad limite de personas</label>
 						<InputNumber class="form-control" @bind-Value="@Viajes.personas" placeholder="20"></InputNumber>
 						<ValidationMessage For="@(() => Viajes.personas)" />
 					</div>
@@ -55,7 +63,7 @@
 				<div class="row">
 					<label class="formFileMultiple">Insertar Imagenes del sitio</label>
 					<InputFile class="form-control" multiple OnChange="AgregarImagenes"></InputFile>
-						
+
 					<table class="table table-hover text-center mt-3">
 						<thead class="table table-striped text-black">
 							<tr>
@@ -66,13 +74,21 @@
 							<tr>
 								<td colspan="2">
 									<div class="row justify-content-center">
-										@foreach (var im in Viajes.Imagenes)
+										@if (Viajes.Imagenes.Any())
 										{
-											<div class="col-2 mb-3 text-center">
-												<img src="@im.Base64" alt="@im.Alt" title="@im.Titulo" class="img-fluid" />
-												<button @onclick="() => RemoverDetalle(im)" class="btn btn-danger bi bi-trash mt-2">Remover</button>
-											</div>
+											@foreach (var im in Viajes.Imagenes)
+											{
+												<div class="col-2 mb-3 text-center">
+													<img src="@im.Base64" alt="@im.Alt" title="@im.Titulo" class="img-fluid" />
+													<button @onclick="() => RemoverDetalle(im)" class="btn btn-danger bi bi-trash mt-2">Remover</button>
+												</div>
+											}
 										}
+										else
+										{
+											<p class="text-white">No hay imagenes seleccionadas</p>
+										}
+
 									</div>
 								</td>
 							</tr>
@@ -82,7 +98,6 @@
 				<div class="card-footer">
 					<button type="submit" class="btn btn-danger bi bi-trash mt-2">Guardar</button>
 					<a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
-
 				</div>
 			</div>
 		</div>
@@ -95,13 +110,32 @@
 @code {
 	public List<TaxistaDto> ListTaxista { get; set; } = new List<TaxistaDto>();
 	public ViajesDto Viajes { get; set; } = new ViajesDto();
+	public List<CiudadesDto> ListCiudades { get; set; } = new List<CiudadesDto>();
 
-	// protected override async Task OnInitializedAsync()
-	// {
-	// 	ListTaxista = await TaxistaService.Listar(T => true);
-	// }
 
-	public void Guardar() { }
+	protected override async Task OnInitializedAsync()
+	{
+		// 	ListTaxista = await TaxistaService.Listar(T => true);
+		Viajes.Fecha = DateTime.Now;
+		ListCiudades = await CiudadService.Listar(T => true);
+	}
+
+	public async Task Guardar()
+	{
+		if (Viajes.Imagenes.Count < 1)
+		{
+			Console.WriteLine("Necesita agregar por lo menos 1 imagen");
+			return;
+		}
+		else if (Viajes.Imagenes.Count > 5)
+		{
+			Console.WriteLine("El limite son 5 imagenes por viaje");
+			return;
+		}
+		await ViajeService.Guardar(Viajes);
+		NavigationManager.NavigateTo("/");
+
+	}
 	public async Task AgregarImagenes(InputFileChangeEventArgs e)
 	{
 		foreach (var f in e.GetMultipleFiles())
@@ -130,6 +164,6 @@
 	}
 	private void RemoverDetalle(ImagenDto im)
 	{
-		throw new NotImplementedException();
+		Viajes.Imagenes.Remove(im);
 	}
 }

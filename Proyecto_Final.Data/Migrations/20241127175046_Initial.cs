@@ -232,7 +232,7 @@ namespace Proyecto_Final.Data.Migrations
                 {
                     ViajeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Destino = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Destino = table.Column<int>(type: "int", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EstadoVId = table.Column<int>(type: "int", nullable: false),
                     Precio = table.Column<double>(type: "float", nullable: false),

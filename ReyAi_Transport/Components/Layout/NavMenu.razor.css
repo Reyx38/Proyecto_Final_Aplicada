@@ -36,22 +36,31 @@
     background-color: #00b7c5; /* Color del ícono del toggler */
 }
 
-.btn-outline-success {
-    color: #ff6d3a; /* Texto naranja */
-    border-color: #ffaf7a; /* Bordes naranjas */
-}
-
-    .btn-outline-success:hover {
-        background-color: #ffaf7a; /* Fondo naranja suave */
-        color: #fff; /* Texto blanco */
-    }
-
-.form-control {
+.custom-input {
     border: 1px solid #00b7c5; /* Bordes azules */
     transition: border-color 0.3s ease;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 1rem;
 }
 
-    .form-control:focus {
-        border-color: #ff6d3a; /* Cambia a naranja al hacer focus */
-        box-shadow: 0 0 5px rgba(255, 109, 58, 0.5); /* Sombra naranja */
+    .custom-input:focus {
+        border-color: #ff6d3a; 
+        box-shadow: 0 0 5px rgba(255, 109, 58, 0.5); 
+    }
+
+.custom-button {
+    color: #ff6d3a;
+    border: 1px solid #ffaf7a; 
+    background-color: transparent;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .custom-button:hover {
+        background-color: #ffaf7a; 
+        color: #fff; 
     }

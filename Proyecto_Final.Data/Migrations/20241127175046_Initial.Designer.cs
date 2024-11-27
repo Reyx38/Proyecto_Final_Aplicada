@@ -12,7 +12,7 @@ using ReyAI_Trasport.Data.Contexto;
 namespace Proyecto_Final.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241127042534_Initial")]
+    [Migration("20241127175046_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -448,9 +448,8 @@ namespace Proyecto_Final.Data.Migrations
                     b.Property<string>("ClientesId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Destino")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Destino")
+                        .HasColumnType("int");
 
                     b.Property<int>("EstadoVId")
                         .HasColumnType("int");
