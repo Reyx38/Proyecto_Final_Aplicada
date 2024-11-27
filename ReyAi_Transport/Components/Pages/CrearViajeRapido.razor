@@ -1,33 +1,32 @@
 ﻿@inject AuthenticationStateProvider AuthenticationStateProvider
-<div class="col-auto input-group align-items-center">
-    @* Destino *@
-    <label class="col-form-label input-group-text">Destino</label>
-    <InputText class="form-control" @bind-Value="Destino" placeholder="Ingrese destino"></InputText>
+<div>
+    <div>
+        <div class="col-auto input-group align-items-center">
+            @* Destino *@
+            <label class="col-form-label input-group-text">Destino</label>
+            <InputText class="form-control" @bind-Value="Destino" placeholder="Ingrese destino"></InputText>
 
-    @* Fecha *@
-    <label class="col-form-label input-group-text">Fecha</label>
-    <InputDate class="form-control" @bind-Value="Fecha"></InputDate>
+            @* Precio *@
+            <label class="col-form-label input-group-text">Precio</label>
+            <InputNumber class="form-control" @bind-Value="Precio"></InputNumber>
 
+            @* Número de personas *@
+            <label class="col-form-label input-group-text">Personas</label>
+            <InputNumber class="form-control" @bind-Value="Personas"></InputNumber>
 
-    @* Precio *@
-    <label class="col-form-label input-group-text">Precio</label>
-    <InputNumber class="form-control" @bind-Value="Precio"></InputNumber>
+            @* Taxista *@
+            <label class="col-form-label input-group-text">Taxista</label>
+            <InputSelect class="form-select" @bind-Value="TaxistaId">
+                <option disabled value="">Seleccione un taxista</option>
+                @foreach (var taxista in ListaTaxistas)
+                {
+                    <option value="@taxista.Id">@taxista.UserName</option>
+                }
+            </InputSelect>
 
-    @* Número de personas *@
-    <label class="col-form-label input-group-text">Personas</label>
-    <InputNumber class="form-control" @bind-Value="Personas"></InputNumber>
-
-    @* Taxista *@
-    <label class="col-form-label input-group-text">Taxista</label>
-    <InputSelect class="form-select" @bind-Value="TaxistaId">
-        <option disabled value="">Seleccione un taxista</option>
-        @foreach (var taxista in ListaTaxistas)
-        {
-            <option value="@taxista.Id">@taxista.UserName</option>
-        }
-    </InputSelect>
-
-    <button type="button" class="btn btn-success bi bi-plus-square" @onclick="RegistrarViaje">Registrar Viaje</button>
+            <button type="button" class="btn btn-success bi bi-plus-square" @onclick="RegistrarViaje">Registrar Viaje</button>
+        </div>
+    </div>
 </div>
 @if (!string.IsNullOrEmpty(Mensaje))
 {
