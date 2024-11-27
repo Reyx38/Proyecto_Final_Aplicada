@@ -12,6 +12,7 @@ namespace ReyAI_Trasport.Data.Models;
 
 public class Reservaciones
 {
+    [Key]
     public int ReservacionId { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
