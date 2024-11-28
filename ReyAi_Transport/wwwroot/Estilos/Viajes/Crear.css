@@ -106,9 +106,17 @@
     height: 100px;
     object-fit: cover;
     border-radius: 5px;
+    padding-bottom: 2px;
 }
 
 .table-hover caption {
     color: rgb(255, 109, 58);
     font-weight: bold;
+}
+.btn-custom {
+    border: 1px solid red;
+    background-color: red;
+    padding: 10px 5px;
+    border-radius: 4px;
+    font-size: 12px;
 }

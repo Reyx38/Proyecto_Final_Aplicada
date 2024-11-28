@@ -88,14 +88,18 @@ public async Task<bool> Guardar(ViajesDto viajeDto)
 public async Task<List<ViajesDto>> Listar(Expression<Func<ViajesDto, bool>> criterio)
 {
     await using var contexto = await DbFactory.CreateDbContextAsync();
-    return await contexto.Viajes.Select(p => new ViajesDto()
-    {
-        ViajeId = p.ViajeId,
-        Destino = p.Destino,
-        Fecha = p.Fecha,
-        Precio = p.Precio,
-        TaxistaId = p.TaxistaId
-    })
+        return await contexto.Viajes
+            .Include(v => v.Imagen)
+            .Select(p => new ViajesDto()
+        {
+            ViajeId = p.ViajeId,
+            Destino = p.Destino,
+            EstadoId = p.EstadoVId,
+            Fecha = p.Fecha,
+            Precio = p.Precio,
+            TaxistaId = p.TaxistaId,
+
+        })
     .Where(criterio)
     .ToListAsync();
 }
