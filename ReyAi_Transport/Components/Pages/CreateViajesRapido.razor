@@ -15,14 +15,15 @@
             <div class="col-3">
                 <label class="form-label" for="Destino"><strong>Destino</strong></label>
             </div>
-            <div class="col-2">
-                <label class="form-label" for="Precio"><strong>Precio</strong></label>
-            </div>
+            
             <div class="col-2">
                 <label class="form-label" for="Personas"><strong>Personas</strong></label>
             </div>
             <div class="col-3">
                 <label class="form-label" for="TaxistaId"><strong>Taxista</strong></label>
+            </div>
+            <div class="col-2">
+                <label class="form-label" for="Precio"><strong>Precio</strong></label>
             </div>
         </div>
         <div class="row align-items-center">
@@ -36,11 +37,6 @@
                         <option value="@destino.DestinoCercaId">@destino.Descripcion</option>
                     }
                 </InputSelect>
-            </div>
-
-            @*Precio*@
-            <div class="col-2">
-                <label style="color: white;"><strong>DOP$ @ViajeRapidoDto.Precio</strong></label>
             </div>
 
             @*Número de personas*@
@@ -59,6 +55,11 @@
                         <option value="@taxista.TaxistaId">@taxista.NickName</option>
                     }
                 </InputSelect>
+            </div>
+
+            @*Precio*@
+            <div class="col-2">
+                <label style="color: white;" class="form-label"><strong>DOP$ @ViajeRapidoDto.Precio</strong></label>
             </div>
 
             <div class="col-auto">
@@ -106,7 +107,7 @@
             var crear = await viajesRapidosServices.Guardar(ViajeRapidoDto);
             if (crear)
             {
-                Mensaje = "Se a creado correctamente el cliente";
+                Mensaje = "Se a creado tu viaje rapido";
             }
         }
         else
