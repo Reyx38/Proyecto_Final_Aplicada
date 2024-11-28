@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/Estilos/CrearViaje/StyleCrearViajes.css" />
 <EditForm model="ViajeRapidoDto" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
+    <ValidationSummary />
     <div class="cont glass-effect">
         <div class="row">
 
@@ -38,13 +39,13 @@
 
             @*Precio*@
             <div class="col-2">
-                <InputNumber id="Personas" class="form-control" @bind-Value="ViajeRapidoDto.Precio"></InputNumber>
+                <label><strong>DOP$ @ViajeRapidoDto.Precio</strong></label>
             </div>
 
             @*Número de personas*@
             <div class="col-2">
-
                 <InputNumber id="Personas" class="form-control" @bind-Value="ViajeRapidoDto.personas"></InputNumber>
+                <ValidationMessage For="(()=> ViajeRapidoDto.personas)" />
             </div>
 
             @*Taxista*@
@@ -95,17 +96,21 @@
             Mensaje = "Ya tienes un viaje";
             return;
         }
+        ViajeRapidoDto.Precio = 209 * ViajeRapidoDto.personas;
         ViajeRapidoDto.Fecha = DateTime.Now;
         ViajeRapidoDto.EstadoVId = 1;
-        var crear = await viajesRapidosServices.Guardar(ViajeRapidoDto);
 
-        if (crear)
+        if(ViajeRapidoDto.personas > 0 && ViajeRapidoDto.Precio > 0 && ViajeRapidoDto.DestinoCercaId != 0 && ViajeRapidoDto.TaxistaId != null)
         {
-            Mensaje = "Se a creado correctamente el cliente";
+            var crear = await viajesRapidosServices.Guardar(ViajeRapidoDto);
+            if (crear)
+            {
+                Mensaje = "Se a creado correctamente el cliente";
+            }
         }
         else
         {
-            Mensaje = "No se a creado correctamente el cliente";
+            Mensaje = "Ingrese todos los datos";
         }
         
     }
