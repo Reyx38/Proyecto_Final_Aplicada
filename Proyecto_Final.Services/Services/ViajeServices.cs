@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Proyecto_Final.Data.Models;
 using ReyAI_Trasport.Abstracions.Interfaces;
 using ReyAI_Trasport.Data.Contexto;
 using ReyAI_Trasport.Domain.Dto;
@@ -19,7 +18,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
        .Select(p => new ViajesDto()
        {
            ViajeId = p.ViajeId,
-           Destino = p.Destino,
+           CiudadId = p.CiudadId,
            Fecha = p.Fecha,
            EstadoId = p.EstadoVId,
            Precio = p.Precio,
@@ -43,7 +42,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         var viaje = new Viajes()
         {
             ViajeId = viajeDto.ViajeId,
-            Destino = viajeDto.Destino,
+            CiudadId = viajeDto.CiudadId,
             Fecha = viajeDto.Fecha,
             EstadoVId = viajeDto.EstadoId,
             TaxistaId = viajeDto.TaxistaId,
@@ -61,7 +60,7 @@ private async Task<bool> Modificar(ViajesDto viajeDto)
     var viaje = new Viajes()
     {
         ViajeId = viajeDto.ViajeId,
-        Destino = viajeDto.Destino,
+        CiudadId = viajeDto.CiudadId,
         Fecha = viajeDto.Fecha,
         EstadoVId = viajeDto.EstadoId,
         TaxistaId = viajeDto.TaxistaId,
@@ -92,7 +91,7 @@ public async Task<List<ViajesDto>> Listar(Expression<Func<ViajesDto, bool>> crit
     return await contexto.Viajes.Select(p => new ViajesDto()
     {
         ViajeId = p.ViajeId,
-        Destino = p.Destino,
+        CiudadId = p.CiudadId,
         Fecha = p.Fecha,
         Precio = p.Precio,
         TaxistaId = p.TaxistaId

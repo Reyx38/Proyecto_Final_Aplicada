@@ -13,10 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.RegistarService();
+builder.Services.AddScoped<DestinosCercasServices>();
+builder.Services.AddScoped<ViajesRapidosServices>();
 builder.Services.AddScoped<ViajeServices>();
 builder.Services.AddScoped<CiudadServices>();
 builder.Services.AddScoped<TaxistaServices>();
-
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();

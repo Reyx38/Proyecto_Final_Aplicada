@@ -1,5 +1,4 @@
-﻿using Proyecto_Final.Data.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReyAI_Trasport.Domain.Models;
