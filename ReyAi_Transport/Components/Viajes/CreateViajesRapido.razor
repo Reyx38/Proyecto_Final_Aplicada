@@ -50,7 +50,7 @@
             <div class="col-3">
 
                 <InputSelect id="TaxistaId" class="form-select" @bind-Value="ViajeRapidoDto.TaxistaId">
-                    <option disabled value="">Seleccione un taxista</option>
+                    <option selected disabled value="0">-- Seleccione un conductor --</option>
                     @foreach (var taxista in ListaTaxistas)
                     {
                         <option value="@taxista.TaxistaId">@taxista.NickName</option>
@@ -64,7 +64,7 @@
 
             @*Precio*@
             <div class="col-2">
-                <label style="color: white;" class="form-label"><strong>DOP$ @ViajeRapidoDto.Precio</strong></label>
+                <label style="color: white;" class="form-label"><strong>DOP$ @ViajeRapidoDto.Precio.ToString("N2")</strong></label>
             </div>
 
             <div class="col-auto">
