@@ -3,13 +3,14 @@
 @inject ViajesRapidosServices viajesRapidosServices
 @inject TaxistaServices taxistasServices
 @inject DestinosCercasServices destinosCercaService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
 <link rel="stylesheet" href="/Estilos/CrearViaje/StyleCrearViajes.css" />
 <EditForm model="ViajeRapidoDto" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="cont glass-effect">
-        <h3 style="color: white;">Viajes Rapidos</h3>
+        <h3 style="color: white;" class="mt-2">Viajes Rapidos</h3>
         <div class="row">
 
             <div class="col-3">
@@ -68,7 +69,7 @@
             </div>
 
             <div class="col-auto">
-                <button type="submit" class="btn btn-success" >Registrar</button>
+                <button type="submit" class="btn btn-success" >Pedir Taxi</button>
             </div>
 
         </div>
@@ -82,10 +83,23 @@
     public ViajesRapidosDto ViajeRapidoDto { get; set; } = new ViajesRapidosDto();
     public string Mensaje { get; set; } = string.Empty;
 
+
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            ViajeRapidoDto.ClienteId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        }
+        else
+        {
+            Mensaje = "Usuario no autenticado";
+        }
         ListaDestinos = await destinosCercaService.Listar(a => true);
         ListaTaxistas = await taxistasServices.Listar(a => true);
+
         ViajeRapidoDto.Fecha = DateTime.Now;
     }
 
@@ -98,8 +112,22 @@
 
     private void CalcularMonto()
     {
-            ViajeRapidoDto.Precio = 200 * ViajeRapidoDto.personas;
+        ViajeRapidoDto.Precio = 200 * ViajeRapidoDto.personas;
     } 
+
+    private async Task<bool> Restriccion()
+    {
+        var destino = await destinosCercaService.Buscar(ViajeRapidoDto.DestinoCercaId);
+        var taxista = await taxistasServices.Buscar(ViajeRapidoDto.TaxistaId);
+        if(destino.CiudadId == taxista.CiudadId)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     public async Task Guardar()
     {
@@ -110,14 +138,21 @@
         }
         ViajeRapidoDto.Fecha = DateTime.Now;
         ViajeRapidoDto.EstadoVId = 1;
-
         if(ViajeRapidoDto.personas > 0 && ViajeRapidoDto.Precio > 0 && ViajeRapidoDto.DestinoCercaId != 0 && ViajeRapidoDto.TaxistaId != null)
         {
-            var crear = await viajesRapidosServices.Guardar(ViajeRapidoDto);
-            if (crear)
+            if (await Restriccion())
             {
-                Mensaje = "Se a creado tu viaje rapido";
+                var crear = await viajesRapidosServices.Guardar(ViajeRapidoDto);
+                if (crear)
+                {
+                    Mensaje = "Se a creado tu viaje rapido";
+                }
             }
+            else
+            {
+                Mensaje = "Taxista no es de la misma ciudad";
+            }
+
         }
         else
         {

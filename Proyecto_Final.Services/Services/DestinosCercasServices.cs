@@ -25,4 +25,20 @@ public class DestinosCercasServices(IDbContextFactory<ApplicationDbContext> DbFa
         .Where(criterio)
         .ToListAsync();
     }
+
+    public async Task<DestinoCercaDto> Buscar(int id)
+    {
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        var destino = await contexto.DestinosCerca
+       .Where(e => e.DestinoCercaId == id)
+       .Select(p => new DestinoCercaDto()
+       {
+           DestinoCercaId = p.DestinoCercaId,
+           Descripcion = p.Descripcion,
+           CiudadId = p.CiudadId
+       })
+       .FirstOrDefaultAsync();
+        return destino ?? new DestinoCercaDto();
+    }
+
 }

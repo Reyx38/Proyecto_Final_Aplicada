@@ -7,11 +7,9 @@ public class ClientesDto
 
     public string NickName { get; set; }
 
-    public string Nombres { get; set; }
-
     public string Correo { get; set; }
 
     public string Password { get; set; }
 
-    public int CiudadId { get; set; }
+    public int? CiudadId { get; set; }
 }

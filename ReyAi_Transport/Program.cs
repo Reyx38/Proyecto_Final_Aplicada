@@ -19,6 +19,7 @@ builder.Services.AddScoped<ViajesRapidosServices>();
 builder.Services.AddScoped<ViajeServices>();
 builder.Services.AddScoped<CiudadServices>();
 builder.Services.AddScoped<TaxistaServices>();
+builder.Services.AddScoped<ClienteServices>();
 builder.Services.AddScoped<EstadoServices>();
 
 
