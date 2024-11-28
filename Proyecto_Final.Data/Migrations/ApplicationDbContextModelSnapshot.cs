@@ -51,19 +51,19 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9e3c6d40-73ff-415b-8c00-a528e98df8d8",
+                            Id = "a8b03628-84b4-4fdc-8cda-e1b36cdee3ee",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d78aa974-b730-4518-b6b7-305d09cd0c7a",
+                            Id = "eccbcc6d-9d40-4ce9-8296-776346ed4fb8",
                             Name = "Taxista",
                             NormalizedName = "TAXISTA"
                         },
                         new
                         {
-                            Id = "61ac1ee4-f19c-4d5b-b3a5-b423c9acf789",
+                            Id = "63a7ebd3-436e-41fe-a9ff-d8c7ef0fd69d",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
                         });
@@ -619,15 +619,15 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9a0173c0-3f70-406e-b5d7-ad6b4c1588a0",
+                            Id = "9beef371-8972-4ede-a8d6-d23b3900cbd4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f5e497a7-8789-488a-8fcf-7513e99006c8",
+                            ConcurrencyStamp = "0e93cd8c-7181-4174-b0d9-435463619fca",
                             Email = "juanperez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword123",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7a7734bf-8f6c-4e3a-bb0c-cfcf9a438292",
+                            SecurityStamp = "9af6da46-698d-4dcf-a00c-ba5a50784821",
                             TwoFactorEnabled = false,
                             UserName = "juanperez",
                             EstadoTId = 1,
@@ -636,15 +636,15 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "c9218998-828a-4e7e-82f4-720fcde4a0fd",
+                            Id = "9263c131-83ad-40f9-9308-74cd3d58709e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "15fbd967-efc9-40af-8ad3-aed47b6d0cbc",
+                            ConcurrencyStamp = "37c91cb6-b442-42f1-ace9-09cec0ba440e",
                             Email = "mariagonzalez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword456",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ccf516eb-239e-4976-8af1-2c2e6717e195",
+                            SecurityStamp = "a691d1b0-91e6-41ed-878b-ddd25e2d6298",
                             TwoFactorEnabled = false,
                             UserName = "mariagonzalez",
                             EstadoTId = 1,
@@ -653,15 +653,15 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "213bc89e-9d7c-4e34-8e3c-971be29b83c4",
+                            Id = "93f0a2eb-7669-432f-9344-88b80212c112",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f35e838e-dfce-4a4e-825a-84519d0382aa",
+                            ConcurrencyStamp = "36465522-dd12-4133-951f-a258534f966a",
                             Email = "carlosmendoza@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "eb1e7ad1-f43d-4314-99bd-189f6aeb8681",
+                            SecurityStamp = "86c03db9-f384-4290-afee-c4c8e6da80dd",
                             TwoFactorEnabled = false,
                             UserName = "carlosmendoza",
                             EstadoTId = 1,
@@ -670,15 +670,15 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "de7009aa-f3ff-4c86-9cff-62b835d333cf",
+                            Id = "cba21bc2-a6da-4036-b1be-8dcde4686a1a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a897116a-a930-42dc-91c8-50dca0a0216a",
+                            ConcurrencyStamp = "10223436-3de5-48d9-bfb7-ce750946ae20",
                             Email = "luismartinez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword101",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "34311908-a926-4c59-9007-5776ab296653",
+                            SecurityStamp = "f718f578-8a49-43f9-8d6a-1aa470dbed8f",
                             TwoFactorEnabled = false,
                             UserName = "luismartinez",
                             EstadoTId = 1,
@@ -687,15 +687,15 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "7957b032-a729-46c4-a0f1-601603975d74",
+                            Id = "ea45dbf2-dd5a-469c-b69e-a0141099a023",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0d26b17d-c16b-4a57-9df1-07d92c9f4609",
+                            ConcurrencyStamp = "42b64339-7039-49d3-a628-e106ac3fba7e",
                             Email = "anafernandez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword102",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a9dd5a79-7caf-402c-b5df-3a60c460ebc7",
+                            SecurityStamp = "2ef44f35-4999-4be0-9087-37cbcda9cb93",
                             TwoFactorEnabled = false,
                             UserName = "anafernandez",
                             EstadoTId = 1,
