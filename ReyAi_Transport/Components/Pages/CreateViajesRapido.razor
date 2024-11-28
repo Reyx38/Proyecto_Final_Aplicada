@@ -9,19 +9,21 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="cont glass-effect">
+        <h3 style="color: white;">Viajes Rapidos</h3>
         <div class="row">
 
             <div class="col-3">
                 <label class="form-label" for="Destino"><strong>Destino</strong></label>
             </div>
-            <div class="col-2">
-                <label class="form-label" for="Precio"><strong>Precio</strong></label>
-            </div>
+            
             <div class="col-2">
                 <label class="form-label" for="Personas"><strong>Personas</strong></label>
             </div>
             <div class="col-3">
                 <label class="form-label" for="TaxistaId"><strong>Taxista</strong></label>
+            </div>
+            <div class="col-2">
+                <label class="form-label" for="Precio"><strong>Precio</strong></label>
             </div>
         </div>
         <div class="row align-items-center">
@@ -29,17 +31,12 @@
             <div class="col-3 ml-3">
 
                 <InputSelect id="Destino" class="form-select" @bind-Value="ViajeRapidoDto.DestinoCercaId">
-                    <option disabled value="">Seleccione un destino</option>
+                    <option disabled value="0">Seleccione un destino</option>
                     @foreach (var destino in ListaDestinos)
                     {
                         <option value="@destino.DestinoCercaId">@destino.Descripcion</option>
                     }
                 </InputSelect>
-            </div>
-
-            @*Precio*@
-            <div class="col-2">
-                <label><strong>DOP$ @ViajeRapidoDto.Precio</strong></label>
             </div>
 
             @*Número de personas*@
@@ -52,12 +49,17 @@
             <div class="col-3">
 
                 <InputSelect id="TaxistaId" class="form-select" @bind-Value="ViajeRapidoDto.TaxistaId">
-                    <option disabled value="0">Seleccione un taxista</option>
+                    <option disabled value="">Seleccione un taxista</option>
                     @foreach (var taxista in ListaTaxistas)
                     {
                         <option value="@taxista.TaxistaId">@taxista.NickName</option>
                     }
                 </InputSelect>
+            </div>
+
+            @*Precio*@
+            <div class="col-2">
+                <label style="color: white;" class="form-label"><strong>DOP$ @ViajeRapidoDto.Precio</strong></label>
             </div>
 
             <div class="col-auto">
@@ -105,7 +107,7 @@
             var crear = await viajesRapidosServices.Guardar(ViajeRapidoDto);
             if (crear)
             {
-                Mensaje = "Se a creado correctamente el cliente";
+                Mensaje = "Se a creado tu viaje rapido";
             }
         }
         else
