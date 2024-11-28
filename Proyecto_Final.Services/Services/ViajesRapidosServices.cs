@@ -28,6 +28,8 @@ public class ViajesRapidosServices(IDbContextFactory<ApplicationDbContext> DbFac
            EstadoVId = p.EstadoVId,
            Precio = p.Precio,
            TaxistaId = p.TaxistaId,
+           ClienteId = p.ClienteId,
+           personas = p.personas
        })
        .FirstOrDefaultAsync();
         return viaje ?? new ViajesRapidosDto();
@@ -52,7 +54,9 @@ public class ViajesRapidosServices(IDbContextFactory<ApplicationDbContext> DbFac
             Fecha = viajeRapidoDto.Fecha,
             EstadoVId = viajeRapidoDto.EstadoVId,
             TaxistaId = viajeRapidoDto.TaxistaId,
-            Precio = viajeRapidoDto.Precio
+            Precio = viajeRapidoDto.Precio,
+            personas = viajeRapidoDto.personas,
+            ClienteId = viajeRapidoDto.ClienteId
         };
         contexto.ViajesRapidos.Add(viaje);
         var guardo = await contexto.SaveChangesAsync() > 0;
@@ -70,7 +74,9 @@ public class ViajesRapidosServices(IDbContextFactory<ApplicationDbContext> DbFac
             Fecha = viajeRapidoDto.Fecha,
             EstadoVId = viajeRapidoDto.EstadoVId,
             TaxistaId = viajeRapidoDto.TaxistaId,
-            Precio = viajeRapidoDto.Precio
+            Precio = viajeRapidoDto.Precio,
+            personas = viajeRapidoDto.personas,
+            ClienteId = viajeRapidoDto.ClienteId
         };
         contexto.Update(viaje);
         var modificado = await contexto.SaveChangesAsync() > 0;
@@ -102,7 +108,9 @@ public class ViajesRapidosServices(IDbContextFactory<ApplicationDbContext> DbFac
             Fecha = p.Fecha,
             EstadoVId = p.EstadoVId,
             Precio = p.Precio,
-            TaxistaId = p.TaxistaId
+            TaxistaId = p.TaxistaId,
+            ClienteId = p.ClienteId,
+            personas = p.personas
         })
         .Where(criterio)
         .ToListAsync();
