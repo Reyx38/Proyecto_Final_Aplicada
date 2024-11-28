@@ -1,64 +1,48 @@
 ﻿@page "/Prueba"
+@using ReyAI_Trasport.Data.Models
 
 
 @inject CiudadServices ciudadServices
-@inject ViajeServices viajeServices
+@inject ViajesRapidosServices viajeRServices
 @inject TaxistaServices taxistaServices
+@inject DestinosCercasServices destinoCercaServices
 
 
 <div class="container">
     <div class="card-header">
         <h3>PruebaPicket</h3>
     </div>
-    <div class="card-body">
-        <div class="cont">
-            <div class="glass-effect">
-                <CrearViajeRapido ListaCiudades="ListaCiudades"
+    <div>
+        <div >
+            <div>
+                <CrearViajesRapidos ListaDestinosCerca="ListaDestinoCerca"
                                   ListaTaxistas="ListaTaxistas"
-                                  ViajeDto="ViajeDto"
+                                  ViajeRapidoDto="ViajRapidoseDto"
                                   ViajeRegistrado="Guardar" />
 
             </div>
         </div>
     </div>
 </div>
+@Mensaje
 <style>
     body{
         background-color: cadetblue;
     }
-   
-    .cont{
-        width: 45rem;
-        height: 30rem;
-        border: 3px solid rgba(250, 250, 250, 0.1); /* Borde con opacidad */
-        margin: 0 auto;
-        border-radius: 1rem;
-        position: relative;
-    }
-
-    .glass-effect {
-        background: rgba(255, 255, 255, 0.1); /* Fondo semi-transparente */
-        backdrop-filter: blur(10px); /* Efecto de desenfoque en el fondo */
-        border-radius: 5rem;
-        padding: 10px;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-    }
 </style>
 @code {
-    public List<Ciudades> ListaCiudades { get; set; } = new List<Ciudades>();
-    public List<Taxistas> ListaTaxistas { get; set; } = new List<Taxistas>();
-    public ViajesDto ViajeDto { get; set; } = new ViajesDto();
+    public List<DestinoCercaDto> ListaDestinoCerca { get; set; } = new List<DestinoCercaDto>();
+    public List<TaxistaDto> ListaTaxistas { get; set; } = new List<TaxistaDto>();
+    public ViajesRapidosDto ViajRapidoseDto { get; set; } = new ViajesRapidosDto();
     public string Mensaje { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        await ciudadServices.Listar(a => a.CiudadId > 0);
-        await taxistaServices.Listar(a => a.TaxistaId != "");
+        ListaDestinoCerca = await destinoCercaServices.Listar(a => a.DestinoCercaId > 0);
+        ListaTaxistas = await taxistaServices.Listar(a => a.TaxistaId != "");
     }
 
-    private async Task Guardar(ViajesDto viaje)
+    private async Task Guardar(ViajesRapidosDto viaje)
     {
         // if (await Validar())
         // {
@@ -66,7 +50,7 @@
         //     return;
         // }
 
-        var crear = await viajeServices.Guardar(viaje);
+        var crear = await viajeRServices.Guardar(viaje);
 
         if (crear)
         {

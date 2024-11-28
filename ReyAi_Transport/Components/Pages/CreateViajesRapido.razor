@@ -1,0 +1,112 @@
+﻿@page "/CrearViajeRapido"
+
+@inject ViajesRapidosServices viajesRapidosServices
+@inject TaxistaServices taxistasServices
+@inject DestinosCercasServices destinosCercaService
+@rendermode InteractiveServer
+<link rel="stylesheet" href="/Estilos/CrearViaje/StyleCrearViajes.css" />
+<EditForm model="ViajeRapidoDto" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="cont glass-effect">
+        <div class="row">
+
+            <div class="col-3">
+                <label class="form-label" for="Destino"><strong>Destino</strong></label>
+            </div>
+            <div class="col-2">
+                <label class="form-label" for="Precio"><strong>Precio</strong></label>
+            </div>
+            <div class="col-2">
+                <label class="form-label" for="Personas"><strong>Personas</strong></label>
+            </div>
+            <div class="col-3">
+                <label class="form-label" for="TaxistaId"><strong>Taxista</strong></label>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            @*Destino*@
+            <div class="col-3 ml-3">
+
+                <InputSelect id="Destino" class="form-select" @bind-Value="ViajeRapidoDto.DestinoCercaId">
+                    <option disabled value="">Seleccione un destino</option>
+                    @foreach (var destino in ListaDestinos)
+                    {
+                        <option value="@destino.DestinoCercaId">@destino.Descripcion</option>
+                    }
+                </InputSelect>
+            </div>
+
+            @*Precio*@
+            <div class="col-2">
+                <InputNumber id="Personas" class="form-control" @bind-Value="ViajeRapidoDto.Precio"></InputNumber>
+            </div>
+
+            @*Número de personas*@
+            <div class="col-2">
+
+                <InputNumber id="Personas" class="form-control" @bind-Value="ViajeRapidoDto.personas"></InputNumber>
+            </div>
+
+            @*Taxista*@
+            <div class="col-3">
+
+                <InputSelect id="TaxistaId" class="form-select" @bind-Value="ViajeRapidoDto.TaxistaId">
+                    <option disabled value="0">Seleccione un taxista</option>
+                    @foreach (var taxista in ListaTaxistas)
+                    {
+                        <option value="@taxista.TaxistaId">@taxista.NickName</option>
+                    }
+                </InputSelect>
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-success" >Registrar</button>
+            </div>
+
+        </div>
+    </div>
+
+</EditForm>
+@Mensaje
+@code {
+    public List<TaxistaDto> ListaTaxistas { get; set; } = new List<TaxistaDto>();
+    public List<DestinoCercaDto> ListaDestinos { get; set; } = new List<DestinoCercaDto>();
+    public ViajesRapidosDto ViajeRapidoDto { get; set; } = new ViajesRapidosDto();
+    public string Mensaje { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaDestinos = await destinosCercaService.Listar(a => true);
+        ListaTaxistas = await taxistasServices.Listar(a => true);
+        ViajeRapidoDto.Fecha = DateTime.Now;
+    }
+
+    private async Task<bool> Validar()
+    {
+        var valido = await viajesRapidosServices.
+        ExisteViaje(ViajeRapidoDto.DestinoCercaId, ViajeRapidoDto.ViajeRapidoId, ViajeRapidoDto.TaxistaId);
+        return valido;
+    }
+
+    public async Task Guardar()
+    {
+        if(await Validar())
+        {
+            Mensaje = "Ya tienes un viaje";
+            return;
+        }
+        ViajeRapidoDto.Fecha = DateTime.Now;
+        ViajeRapidoDto.EstadoVId = 1;
+        var crear = await viajesRapidosServices.Guardar(ViajeRapidoDto);
+
+        if (crear)
+        {
+            Mensaje = "Se a creado correctamente el cliente";
+        }
+        else
+        {
+            Mensaje = "No se a creado correctamente el cliente";
+        }
+        
+    }
+}

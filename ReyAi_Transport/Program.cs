@@ -16,6 +16,8 @@ builder.Services.RegistarService();
 builder.Services.AddScoped<TaxistaServices>();
 builder.Services.AddScoped<CiudadServices>();
 builder.Services.AddScoped<ViajeServices>();
+builder.Services.AddScoped<DestinosCercasServices>();
+builder.Services.AddScoped<ViajesRapidosServices>();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
