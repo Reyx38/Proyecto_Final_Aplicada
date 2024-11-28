@@ -21,7 +21,8 @@ builder.Services.AddScoped<CiudadServices>();
 builder.Services.AddScoped<TaxistaServices>();
 builder.Services.AddScoped<ClienteServices>();
 builder.Services.AddScoped<EstadoServices>();
-
+builder.Services.AddScoped<ReservacionesServices>();
+builder.Services.AddScoped<ReservacionDetallesServices>();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
