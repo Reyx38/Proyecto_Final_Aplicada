@@ -8,6 +8,4 @@ public class Clientes : ApplicationUser
     
     public ICollection<Viajes> Viajes { get; set; } = new List<Viajes>();
 
-    public ICollection<Taxistas> Favoritos { get; set; } = new List<Taxistas>();
-
 }
