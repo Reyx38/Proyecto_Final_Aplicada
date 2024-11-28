@@ -27,10 +27,12 @@ public class ViajesRapidos
     public int EstadoVId { get; set; }
     public EstadosViajes? EstadoViaje { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Campo obligatorio")]
+    [RegularExpression(@"^\d+(\.\d+)?$", ErrorMessage = "Solo se permiten numeros enteros o decimales")]
     public double Precio { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Campo obligatorio")]
+    [RegularExpression(@"^\d?$", ErrorMessage = "Solo se permiten numeros enteros")]
     public int personas { get; set; }
 
 

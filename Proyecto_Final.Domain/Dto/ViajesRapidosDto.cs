@@ -21,7 +21,7 @@ public class ViajesRapidosDto
 
     public int personas { get; set; }
 
-    public string ClienteId { get; set; }
+    public string? ClienteId { get; set; }
 
-    public string TaxistaId { get; set; }
+    public string? TaxistaId { get; set; }
 }
