@@ -12,7 +12,7 @@ using ReyAI_Trasport.Data.Contexto;
 namespace Proyecto_Final.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241127175046_Initial")]
+    [Migration("20241128013249_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -50,6 +50,26 @@ namespace Proyecto_Final.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b3ffa056-46a9-40cc-9442-ed9a773c665a",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "79c4feb8-36fd-4c22-8f61-a28688e21a5d",
+                            Name = "Taxista",
+                            NormalizedName = "TAXISTA"
+                        },
+                        new
+                        {
+                            Id = "65c21308-9f1e-46ae-9351-be0fec36e14e",
+                            Name = "Cliente",
+                            NormalizedName = "CLIENTE"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -158,50 +178,6 @@ namespace Proyecto_Final.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Proyecto_Final.Data.Models.Ciudades", b =>
-                {
-                    b.Property<int>("CiudadId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CiudadId"));
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CiudadId");
-
-                    b.ToTable("Ciudades");
-
-                    b.HasData(
-                        new
-                        {
-                            CiudadId = 1,
-                            Nombre = "San Francisco de Macoris"
-                        },
-                        new
-                        {
-                            CiudadId = 2,
-                            Nombre = "Santo Domingo"
-                        },
-                        new
-                        {
-                            CiudadId = 3,
-                            Nombre = "Santigo"
-                        },
-                        new
-                        {
-                            CiudadId = 4,
-                            Nombre = "Samana"
-                        },
-                        new
-                        {
-                            CiudadId = 5,
-                            Nombre = "Puerto Plata"
-                        });
-                });
-
             modelBuilder.Entity("ReyAI_Trasport.Data.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -274,6 +250,97 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("ReyAI_Trasport.Data.Models.Ciudades", b =>
+                {
+                    b.Property<int>("CiudadId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CiudadId"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CiudadId");
+
+                    b.ToTable("Ciudades");
+
+                    b.HasData(
+                        new
+                        {
+                            CiudadId = 1,
+                            Nombre = "San Francisco de Macoris"
+                        },
+                        new
+                        {
+                            CiudadId = 2,
+                            Nombre = "Santo Domingo"
+                        },
+                        new
+                        {
+                            CiudadId = 3,
+                            Nombre = "Santigo"
+                        },
+                        new
+                        {
+                            CiudadId = 4,
+                            Nombre = "Samana"
+                        },
+                        new
+                        {
+                            CiudadId = 5,
+                            Nombre = "Puerto Plata"
+                        });
+                });
+
+            modelBuilder.Entity("ReyAI_Trasport.Data.Models.DestinosCerca", b =>
+                {
+                    b.Property<int>("DestinoCercaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DestinoCercaId"));
+
+                    b.Property<int>("CiudadId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DestinoCercaId");
+
+                    b.HasIndex("CiudadId");
+
+                    b.ToTable("DestinosCerca");
+
+                    b.HasData(
+                        new
+                        {
+                            DestinoCercaId = 1,
+                            CiudadId = 1,
+                            Descripcion = "Parque Duarte"
+                        },
+                        new
+                        {
+                            DestinoCercaId = 2,
+                            CiudadId = 1,
+                            Descripcion = "La sirena"
+                        },
+                        new
+                        {
+                            DestinoCercaId = 3,
+                            CiudadId = 1,
+                            Descripcion = "Supermercado Bravo"
+                        },
+                        new
+                        {
+                            DestinoCercaId = 4,
+                            CiudadId = 1,
+                            Descripcion = "El mercado"
+                        });
                 });
 
             modelBuilder.Entity("ReyAI_Trasport.Data.Models.EstadosTaxistas", b =>
@@ -401,6 +468,48 @@ namespace Proyecto_Final.Data.Migrations
                     b.ToTable("Reservaciones");
                 });
 
+            modelBuilder.Entity("ReyAI_Trasport.Data.Models.ViajesRapidos", b =>
+                {
+                    b.Property<int>("ViajeRapidoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ViajeRapidoId"));
+
+                    b.Property<string>("ClienteId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DestinoCercaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EstadoVId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Precio")
+                        .HasColumnType("float");
+
+                    b.Property<string>("TaxistaId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("personas")
+                        .HasColumnType("int");
+
+                    b.HasKey("ViajeRapidoId");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("DestinoCercaId");
+
+                    b.HasIndex("EstadoVId");
+
+                    b.HasIndex("TaxistaId");
+
+                    b.ToTable("ViajesRapidos");
+                });
+
             modelBuilder.Entity("ReyAI_Trasport.Domain.Models.Imagen", b =>
                 {
                     b.Property<int>("ImagenId")
@@ -507,6 +616,93 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasIndex("EstadoTId");
 
                     b.HasDiscriminator().HasValue("Taxistas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "d6d8cbfd-a5d3-4f96-a1f4-37b07bb900eb",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "fc15f2a4-8d8f-4b3e-b794-b5f8d324a09f",
+                            Email = "juanperez@example.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "hashedpassword123",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "aff05819-5a87-4d48-a318-332d5e7b90d4",
+                            TwoFactorEnabled = false,
+                            UserName = "juanperez",
+                            EstadoTId = 1,
+                            ExisteLicencia = true,
+                            ExisteVehiculo = true
+                        },
+                        new
+                        {
+                            Id = "84b0f5dc-5341-45b4-901d-62e46ed363ae",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "fbb7bc98-3e2a-4f48-b091-90af8b4e7200",
+                            Email = "mariagonzalez@example.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "hashedpassword456",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "8f0587b6-137d-4d32-9b26-66306e027f30",
+                            TwoFactorEnabled = false,
+                            UserName = "mariagonzalez",
+                            EstadoTId = 1,
+                            ExisteLicencia = true,
+                            ExisteVehiculo = true
+                        },
+                        new
+                        {
+                            Id = "29f18fcd-bdb4-46e1-9ec1-615554f95827",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "9c395037-97e8-49f2-a2db-14cbc37933aa",
+                            Email = "carlosmendoza@example.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "hashedpassword789",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d00de59f-1ab0-46df-953b-9903ab25b04e",
+                            TwoFactorEnabled = false,
+                            UserName = "carlosmendoza",
+                            EstadoTId = 1,
+                            ExisteLicencia = true,
+                            ExisteVehiculo = false
+                        },
+                        new
+                        {
+                            Id = "2067cbf5-9ca8-4fb0-b98b-cb30cef338c6",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "9bde95d7-4a4f-42bb-a6fd-f331bc73d71c",
+                            Email = "luismartinez@example.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "hashedpassword101",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d4bd4277-f08a-43f5-b014-a012cc9a020c",
+                            TwoFactorEnabled = false,
+                            UserName = "luismartinez",
+                            EstadoTId = 1,
+                            ExisteLicencia = false,
+                            ExisteVehiculo = true
+                        },
+                        new
+                        {
+                            Id = "2974c9ee-2be0-4eca-aa9c-3b69c04753cd",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a0014fb9-0309-4f0c-9eb8-c41d19531c83",
+                            Email = "anafernandez@example.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "hashedpassword102",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "f4bbd97e-50b1-4bd7-9007-138aac10f5fb",
+                            TwoFactorEnabled = false,
+                            UserName = "anafernandez",
+                            EstadoTId = 1,
+                            ExisteLicencia = true,
+                            ExisteVehiculo = true
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -560,6 +756,17 @@ namespace Proyecto_Final.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ReyAI_Trasport.Data.Models.DestinosCerca", b =>
+                {
+                    b.HasOne("ReyAI_Trasport.Data.Models.Ciudades", "Ciudad")
+                        .WithMany()
+                        .HasForeignKey("CiudadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ciudad");
+                });
+
             modelBuilder.Entity("ReyAI_Trasport.Data.Models.Reservaciones", b =>
                 {
                     b.HasOne("ReyAI_Trasport.Domain.Models.Viajes", "Viaje")
@@ -569,6 +776,37 @@ namespace Proyecto_Final.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Viaje");
+                });
+
+            modelBuilder.Entity("ReyAI_Trasport.Data.Models.ViajesRapidos", b =>
+                {
+                    b.HasOne("ReyAI_Trasport.Data.ApplicationUser", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId");
+
+                    b.HasOne("ReyAI_Trasport.Data.Models.DestinosCerca", "DestinoCerca")
+                        .WithMany()
+                        .HasForeignKey("DestinoCercaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReyAI_Trasport.Data.Models.EstadosViajes", "EstadoViaje")
+                        .WithMany()
+                        .HasForeignKey("EstadoVId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReyAI_Trasport.Data.ApplicationUser", "Taxista")
+                        .WithMany()
+                        .HasForeignKey("TaxistaId");
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("DestinoCerca");
+
+                    b.Navigation("EstadoViaje");
+
+                    b.Navigation("Taxista");
                 });
 
             modelBuilder.Entity("ReyAI_Trasport.Domain.Models.Imagen", b =>
