@@ -2,10 +2,11 @@
 @inject ViajeServices ViajeService
 <div class="overlay">
 	<div class="tarjetas-contenedor">
-		@for (int i = 0; i <= 3; i++)
-		{
-			<TarjetaViaje />
 
+		@foreach(var viajes in ListViajes)
+		{
+			<TarjetaViaje 
+				Viaje="viajes" />
 		}
 	</div>
 </div>
@@ -49,6 +50,6 @@
 	public List<ViajesDto> ListViajes { get; set; } = new List<ViajesDto>();
 	protected override async Task OnInitializedAsync()
 	{
-		ListViajes = await ViajeService.Listar(v => v.EstadoId == 5);
+		ListViajes = await ViajeService.Listar(v => true);
 	}
 }

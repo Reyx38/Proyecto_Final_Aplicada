@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 @rendermode InteractiveServer
 @inject ViajeServices ViajeService
-@inject TaxistaServices TaxistaServices
+@inject TaxistaServices TaxistaService
 @inject CiudadServices CiudadService
 @inject NavigationManager NavigationManager
 <EditForm Model="@Viajes" OnValidSubmit="Guardar" FormName="CrearViajes">
@@ -115,7 +115,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		// 	ListTaxista = await TaxistaService.Listar(T => true);
+		ListTaxista = await TaxistaService.Listar(T => true);
 		Viajes.Fecha = DateTime.Now;
 		ListCiudades = await CiudadService.Listar(T => true);
 	}

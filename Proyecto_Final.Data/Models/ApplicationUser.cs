@@ -7,7 +7,11 @@ namespace ReyAI_Trasport.Data;
 public class ApplicationUser : IdentityUser
 {
     [ForeignKey("Ciudad")]
+<<<<<<< HEAD
     public int? CiudadId { get; set; }
+=======
+    public int CiudadId { get; set; } 
+>>>>>>> 59303e9c8f4bbf28d2d85963598152e05c8c79da
     public Ciudades? Ciudad { get; set; }
 
 }
