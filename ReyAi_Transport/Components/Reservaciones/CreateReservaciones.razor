@@ -1,4 +1,4 @@
-﻿
+﻿@page "/reservacion"
 @inject ViajeServices viajeServices
 @inject ReservacionDetallesServices detallesServices
 @inject TaxistaServices taxistaService
@@ -63,6 +63,15 @@
 						<label class="form-label">Costo</label>
 						<label class="form-label"><strong>DOP$ @ViajeDto.Precio.ToString("N2")</strong></label>
 					</div>
+				</div>
+				<div class="row">
+					<div class="col-auto">
+                            <SeleccionarArticulos ListaArticulo="ListaArticulos"
+                                                 ArticuloId="DetallesDto.ArticuloId"
+                                                 Cantidad="DetallesDto.Cantidad"
+                                                 Precio="DetallesDto.Precio"
+                                                 ArticuloSeleccionado="AgregarDetalle" />
+                        </div>
 				</div>
 				
 				<div class="card-footer">
