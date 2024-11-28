@@ -72,7 +72,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                PasswordHash = "hashedpassword123",
                EstadoTId = 1,
                ExisteLicencia = true,
-               ExisteVehiculo = true
+               ExisteVehiculo = true,
+               CiudadId = 1
            },
            new Taxistas
            {
@@ -82,7 +83,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                PasswordHash = "hashedpassword456",
                EstadoTId = 1,
                ExisteLicencia = true,
-               ExisteVehiculo = true
+               ExisteVehiculo = true,
+               CiudadId = 3
            },
            new Taxistas
            {
@@ -92,7 +94,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                PasswordHash = "hashedpassword789",
                EstadoTId = 1,
                ExisteLicencia = true,
-               ExisteVehiculo = false
+               ExisteVehiculo = true,
+               CiudadId = 2
            },
            new Taxistas
            {
@@ -101,8 +104,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                Email = "luismartinez@example.com",
                PasswordHash = "hashedpassword101",
                EstadoTId = 1,  
-               ExisteLicencia = false,
-               ExisteVehiculo = true
+               ExisteLicencia = true,
+               ExisteVehiculo = true,
+               CiudadId = 2
            },
            new Taxistas
            {
@@ -112,7 +116,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                PasswordHash = "hashedpassword102",
                EstadoTId = 1,
                ExisteLicencia = true,
-               ExisteVehiculo = true
+               ExisteVehiculo = true,
+               CiudadId = 1
            }
         );
     }

@@ -19,4 +19,5 @@ public class Taxistas : ApplicationUser
     [ForeignKey("EstadoTaxista")]
     public int EstadoTId { get; set; }
     public EstadosTaxistas? EstadoTaxista { get; set; }
+
 }
