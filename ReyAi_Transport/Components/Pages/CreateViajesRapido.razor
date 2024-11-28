@@ -3,7 +3,6 @@
 @inject ViajesRapidosServices viajesRapidosServices
 @inject TaxistaServices taxistasServices
 @inject DestinosCercasServices destinosCercaService
-@inject ClienteServices clienteServices
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
 <link rel="stylesheet" href="/Estilos/CrearViaje/StyleCrearViajes.css" />
@@ -84,6 +83,7 @@
     public ViajesRapidosDto ViajeRapidoDto { get; set; } = new ViajesRapidosDto();
     public string Mensaje { get; set; } = string.Empty;
 
+
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -97,16 +97,8 @@
         {
             Mensaje = "Usuario no autenticado";
         }
-        var usuario = await clienteServices.Buscar(ViajeRapidoDto.ClienteId);
         ListaDestinos = await destinosCercaService.Listar(a => true);
-        if (usuario.CiudadId > 0)
-        {
-            ListaTaxistas = await taxistasServices.Listar(a => a.CiudadId == usuario.CiudadId);
-        }
-        else
-        {
-            Mensaje = "No se busca bien";
-        }
+        ListaTaxistas = await taxistasServices.Listar(a => true);
 
         ViajeRapidoDto.Fecha = DateTime.Now;
     }
@@ -120,8 +112,22 @@
 
     private void CalcularMonto()
     {
-            ViajeRapidoDto.Precio = 200 * ViajeRapidoDto.personas;
+        ViajeRapidoDto.Precio = 200 * ViajeRapidoDto.personas;
     } 
+
+    private async Task<bool> Restriccion()
+    {
+        var destino = await destinosCercaService.Buscar(ViajeRapidoDto.DestinoCercaId);
+        var taxista = await taxistasServices.Buscar(ViajeRapidoDto.TaxistaId);
+        if(destino.CiudadId == taxista.CiudadId)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     public async Task Guardar()
     {
@@ -132,14 +138,21 @@
         }
         ViajeRapidoDto.Fecha = DateTime.Now;
         ViajeRapidoDto.EstadoVId = 1;
-
         if(ViajeRapidoDto.personas > 0 && ViajeRapidoDto.Precio > 0 && ViajeRapidoDto.DestinoCercaId != 0 && ViajeRapidoDto.TaxistaId != null)
         {
-            var crear = await viajesRapidosServices.Guardar(ViajeRapidoDto);
-            if (crear)
+            if (await Restriccion())
             {
-                Mensaje = "Se a creado tu viaje rapido";
+                var crear = await viajesRapidosServices.Guardar(ViajeRapidoDto);
+                if (crear)
+                {
+                    Mensaje = "Se a creado tu viaje rapido";
+                }
             }
+            else
+            {
+                Mensaje = "Taxista no es de la misma ciudad";
+            }
+
         }
         else
         {
