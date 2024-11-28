@@ -7,7 +7,7 @@ public class ViajesDto
     public int ViajeId { get; set; }
 
 	[Required(ErrorMessage = "Campo obligatorio")]
-	[Range(0.01, double.MaxValue, ErrorMessage = "Debe selecionar un Destino")] 
+	[Range(0.01, int.MaxValue, ErrorMessage = "Debe selecionar un Destino")] 
 	public int Destino { get; set; }
 
 	[Required(ErrorMessage = "Campo obligatorio")]
@@ -25,7 +25,6 @@ public class ViajesDto
 
 	public List<ImagenDto> Imagenes { get; set; } = new List<ImagenDto>();
 
-	[Required(ErrorMessage = "Campo obligatorio")]
-	[Range(0.01, double.MaxValue, ErrorMessage = "Debe selecionar un Destino")]
+	[Required(ErrorMessage = "Debe seleccionar un taxista")]
 	public string TaxistaId { get; set; }
 }

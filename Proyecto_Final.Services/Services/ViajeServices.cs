@@ -46,9 +46,16 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
             Fecha = viajeDto.Fecha,
             EstadoVId = viajeDto.EstadoId,
             TaxistaId = viajeDto.TaxistaId,
-            Precio = viajeDto.Precio
+            Precio = viajeDto.Precio,
+            Imagen = viajeDto.Imagenes.Select(imagen => new Imagen
+            {
+                ImagenUrl = imagen.ImagenUrl,
+                Base64 = imagen.Base64,
+                Alt = imagen.Alt,
+                Titulo = imagen.Titulo
+            }).ToList() 
         };
-        contexto.Viajes.Add(viaje);
+       await contexto.Viajes.AddAsync(viaje);
         var guardo = await contexto.SaveChangesAsync() > 0;
         viajeDto.ViajeId = viaje.ViajeId;
         return guardo;
@@ -98,8 +105,16 @@ public async Task<List<ViajesDto>> Listar(Expression<Func<ViajesDto, bool>> crit
             Fecha = p.Fecha,
             Precio = p.Precio,
             TaxistaId = p.TaxistaId,
+                Imagenes = p.Imagen.Select(i => new ImagenDto() // Mapear la colección de imágenes  
+                {
+                    Id = i.ImagenId,
+                    ImagenUrl = i.ImagenUrl,
+                    Alt = i.Alt,
+                    Base64 = i.Base64,
+                    Titulo = i.Titulo,
+                }).ToList()
 
-        })
+            })
     .Where(criterio)
     .ToListAsync();
 }
