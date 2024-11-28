@@ -21,7 +21,8 @@ namespace ReyAI_Trasport.Services.Services
                Correo = p.Email,
                ExisteVehiculo = p.ExisteVehiculo,
                ExisteLicencia = p.ExisteLicencia,
-               EstadoTId = p.EstadoTId
+               EstadoTId = p.EstadoTId,
+               CiudadId = p.CiudadId
            })
            .FirstOrDefaultAsync();
             return taxista ?? new TaxistaDto();
@@ -54,7 +55,8 @@ namespace ReyAI_Trasport.Services.Services
                 Email = taxistaDto.Correo,
                 ExisteVehiculo = taxistaDto.ExisteVehiculo,
                 ExisteLicencia = taxistaDto.ExisteLicencia,
-                EstadoTId = taxistaDto.EstadoTId
+                EstadoTId = taxistaDto.EstadoTId, 
+                CiudadId = taxistaDto.CiudadId
             };
             contexto.Taxistas.Add(taxista);
             var guardo = await contexto.SaveChangesAsync() > 0;
@@ -72,7 +74,8 @@ namespace ReyAI_Trasport.Services.Services
                 Email = taxistaDto.Correo,
                 ExisteVehiculo = taxistaDto.ExisteVehiculo,
                 ExisteLicencia = taxistaDto.ExisteLicencia,
-                EstadoTId = taxistaDto.EstadoTId
+                EstadoTId = taxistaDto.EstadoTId,
+                CiudadId = taxistaDto.CiudadId
             };
             contexto.Update(taxista);
             var modificado = await contexto.SaveChangesAsync() > 0;
@@ -104,7 +107,8 @@ namespace ReyAI_Trasport.Services.Services
                 Correo = f.Email,
                 ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
-                EstadoTId = f.EstadoTId
+                EstadoTId = f.EstadoTId,
+                CiudadId = f.CiudadId
             })
             .Where(criterio)
             .ToListAsync();
