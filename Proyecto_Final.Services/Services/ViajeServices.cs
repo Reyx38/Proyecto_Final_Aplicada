@@ -18,7 +18,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
        .Select(p => new ViajesDto()
        {
            ViajeId = p.ViajeId,
-           CiudadId = p.CiudadId,
+           Destino = p.Destino,
            Fecha = p.Fecha,
            EstadoId = p.EstadoVId,
            Precio = p.Precio,
@@ -28,12 +28,12 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         return viaje ?? new ViajesDto();
     }
 
-    public async Task<bool> ExisteViaje( int id, string idTaxista)
+    public async Task<bool> ExisteViaje(int id, string idTaxista)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Viajes
             .AnyAsync(e => e.ViajeId != id
-            && e.Taxista.Id == idTaxista);
+            && e.Taxista.Id.ToLower().Equals(idTaxista.ToLower()));
     }
 
     private async Task<bool> Insertar(ViajesDto viajeDto)
@@ -42,7 +42,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         var viaje = new Viajes()
         {
             ViajeId = viajeDto.ViajeId,
-            CiudadId = viajeDto.CiudadId,
+            Destino = viajeDto.Destino,
             Fecha = viajeDto.Fecha,
             EstadoVId = viajeDto.EstadoId,
             TaxistaId = viajeDto.TaxistaId,
@@ -60,7 +60,7 @@ private async Task<bool> Modificar(ViajesDto viajeDto)
     var viaje = new Viajes()
     {
         ViajeId = viajeDto.ViajeId,
-        CiudadId = viajeDto.CiudadId,
+        Destino = viajeDto.Destino,
         Fecha = viajeDto.Fecha,
         EstadoVId = viajeDto.EstadoId,
         TaxistaId = viajeDto.TaxistaId,
@@ -91,7 +91,7 @@ public async Task<List<ViajesDto>> Listar(Expression<Func<ViajesDto, bool>> crit
     return await contexto.Viajes.Select(p => new ViajesDto()
     {
         ViajeId = p.ViajeId,
-        CiudadId = p.CiudadId,
+        Destino = p.Destino,
         Fecha = p.Fecha,
         Precio = p.Precio,
         TaxistaId = p.TaxistaId
