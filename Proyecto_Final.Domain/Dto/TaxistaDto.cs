@@ -16,5 +16,5 @@ public class TaxistaDto
     public bool ExisteLicencia { get; set; }
     
     public int EstadoTId { get; set; }
-    public int CiudadId { get; set; }
+    public int? CiudadId { get; set; }
 }

@@ -13,5 +13,5 @@ public class ClientesDto
 
     public string Password { get; set; }
 
-    public int CiudadId { get; set; }
+    public int? CiudadId { get; set; }
 }
