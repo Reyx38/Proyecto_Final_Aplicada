@@ -1,5 +1,4 @@
-﻿using Proyecto_Final.Domain.Dto;
-using ReyAI_Trasport.Domain.Dto;
+﻿using ReyAI_Trasport.Domain.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
