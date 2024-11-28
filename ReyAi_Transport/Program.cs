@@ -19,12 +19,9 @@ builder.Services.AddScoped<ViajesRapidosServices>();
 builder.Services.AddScoped<ViajeServices>();
 builder.Services.AddScoped<CiudadServices>();
 builder.Services.AddScoped<TaxistaServices>();
-<<<<<<< HEAD
 builder.Services.AddScoped<ClienteServices>();
-=======
 builder.Services.AddScoped<EstadoServices>();
 
->>>>>>> 59303e9c8f4bbf28d2d85963598152e05c8c79da
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
