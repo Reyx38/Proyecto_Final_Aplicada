@@ -27,4 +27,7 @@ public class Reservaciones
 
     [Required(ErrorMessage = "Campo obligatorio")]
     public string? Recibo { get; set; }
+
+    [ForeignKey("ReservacionId")]
+    public ICollection<ReservacionDetalles> ReservacionDetalles { get; set; } = new List<ReservacionDetalles>();
 }
