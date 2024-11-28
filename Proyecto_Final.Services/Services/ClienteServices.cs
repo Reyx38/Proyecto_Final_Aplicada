@@ -19,14 +19,7 @@ public class ClienteServices(IDbContextFactory<ApplicationDbContext> DbFactory) 
            ClienteId = p.Id,
            NickName = p.UserName,
            Correo = p.Email,
-           Favoritos = p.Favoritos.Select(f => new TaxistaDto
-           {
-               TaxistaId = f.Id,
-               NickName = f.UserName,
-               Correo = f.Email,
-               ExisteVehiculo = f.ExisteVehiculo,
-               ExisteLicencia = f.ExisteLicencia,
-           }).ToList()
+           CiudadId = p.CiudadId
        })
        .FirstOrDefaultAsync();
         return cliente ?? new ClientesDto();
@@ -37,7 +30,6 @@ public class ClienteServices(IDbContextFactory<ApplicationDbContext> DbFactory) 
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Clientes
             .Where(e => e.Id == id)
-            .Include(p => p.Favoritos)
             .ExecuteDeleteAsync() > 0;
     }
 
@@ -59,14 +51,7 @@ public class ClienteServices(IDbContextFactory<ApplicationDbContext> DbFactory) 
             UserName = clienteDto.NickName,
             Email = clienteDto.Correo,
             PasswordHash = clienteDto.Password,
-            Favoritos = clienteDto.Favoritos.Select(f => new Taxistas
-            {
-				Id = f.TaxistaId,
-                UserName = f.NickName,
-                Email = f.Correo,
-                ExisteVehiculo = f.ExisteVehiculo,
-                ExisteLicencia = f.ExisteLicencia,
-            }).ToList()
+            CiudadId = clienteDto.CiudadId
         };
         contexto.Clientes.Add(cliente);
         var guardo = await contexto.SaveChangesAsync() > 0;
@@ -83,14 +68,7 @@ public class ClienteServices(IDbContextFactory<ApplicationDbContext> DbFactory) 
             UserName = clienteDto.NickName,
             Email = clienteDto.Correo,
             PasswordHash = clienteDto.Password,
-            Favoritos = clienteDto.Favoritos.Select(f => new Taxistas
-            {
-                Id = f.TaxistaId,
-                UserName = f.NickName,
-                Email = f.Correo,
-                ExisteVehiculo = f.ExisteVehiculo,
-                ExisteLicencia = f.ExisteLicencia,
-            }).ToList()
+            CiudadId = clienteDto.CiudadId
         };
         contexto.Update(cliente);
         var modificado = await contexto.SaveChangesAsync() > 0;
@@ -121,16 +99,8 @@ public class ClienteServices(IDbContextFactory<ApplicationDbContext> DbFactory) 
             NickName = p.UserName,
             Correo = p.Email,
             Password = p.PasswordHash,
-            Favoritos = p.Favoritos.Select(f => new TaxistaDto
-            {
-                TaxistaId = f.Id,
-                NickName = f.UserName,
-                Correo = f.Email,
-                ExisteVehiculo = f.ExisteVehiculo,
-                ExisteLicencia = f.ExisteLicencia,
-            }).ToList()
+            CiudadId = p.CiudadId
         })
-        .Include(p => p.Favoritos)
         .Where(criterio)
         .ToListAsync();
     }
