@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Proyecto_Final.Abstracions\Proyecto_Final.Abstracions.csproj" />
     <ProjectReference Include="..\Proyecto_Final.Data\Proyecto_Final.Data.csproj" />
+    <ProjectReference Include="..\Proyecto_Final.Domain\Proyecto_Final.Domain.csproj" />
   </ItemGroup>
 
 </Project>
