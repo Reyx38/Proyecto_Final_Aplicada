@@ -1,0 +1,166 @@
+﻿
+@inject ViajeServices viajeServices
+@inject ReservacionDetallesServices detallesServices
+@inject TaxistaServices taxistaService
+@inject CiudadServices ciudadesServices
+@inject ReservacionesServices reservacionesServices
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+<link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
+<h3>CreateReservaciones</h3>
+
+<EditForm Model="ReservacionDto" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+	<div class="overlay"></div>
+	<div class="container">
+		<div class="card">
+			<div class="card-header">
+				<h2>Crear Viaje</h2>
+			</div>
+			<div class="card-body">
+				<div class="row mb-3">
+					<div class="col-12">
+						<label class="form-label">Seleccionar conductor:</label>
+						<InputSelect class="form-select" @bind-Value="ViajeDto.TaxistaId">
+							<option selected disabled value="0">-- Seleccione un Conductor --</option>
+
+							@foreach (var taxista in ListaTaxistas)
+							{
+								<option value="@taxista.TaxistaId">@taxista.NickName</option>
+							}
+						</InputSelect>
+						<ValidationMessage For="@(() => ViajeDto.TaxistaId)" />
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-12">
+						<label class="form-label">Destino</label>
+						<InputSelect class="form-select" @bind-Value="ViajeDto.Destino">
+							<option selected disabled value="0">-- Seleccione un Destino --</option>
+
+							@foreach (var Ciudades in ListaCiudades)
+							{
+								<option value="@Ciudades.CiudadId">@Ciudades.Nombre</option>
+							}
+						</InputSelect>
+					</div>
+				</div>
+				<div class="row mb-3">
+					@*Fecha Viaje*@
+					<div class="col-md-4">
+						<label class="form-label">Fecha</label>
+						<InputDate class="form-control" @bind-Value="ViajeDto.Fecha" />
+						<ValidationMessage For="@(() => ViajeDto.Fecha)" />
+					</div>
+					@*Cantidad de personas*@
+					<div class="col-md-4">
+						<label class="form-label">Cantidad de personas</label>
+						<InputNumber class="form-control" @bind-Value="@ViajeDto.personas" placeholder="20"></InputNumber>
+					</div>
+
+					@*Precio*@
+					<div class="col-md-4">
+						<label class="form-label">Costo</label>
+						<label class="form-label"><strong>DOP$ @ViajeDto.Precio.ToString("N2")</strong></label>
+					</div>
+				</div>
+				
+				<div class="card-footer">
+					<button type="submit" class="btn btn-danger bi bi-trash mt-2">Guardar</button>
+					<a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</EditForm> 
+
+@code {
+	public int ViajeId { get; set; }
+	public ViajesDto ViajeDto { get; set; } = new ViajesDto();
+	public ReservacionesDto ReservacionDto { get; set; } = new ReservacionesDto();
+	public ReservacionDetallesDto DetallesDto { get; set; } = new ReservacionDetallesDto();
+	public List<TaxistaDto> ListaTaxistas { get; set; } = new List<TaxistaDto>();
+	public List<ArticulosDto> ListaArticulos { get; set; } = new List<ArticulosDto>();
+	public List<ViajesDto> ListaViajes { get; set; } = new List<ViajesDto>();
+	public List<CiudadesDto> ListaCiudades { get; set; } = new List<CiudadesDto>();
+	public string Mensaje { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		if(ViajeId > 0)
+		{
+			ViajeDto = await viajeServices.Buscar(ViajeId);
+		}
+		ListaCiudades = await ciudadesServices.Listar(a => true);
+
+		ListaArticulos = await detallesServices.Listar(a => a.ArticuloId > 0);
+		ListaViajes = await viajeServices.Listar(a => true);
+		ListaTaxistas = await taxistaService.Listar(a => true);
+	}
+
+    private async Task AgregarDetalle((ArticulosDto articulos, int Cantidad) selection)
+    {
+		var ArticuloExiste = ReservacionDto.ReservacionDetalles.FirstOrDefault(A => A.ArticuloId == selection.articulos.ArticuloId);
+
+		if (ArticuloExiste != null)
+		{
+			ArticuloExiste.Cantidad += selection.Cantidad;
+			ArticuloExiste.Costo = selection.articulos.Costo * ArticuloExiste.Cantidad;
+			ArticuloExiste.Precio = selection.articulos.Precio * ArticuloExiste.Cantidad;
+		}
+		else
+		{
+			var ReservacionDetalle = new ReservacionDetallesDto
+            {
+               ArticuloId = selection.articulos.ArticuloId,
+               Cantidad = selection.Cantidad,
+               Costo = selection.articulos.Costo * selection.Cantidad,
+               Precio = selection.articulos.Precio * selection.Cantidad, 
+            };
+
+			ReservacionDto.ReservacionDetalles.Add(ReservacionDetalle);
+
+			DetallesDto = new ReservacionDetallesDto();
+
+			await Task.CompletedTask;
+		}
+    }
+
+    private async Task<bool> Validar()
+    {
+		var valido = await reservacionesServices.
+		ExisteReservacion(ReservacionDto.ReservacionId, ReservacionDto.ViajeId);
+		return valido;
+    }
+
+    private async Task Guardar()
+    {
+		if (await Validar())
+		{
+			Mensaje = "Ya existe un trabajo con este ID";
+			return;
+		}
+		ReservacionDto.Fecha = DateTime.Now;
+		var crear = await reservacionesServices.Guardar(ReservacionDto);
+
+        if (crear)
+        {
+            Mensaje = "Se ha creado correctamente el trabajo";
+            navigationManager.NavigateTo("#");
+        }
+        else
+        {
+            Mensaje = "No se ha creado correctamente el trabajo";
+        }
+
+    }
+
+    public async Task Eliminar(ReservacionDetallesDto detalle)
+    {
+        ReservacionDto.ReservacionDetalles.Remove(detalle);
+        DetallesDto.Cantidad = detalle.Cantidad;
+        DetallesDto.ArticuloId = detalle.ArticuloId;
+    }
+
+}
