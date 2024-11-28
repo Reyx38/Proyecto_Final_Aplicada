@@ -13,5 +13,5 @@ public class ClientesDto
 
     public string Password { get; set; }
 
-    public ICollection<TaxistaDto> Favoritos { get; set; } = new List<TaxistaDto>();
+    public int CiudadId { get; set; }
 }
