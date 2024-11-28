@@ -26,4 +26,7 @@ public class ReservacionDetalles
 
     [Required(ErrorMessage = "Campo obligatorio")]
     public double Precio { get; set; }
+    
+    [Required(ErrorMessage = "Campo obligatorio")]
+    public double Costo { get; set; }
 }
