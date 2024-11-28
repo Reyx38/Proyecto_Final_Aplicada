@@ -13,7 +13,7 @@ public class ClienteServices(IDbContextFactory<ApplicationDbContext> DbFactory) 
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         var cliente = await contexto.Clientes
-       .Where(e => e.Id == id)
+       .Where(e => e.Id.Equals(id))
        .Select(p => new ClientesDto()
        {
            ClienteId = p.Id,
@@ -76,7 +76,7 @@ public class ClienteServices(IDbContextFactory<ApplicationDbContext> DbFactory) 
         return modificado;
     }
 
-    private async Task<bool> Existe(string id)
+    public async Task<bool> Existe(string id)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Clientes
