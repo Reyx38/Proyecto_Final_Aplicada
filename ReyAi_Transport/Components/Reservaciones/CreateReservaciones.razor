@@ -7,7 +7,6 @@
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
-<h3>CreateReservaciones</h3>
 
 <EditForm Model="ReservacionDto" OnValidSubmit="Guardar">
 	<DataAnnotationsValidator />
@@ -15,7 +14,7 @@
 	<div class="container">
 		<div class="card">
 			<div class="card-header">
-				<h2>Crear Viaje</h2>
+				<h2>Reservacion</h2>
 			</div>
 			<div class="card-body">
 				<div class="row mb-3">
@@ -65,6 +64,7 @@
 					</div>
 				</div>
 				<div class="row">
+					<label class="form-label"><strong>¿Quieres algo para el camino?</strong></label>
 					<div class="col-auto">
                             <SeleccionarArticulos ListaArticulo="ListaArticulos"
                                                  ArticuloId="DetallesDto.ArticuloId"
