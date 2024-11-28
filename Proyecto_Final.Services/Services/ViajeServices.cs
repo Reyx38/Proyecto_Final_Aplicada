@@ -44,6 +44,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
             ViajeId = viajeDto.ViajeId,
             Destino = viajeDto.Destino,
             Fecha = viajeDto.Fecha,
+            personas = viajeDto.personas,
             EstadoVId = viajeDto.EstadoId,
             TaxistaId = viajeDto.TaxistaId,
             Precio = viajeDto.Precio,
