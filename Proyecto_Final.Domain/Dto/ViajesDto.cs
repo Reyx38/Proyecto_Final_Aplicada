@@ -1,4 +1,4 @@
-﻿using Proyecto_Final.Domain.Dto;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ReyAI_Trasport.Domain.Dto;
 
@@ -6,18 +6,26 @@ public class ViajesDto
 {
     public int ViajeId { get; set; }
 
-    public int CiudadId { get; set; }
+	[Required(ErrorMessage = "Campo obligatorio")]
+	[Range(0.01, double.MaxValue, ErrorMessage = "Debe selecionar un Destino")] 
+	public int Destino { get; set; }
 
-    public DateTime Fecha { get; set; }
+	[Required(ErrorMessage = "Campo obligatorio")]
+	public DateTime Fecha { get; set; }
 
-    public int EstadoVId { get; set; }
+	[Required(ErrorMessage = "Campo obligatorio")]
+	[Range(0.01, double.MaxValue, ErrorMessage = "El costo por persona debe ser mayor a 0.")]
+	public double Precio { get; set; }
 
-    public double Precio { get; set; }
+	[Required(ErrorMessage = "Campo obligatorio")]
+	[Range(0.01, 20, ErrorMessage = "Los viajes deben tener de 1 a 20 personas.")]
+	public int personas { get; set; }
 
-    public int personas { get; set; }
+	public int EstadoId { get; set; } = 1;
 
-    public List<ImagenDto> Imagenes { get; set; } = new List<ImagenDto>();
-    public string ClienteId { get; set; }
+	public List<ImagenDto> Imagenes { get; set; } = new List<ImagenDto>();
 
-    public string TaxistaId { get; set; }
+	[Required(ErrorMessage = "Campo obligatorio")]
+	[Range(0.01, double.MaxValue, ErrorMessage = "Debe selecionar un Destino")]
+	public string TaxistaId { get; set; }
 }

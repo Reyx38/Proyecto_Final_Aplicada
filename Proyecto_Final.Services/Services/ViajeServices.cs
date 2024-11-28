@@ -20,7 +20,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
            ViajeId = p.ViajeId,
            CiudadId = p.CiudadId,
            Fecha = p.Fecha,
-           EstadoVId = p.EstadoVId,
+           EstadoId = p.EstadoVId,
            Precio = p.Precio,
            TaxistaId = p.TaxistaId,
        })
@@ -28,12 +28,11 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         return viaje ?? new ViajesDto();
     }
 
-    public async Task<bool> ExisteViaje(int destino, int id, string idTaxista)
+    public async Task<bool> ExisteViaje( int id, string idTaxista)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Viajes
             .AnyAsync(e => e.ViajeId != id
-            && e.CiudadId == destino
             && e.Taxista.Id == idTaxista);
     }
 
@@ -45,7 +44,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
             ViajeId = viajeDto.ViajeId,
             CiudadId = viajeDto.CiudadId,
             Fecha = viajeDto.Fecha,
-            EstadoVId = viajeDto.EstadoVId,
+            EstadoVId = viajeDto.EstadoId,
             TaxistaId = viajeDto.TaxistaId,
             Precio = viajeDto.Precio
         };
@@ -63,7 +62,7 @@ private async Task<bool> Modificar(ViajesDto viajeDto)
         ViajeId = viajeDto.ViajeId,
         CiudadId = viajeDto.CiudadId,
         Fecha = viajeDto.Fecha,
-        EstadoVId = viajeDto.EstadoVId,
+        EstadoVId = viajeDto.EstadoId,
         TaxistaId = viajeDto.TaxistaId,
         Precio = viajeDto.Precio
     };
@@ -94,7 +93,6 @@ public async Task<List<ViajesDto>> Listar(Expression<Func<ViajesDto, bool>> crit
         ViajeId = p.ViajeId,
         CiudadId = p.CiudadId,
         Fecha = p.Fecha,
-        EstadoVId = p.EstadoVId,
         Precio = p.Precio,
         TaxistaId = p.TaxistaId
     })
