@@ -19,6 +19,7 @@ public class ClienteServices(IDbContextFactory<ApplicationDbContext> DbFactory) 
            ClienteId = p.Id,
            NickName = p.UserName,
            Correo = p.Email,
+           Password = p.PasswordHash,
            CiudadId = p.CiudadId
        })
        .FirstOrDefaultAsync();

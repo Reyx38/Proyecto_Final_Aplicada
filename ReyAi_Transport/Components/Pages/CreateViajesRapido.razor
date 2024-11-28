@@ -3,6 +3,8 @@
 @inject ViajesRapidosServices viajesRapidosServices
 @inject TaxistaServices taxistasServices
 @inject DestinosCercasServices destinosCercaService
+@inject ClienteServices clienteServices
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @rendermode InteractiveServer
 <link rel="stylesheet" href="/Estilos/CrearViaje/StyleCrearViajes.css" />
 <EditForm model="ViajeRapidoDto" OnValidSubmit="Guardar">
@@ -84,8 +86,28 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            ViajeRapidoDto.ClienteId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        }
+        else
+        {
+            Mensaje = "Usuario no autenticado";
+        }
+        var usuario = await clienteServices.Buscar(ViajeRapidoDto.ClienteId);
         ListaDestinos = await destinosCercaService.Listar(a => true);
-        ListaTaxistas = await taxistasServices.Listar(a => true);
+        if (usuario.CiudadId > 0)
+        {
+            ListaTaxistas = await taxistasServices.Listar(a => a.CiudadId == usuario.CiudadId);
+        }
+        else
+        {
+            Mensaje = "No se busca bien";
+        }
+
         ViajeRapidoDto.Fecha = DateTime.Now;
     }
 
