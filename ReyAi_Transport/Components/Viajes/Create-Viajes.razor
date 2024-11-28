@@ -55,7 +55,7 @@
 						<ValidationMessage For="@(() => Viajes.Precio)" />
 					</div>
 					<div class="col-md-4">
-						<label class="form-label">Cantidad limite de personas</label>
+						<label class="form-label">limite de personas</label>
 						<InputNumber class="form-control" @bind-Value="@Viajes.personas" placeholder="20"></InputNumber>
 						<ValidationMessage For="@(() => Viajes.personas)" />
 					</div>
@@ -65,7 +65,7 @@
 					<InputFile class="form-control" multiple OnChange="AgregarImagenes"></InputFile>
 
 					<table class="table table-hover text-center mt-3">
-						<thead class="table table-striped text-black">
+						<thead class="table table-striped text-white">
 							<tr>
 								<th class="text-white"><strong>Imagenes</strong></th>
 							</tr>
@@ -80,7 +80,7 @@
 											{
 												<div class="col-2 mb-3 text-center">
 													<img src="@im.Base64" alt="@im.Alt" title="@im.Titulo" class="img-fluid" />
-													<button @onclick="() => RemoverDetalle(im)" class="btn btn-danger bi bi-trash mt-2">Remover</button>
+													<button @onclick="() => RemoverDetalle(im)" class="btn-custom">Remover</button>
 												</div>
 											}
 										}
