@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Proyecto_Final.Services.Services;
 using ReyAi_Transport.Components;
 using ReyAI_Trasport.Components.Account;
 using ReyAI_Trasport.Data;
@@ -18,6 +19,8 @@ builder.Services.AddScoped<ViajesRapidosServices>();
 builder.Services.AddScoped<ViajeServices>();
 builder.Services.AddScoped<CiudadServices>();
 builder.Services.AddScoped<TaxistaServices>();
+builder.Services.AddScoped<EstadoServices>();
+
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
