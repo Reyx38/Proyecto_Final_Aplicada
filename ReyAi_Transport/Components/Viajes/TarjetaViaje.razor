@@ -6,8 +6,8 @@
 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
     <div class="property-item rounded overflow-hidden">
         <div class="position-relative overflow-hidden">
-            <a href=""><img src="@ImagenDto.Base64" alt="@ImagenDto.Alt" title="@ImagenDto.Titulo" class="img-fluid" /></a>
-            <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">@Viaje.EstadoId</div>
+            <a href=""><img src="@ImagenDto.Base64" alt="@ImagenDto.Alt" title="@ImagenDto.Titulo" class="img-fluid" style="height:235px;"/></a>
+            <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">@EstadosViajesDto.Descripcion</div>
         </div>
         <div class="p-4 pb-0">
             <h5 class="text-primary mb-3">Precio por persona</h5>
@@ -43,7 +43,6 @@
     /*** Property List ***/
     .property-item {
         box-shadow: 0 0 30px rgba(0, 0, 0, .08);
-        max-width: 600px; /* Ajusta la anchura máxima */
         width:350px;
         margin: 0 auto;
         background-color:white;
