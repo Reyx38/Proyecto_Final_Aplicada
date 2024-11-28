@@ -25,6 +25,7 @@
             <div class="col-2">
                 <label class="form-label" for="Precio"><strong>Precio</strong></label>
             </div>
+
         </div>
         <div class="row align-items-center">
             @*Destino*@
@@ -41,7 +42,7 @@
 
             @*Número de personas*@
             <div class="col-2">
-                <InputNumber id="Personas" class="form-control" @bind-Value="ViajeRapidoDto.personas"></InputNumber>
+                <InputNumber id="Personas" class="form-control" @bind-Value="ViajeRapidoDto.personas" ></InputNumber>
                 <ValidationMessage For="(()=> ViajeRapidoDto.personas)" />
             </div>
 
@@ -56,6 +57,10 @@
                     }
                 </InputSelect>
             </div>
+            @if (ViajeRapidoDto.personas > 0)
+            {
+                CalcularMonto();
+            }
 
             @*Precio*@
             <div class="col-2">
@@ -91,6 +96,11 @@
         return valido;
     }
 
+    private void CalcularMonto()
+    {
+            ViajeRapidoDto.Precio = 200 * ViajeRapidoDto.personas;
+    } 
+
     public async Task Guardar()
     {
         if(await Validar())
@@ -98,7 +108,6 @@
             Mensaje = "Ya tienes un viaje";
             return;
         }
-        ViajeRapidoDto.Precio = 209 * ViajeRapidoDto.personas;
         ViajeRapidoDto.Fecha = DateTime.Now;
         ViajeRapidoDto.EstadoVId = 1;
 
