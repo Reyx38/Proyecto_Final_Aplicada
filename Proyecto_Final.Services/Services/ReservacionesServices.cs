@@ -5,6 +5,7 @@ using ReyAI_Trasport.Abstracions.Interfaces;
 using ReyAI_Trasport.Data.Contexto;
 using ReyAI_Trasport.Data.Models;
 using ReyAI_Trasport.Domain.Dto;
+using ReyAI_Trasport.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         var reserva = await contexto.Reservaciones
+       .Include(p => p.ReservacionDetalles)
        .Where(e => e.ReservacionId == id)
        .Select(p => new ReservacionesDto()
        {
@@ -33,14 +35,12 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
         return reserva ?? new ReservacionesDto();
     }
 
-    public async Task<bool> ExisteReservacion(int clienteId, int reservacionId, int ViajeId)
+    public async Task<bool> ExisteReservacion(int reservacionId, int ViajeId)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Reservaciones
             .AnyAsync(e => e.ReservacionId != reservacionId
-            //&& e.Viaje.ClienteId == clienteId
-            //&& e.Viaje.TaxistaId == ViajeId
-            );
+            && e.ViajeId == ViajeId);
     }
 
     private async Task<bool> Insertar(ReservacionesDto reservacionDto)
@@ -52,7 +52,15 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
             Fecha = reservacionDto.Fecha,
             ViajeId = reservacionDto.ViajeId,
             Pago = reservacionDto.Pago,
-            Recibo = reservacionDto.Recibo
+            Recibo = reservacionDto.Recibo,
+            ReservacionDetalles = reservacionDto.ReservacionDetalles.Select(detalle => new ReservacionDetalles
+            {
+                DetalleId = detalle.DetalleId,
+                ArticuloId = detalle.ArticuloId,
+                Cantidad = detalle.Cantidad,
+                Precio = detalle.Precio,
+                ReservacionId = detalle.ReservacionId
+            }).ToList()
         };
         contexto.Reservaciones.Add(reserva);
         var guardo = await contexto.SaveChangesAsync() > 0;
@@ -69,7 +77,15 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
             Fecha = reservacionDto.Fecha,
             ViajeId = reservacionDto.ViajeId,
             Pago = reservacionDto.Pago,
-            Recibo = reservacionDto.Recibo
+            Recibo = reservacionDto.Recibo,
+            ReservacionDetalles = reservacionDto.ReservacionDetalles.Select(detalle => new ReservacionDetalles
+            {
+                DetalleId = detalle.DetalleId,
+                ArticuloId = detalle.ArticuloId,
+                Cantidad = detalle.Cantidad,
+                Precio = detalle.Precio,
+                ReservacionId = detalle.ReservacionId
+            }).ToList()
         };
         contexto.Update(reserva);
         var modificado = await contexto.SaveChangesAsync() > 0;
@@ -94,7 +110,9 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
     public async Task<List<ReservacionesDto>> Listar(Expression<Func<ReservacionesDto, bool>> criterio)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
-        return await contexto.Reservaciones.Select(p => new ReservacionesDto()
+        return await contexto.Reservaciones
+        .Include(p => p.ReservacionDetalles)
+        .Select(p => new ReservacionesDto()
         {
             ReservacionId = p.ReservacionId,
             Fecha = p.Fecha,
