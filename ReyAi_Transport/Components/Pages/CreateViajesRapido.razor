@@ -9,6 +9,7 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="cont glass-effect">
+        <h3 style="color: white;">Viajes Rapidos</h3>
         <div class="row">
 
             <div class="col-3">
@@ -29,7 +30,7 @@
             <div class="col-3 ml-3">
 
                 <InputSelect id="Destino" class="form-select" @bind-Value="ViajeRapidoDto.DestinoCercaId">
-                    <option disabled value="">Seleccione un destino</option>
+                    <option disabled value="0">Seleccione un destino</option>
                     @foreach (var destino in ListaDestinos)
                     {
                         <option value="@destino.DestinoCercaId">@destino.Descripcion</option>
@@ -39,7 +40,7 @@
 
             @*Precio*@
             <div class="col-2">
-                <label><strong>DOP$ @ViajeRapidoDto.Precio</strong></label>
+                <label style="color: white;"><strong>DOP$ @ViajeRapidoDto.Precio</strong></label>
             </div>
 
             @*Número de personas*@
@@ -52,7 +53,7 @@
             <div class="col-3">
 
                 <InputSelect id="TaxistaId" class="form-select" @bind-Value="ViajeRapidoDto.TaxistaId">
-                    <option disabled value="0">Seleccione un taxista</option>
+                    <option disabled value="">Seleccione un taxista</option>
                     @foreach (var taxista in ListaTaxistas)
                     {
                         <option value="@taxista.TaxistaId">@taxista.NickName</option>
