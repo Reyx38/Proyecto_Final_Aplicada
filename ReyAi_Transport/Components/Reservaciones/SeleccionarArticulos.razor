@@ -1,0 +1,83 @@
+﻿<div class="col-auto input-group align-items-center">
+    <!-- Selector de artículo -->
+    <InputSelect class="form-select" @bind-Value="ArticuloId">
+        <option disabled value="0">Seleccione un articulo</option>
+        @foreach (var articulo in ListaArticulo)
+        {
+            <option value="@articulo.ArticuloId">@articulo.Descripcion -- $ @articulo.Precio</option>
+        }
+    </InputSelect>
+
+    <!-- Cantidad -->
+    <label class="col-form-label input-group-text">Cantidad</label>
+    <InputNumber class="form-control" @bind-Value="Cantidad" @onchange="ActualizarPrecio"></InputNumber>
+
+    <!-- Precio -->
+    <label class="col-form-label input-group-text">Precio</label>
+    <InputNumber class="form-control" @bind-Value="Precio" readonly></InputNumber>
+
+    <!-- Botón para agregar artículo -->
+    <button type="button" class="btn btn-success bi bi-plus-square" @onclick="ElegirArticulo"></button>
+</div>
+
+@if (!string.IsNullOrEmpty(Mensaje))
+{
+    <div class="alert alert-danger">@Mensaje</div>
+}
+
+@code {
+    [Parameter]
+    public List<ArticulosDto> ListaArticulo { get; set; } = new List<ArticulosDto>();  // Usamos ArticulosDto aquí
+
+    [Parameter]
+    public int ArticuloId { get; set; }
+
+    [Parameter]
+    public int Cantidad { get; set; }
+
+    [Parameter]
+    public double Precio { get; set; }
+
+    [Parameter]
+    public EventCallback<(ArticulosDto articulo, int cantidad)> ArticuloSeleccionado { get; set; }
+
+    public string? Mensaje { get; set; } = string.Empty;
+
+    // Método para actualizar el precio según la cantidad
+    private void ActualizarPrecio()
+    {
+        var articuloSeleccionado = ListaArticulo.FirstOrDefault(a => a.ArticuloId == ArticuloId);
+        if (articuloSeleccionado != null && Cantidad > 0)
+        {
+            // Actualizar el precio basado en la cantidad seleccionada
+            Precio = articuloSeleccionado.Precio * Cantidad;
+        }
+        else
+        {
+            Precio = 0; // Si no hay artículo seleccionado o cantidad es 0
+        }
+    }
+
+    // Método para manejar la selección y agregar artículo
+    private async Task ElegirArticulo()
+    {
+        if (ArticuloId > 0)
+        {
+            Mensaje = string.Empty;
+            var articuloElegido = ListaArticulo.Single(a => a.ArticuloId == ArticuloId);
+
+            if (articuloElegido.Existencia < Cantidad)
+            {
+                Mensaje = "La cantidad que solicita es mayor a la existente.";
+                return;
+            }
+
+            // Invocar el callback para agregar el artículo con la cantidad seleccionada
+            await ArticuloSeleccionado.InvokeAsync((articuloElegido, Cantidad));
+        }
+        else
+        {
+            Mensaje = "Debe seleccionar un artículo y especificar su cantidad.";
+        }
+    }
+}
