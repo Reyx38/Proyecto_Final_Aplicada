@@ -1,4 +1,5 @@
-﻿<div class="col-auto input-group align-items-center">
+﻿<link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
+<div class="col-auto input-group align-items-center">
     <!-- Selector de artículo -->
     <InputSelect class="form-select" @bind-Value="ArticuloId">
         <option disabled value="0">Seleccione un articulo</option>
@@ -12,12 +13,9 @@
     <label class="col-form-label input-group-text">Cantidad</label>
     <InputNumber class="form-control" @bind-Value="Cantidad" @onchange="ActualizarPrecio"></InputNumber>
 
-    <!-- Precio -->
-    <label class="col-form-label input-group-text">Precio</label>
-    <InputNumber class="form-control" @bind-Value="Precio" readonly></InputNumber>
 
     <!-- Botón para agregar artículo -->
-    <button type="button" class="btn btn-success bi bi-plus-square" @onclick="ElegirArticulo"></button>
+    <button type="button" class="btnA btn-success bi bi-plus-square" @onclick="ElegirArticulo"></button>
 </div>
 
 @if (!string.IsNullOrEmpty(Mensaje))
