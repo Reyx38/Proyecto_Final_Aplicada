@@ -269,7 +269,8 @@ namespace Proyecto_Final.Data.Migrations
                     ViajeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Destino = table.Column<int>(type: "int", nullable: false),
-                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaCierre = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EstadoVId = table.Column<int>(type: "int", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Precio = table.Column<double>(type: "float", nullable: false),
@@ -438,9 +439,9 @@ namespace Proyecto_Final.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "11afd50e-bbb2-403a-a2b3-b1e8fa49a5dd", null, "Cliente", "CLIENTE" },
-                    { "2608b63a-bab9-41dd-adf9-b879ed7dd031", null, "Admin", "ADMIN" },
-                    { "dc0e215a-478e-48ac-b9d1-9fde3af3f4e2", null, "Taxista", "TAXISTA" }
+                    { "5d53805f-3ed3-4dc6-a748-603820565fe4", null, "Admin", "ADMIN" },
+                    { "80f505e7-abd5-4db5-9cf8-e2e2ba046590", null, "Taxista", "TAXISTA" },
+                    { "b7c665f2-ce3a-42f5-8ea7-92dbc4a473aa", null, "Cliente", "CLIENTE" }
                 });
 
             migrationBuilder.InsertData(
@@ -489,11 +490,11 @@ namespace Proyecto_Final.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "CiudadId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "EstadoTId", "ExisteLicencia", "ExisteVehiculo", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "0019606b-64a0-48aa-a41e-51d063ab0547", 0, 2, "50558626-6ad1-4eb0-9d28-9ce3be59b116", "Taxistas", "luismartinez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword101", null, false, "049aa074-5af2-434f-af80-8a9f05015b85", false, "luismartinez" },
-                    { "01b3a04f-cfab-46a8-9916-8d475be5a3b2", 0, 1, "f510c7f6-28bc-4612-8831-cd120e674d30", "Taxistas", "anafernandez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword102", null, false, "a111cf5e-ad21-4612-bb03-f9f80669b442", false, "anafernandez" },
-                    { "544227ec-e49b-4019-9c64-a4c56646e9a4", 0, 3, "a3bc6cac-c13b-48ab-b7cb-b9ffb3ec00eb", "Taxistas", "mariagonzalez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword456", null, false, "f94651a6-e3ba-45aa-8bba-d8bb15f531b1", false, "mariagonzalez" },
-                    { "cdc68606-fe57-453f-ac96-c005d5d7bb1d", 0, 1, "d608a75b-e9ac-4571-92c8-708f2c12ca73", "Taxistas", "juanperez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword123", null, false, "29ef0a88-43df-4ba2-b421-ad53ea56b746", false, "juanperez" },
-                    { "fc147276-b439-41a9-a8f3-49c3d3c4f4e5", 0, 2, "a3c598af-7fb7-4f55-bb5f-65f57a607c62", "Taxistas", "carlosmendoza@example.com", false, 1, true, true, false, null, null, null, "hashedpassword789", null, false, "ae65a412-9414-4a5a-8423-ba99353e0c26", false, "carlosmendoza" }
+                    { "31783d19-404f-4c8b-8ffb-76b7bd168b31", 0, 3, "6f6e12e6-e197-488c-b041-4db903202937", "Taxistas", "mariagonzalez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword456", null, false, "c7153dac-10f6-473d-864d-41e13b48e42b", false, "mariagonzalez" },
+                    { "7c8d9b4e-2e99-4732-b745-976578f07cf5", 0, 2, "3cbbf505-ba48-4c63-9eeb-95572c3f5328", "Taxistas", "luismartinez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword101", null, false, "000e6599-7540-40b6-b02b-7f3bd261f43c", false, "luismartinez" },
+                    { "99d0212e-4fc2-4dc9-95df-0c93b3a27d37", 0, 1, "d14f423d-ef97-41f9-acfa-9b9fab1c1173", "Taxistas", "juanperez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword123", null, false, "2f9fb609-7405-475d-a373-3427f002e56d", false, "juanperez" },
+                    { "c9433c36-ac47-43f4-b7b7-18c2825575c7", 0, 1, "ebdc764a-a197-4d3e-81e2-768469f15fac", "Taxistas", "anafernandez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword102", null, false, "2d573244-fe74-47d3-b048-ea4bd04c7665", false, "anafernandez" },
+                    { "e1f6e560-4ce4-4691-a7d4-561daba0a2e0", 0, 2, "c957a097-e6c9-4394-89c5-ed7c81ee4147", "Taxistas", "carlosmendoza@example.com", false, 1, true, true, false, null, null, null, "hashedpassword789", null, false, "dc8e24a7-22f9-4f1b-a39d-5040554f5737", false, "carlosmendoza" }
                 });
 
             migrationBuilder.InsertData(

@@ -202,7 +202,7 @@
 	public async Task GenerarRecibo()
 	{
 		var destino = await ciudadesServices.Buscar(ViajeDto.Destino);
-		ReservacionDto.Recibo = $"Usted a reservado un viaje a {destino.Nombre} para la fecha {ViajeDto.Fecha} con un precio de {ViajeDto.Precio}, gracias por preferirnos";
+		ReservacionDto.Recibo = $"Usted a reservado un viaje a {destino.Nombre} para la fecha {ReservacionDto.Fecha} con un precio de {ViajeDto.Precio}, gracias por preferirnos";
 	}
 
 }
