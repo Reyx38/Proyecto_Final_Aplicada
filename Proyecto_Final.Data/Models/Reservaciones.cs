@@ -29,5 +29,5 @@ public class Reservaciones
     public string? Recibo { get; set; }
 
     [ForeignKey("ReservacionId")]
-    public ICollection<ReservacionDetalles> ReservacionDetalles { get; set; } = new List<ReservacionDetalles>();
+    public ICollection<ReservacionDetalles>? ReservacionDetalles { get; set; } = new List<ReservacionDetalles>();
 }
