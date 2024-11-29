@@ -158,7 +158,7 @@
 	private async Task<bool> Validar()
 	{
 		var valido = await reservacionesServices.
-		ExisteReservacion(ReservacionDto.ReservacionId, ReservacionDto.ViajeId);
+		ExisteReservacion(ReservacionDto.ReservacionId, ReservacionDto.ViajeId, ReservacionDto.Fecha);
 		return valido;
 	}
 

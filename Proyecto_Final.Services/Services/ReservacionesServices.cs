@@ -46,12 +46,12 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
         return reserva ?? new ReservacionesDto();
     }
 
-    public async Task<bool> ExisteReservacion(int reservacionId, int ViajeId)
+    public async Task<bool> ExisteReservacion(int reservacionId, int ViajeId, DateTime fecha)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Reservaciones
             .AnyAsync(e => e.ReservacionId != reservacionId
-            && e.ViajeId == ViajeId);
+            && e.ViajeId == ViajeId && e.Fecha == fecha);
     }
 
     private async Task<bool> Insertar(ReservacionesDto reservacionDto)
