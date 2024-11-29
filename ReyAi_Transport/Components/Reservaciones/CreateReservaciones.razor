@@ -21,32 +21,40 @@
 			<div class="card-body">
 				<div class="row mb-3">
 					<div class="col-12">
-						<label class="form-label fs-3">Conductor:  </label>
-						<label class="form-label fs-4"><strong>@taxista.NickName</strong></label>
+						<label class="form-label fs-5">Conductor:  </label>
+						<label class="form-label fs-5 "><strong>@taxista.NickName</strong></label>
+					
+						<label class="form-label fs-5 ms-4">Destino:  </label>
+						<label class="form-label fs-5"><strong>@destino.Nombre</strong></label>
 					</div>
 				</div>
+			
 				<div class="row mb-3">
-					<div class="col-12">
-						<label class="form-label fs-3">Destino</label>
-						<label class="form-label fs-4">@destino.Nombre</label>
+					@*Fecha Viaje*@
+					<div class="col-md-4">
+						<label class="form-label">Fecha</label>
+					</div>
+					@*Cantidad de personas*@
+					<div class="col-md-4">
+						<label class="form-label">Cantidad de pasajeros</label>
+					</div>
+					@*Precio*@
+					<div class="col-md-4">
+						<label class="form-label fs-6">Costo</label>
 					</div>
 				</div>
 				<div class="row mb-3">
 					@*Fecha Viaje*@
 					<div class="col-md-4">
-						<label class="form-label">Fecha</label>
 						<InputDate class="form-control" @bind-Value="ReservacionDto.Fecha" />
 					</div>
 					@*Cantidad de personas*@
 					<div class="col-md-4">
-						<label class="form-label">Cantidad de pasajeros</label>
 						<InputNumber class="form-control" @bind-Value="ReservacionDto.CantidadPasajeros" placeholder="20"></InputNumber>
 					</div>
-
 					@*Precio*@
 					<div class="col-md-4">
-						<label class="form-label">Costo</label>
-						<label class="form-label"><strong>DOP$ @ReservacionDto.Monto.ToString("N2")</strong></label>
+						<label class="form-label fs-6"><strong>DOP$ @ReservacionDto.Monto.ToString("N2")</strong></label>
 					</div>
 				</div>
 				<div class="row">
@@ -71,7 +79,7 @@
 					}
 				</ul>
 				<div class="card-footer">
-					<button type="submit" class="btn btn-danger bi bi-trash mt-2">Guardar</button>
+					<button type="submit" class="btn btn-danger mt-2">Guardar</button>
 					<a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
 					<a href="#" class="btn btn-danger">Realizar pago</a>
 				</div>
