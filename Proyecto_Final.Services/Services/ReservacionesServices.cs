@@ -29,7 +29,9 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
            Fecha = p.Fecha,
            ViajeId = p.ViajeId,
            Pago = p.Pago,
-           Recibo = p.Recibo
+           Recibo = p.Recibo,
+           CantidadPasajeros = p.CantidadPasajeros,
+           Monto = p.Monto
        })
        .FirstOrDefaultAsync();
         return reserva ?? new ReservacionesDto();
@@ -53,7 +55,9 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
             ViajeId = reservacionDto.ViajeId,
             Pago = reservacionDto.Pago,
             Recibo = reservacionDto.Recibo,
-            ReservacionDetalles = reservacionDto.ReservacionDetalles.Select(detalle => new ReservacionDetalles
+			CantidadPasajeros = reservacionDto.CantidadPasajeros,
+			Monto = reservacionDto.Monto,
+			ReservacionDetalles = reservacionDto.ReservacionDetalles.Select(detalle => new ReservacionDetalles
             {
                 DetalleId = detalle.DetalleId,
                 ArticuloId = detalle.ArticuloId,
@@ -78,7 +82,9 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
             ViajeId = reservacionDto.ViajeId,
             Pago = reservacionDto.Pago,
             Recibo = reservacionDto.Recibo,
-            ReservacionDetalles = reservacionDto.ReservacionDetalles.Select(detalle => new ReservacionDetalles
+			CantidadPasajeros = reservacionDto.CantidadPasajeros,
+			Monto = reservacionDto.Monto,
+			ReservacionDetalles = reservacionDto.ReservacionDetalles.Select(detalle => new ReservacionDetalles
             {
                 DetalleId = detalle.DetalleId,
                 ArticuloId = detalle.ArticuloId,
@@ -118,8 +124,10 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
             Fecha = p.Fecha,
             ViajeId = p.ViajeId,
             Pago = p.Pago,
-            Recibo = p.Recibo
-        })
+            Recibo = p.Recibo,
+			CantidadPasajeros = p.CantidadPasajeros,
+			Monto = p.Monto
+		})
         .Where(criterio)
         .ToListAsync();
     }

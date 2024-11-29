@@ -20,5 +20,9 @@ public class ReservacionesDto
     public bool Pago { get; set; }
     public string? Recibo { get; set; }
 
-    public ICollection<ReservacionDetallesDto> ReservacionDetalles { get; set; } = new List<ReservacionDetallesDto>();
+	public double Monto { get; set; }
+
+	public int CantidadPasajeros { get; set; }
+
+	public ICollection<ReservacionDetallesDto> ReservacionDetalles { get; set; } = new List<ReservacionDetallesDto>();
 }
