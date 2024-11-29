@@ -21,6 +21,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
            Destino = p.Destino,
            Fecha = p.Fecha,
            EstadoId = p.EstadoVId,
+           personas = p.personas,
            Precio = p.Precio,
            TaxistaId = p.TaxistaId,
        })
@@ -105,6 +106,7 @@ public async Task<List<ViajesDto>> Listar(Expression<Func<ViajesDto, bool>> crit
             EstadoId = p.EstadoVId,
             Fecha = p.Fecha,
             Precio = p.Precio,
+            personas = p.personas,
             TaxistaId = p.TaxistaId,
                 Imagenes = p.Imagen.Select(i => new ImagenDto() // Mapear la colección de imágenes  
                 {
