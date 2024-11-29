@@ -11,9 +11,9 @@
 
 .filtro-titulo {
     align-content: center;
-    margin-top: 50px;
+    margin-top: 30px;
     font-size: 2rem;
-    font-weight: 600;
+    font-weight: 450;
 }
 
 .filters_menu {
@@ -59,7 +59,7 @@
 
 .tarjetas-contenedor {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     justify-content: center;
     gap: 20px;
     padding: 20px;
