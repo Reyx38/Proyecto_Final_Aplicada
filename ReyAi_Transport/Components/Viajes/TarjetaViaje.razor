@@ -1,4 +1,7 @@
 ﻿@using Proyecto_Final.Services.Services
+<link rel="stylesheet" href="/Estilos/Viajes/TarjetaViajes.css" />
+@rendermode InteractiveServer
+
 @inject CiudadServices CiudadesService
 @inject TaxistaServices taxistasService
 @inject EstadoServices EstadoServices
@@ -6,7 +9,7 @@
 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
     <div class="property-item rounded overflow-hidden">
         <div class="position-relative overflow-hidden">
-            <a href=""><img src="@ImagenDto.Base64" alt="@ImagenDto.Alt" title="@ImagenDto.Titulo" class="img-fluid" style="height:235px;"/></a>
+            <a href=""><img src="@ImagenDto.Base64" alt="@ImagenDto.Alt" title="@ImagenDto.Titulo" class="img-fluid" style="height:200px;"/></a>
             <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">@EstadosViajesDto.Descripcion</div>
         </div>
         <div class="p-4 pb-0">
@@ -21,51 +24,7 @@
         </div>
     </div>
 </div>
-<style>
-    :root {
-        --primary: #00B98E;
-        --secondary: #FF6922;
-        --light: #EFFDF5;
-        --dark: #0E2E50;
-    }
 
-    /*** Botón ***/
-    .btn {
-        transition: .5s;
-    }
-
-        .btn.btn-primary,
-        .btn.btn-secondary {
-            color: #FFFFFF;
-        }
-
-
-    /*** Property List ***/
-    .property-item {
-        box-shadow: 0 0 30px rgba(0, 0, 0, .08);
-        width:350px;
-        margin: 0 auto;
-        background-color:white;
-        z-index:3;
-    }
-
-        .property-item img {
-            transition: .5s;
-        }
-
-        .property-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .property-item .border-top {
-            border-top: 1px dashed rgba(0, 185, 142, .3) !important;
-        }
-
-        .property-item .border-end {
-            border-right: 1px dashed rgba(0, 185, 142, .3) !important;
-        }
-
-</style>
 @code {
     [Parameter]
     public ViajesDto Viaje { get; set; } = new ViajesDto();
@@ -74,8 +33,6 @@
     public CiudadesDto CiudadDto { get; set; } = new CiudadesDto();
     public EstadosViajesDto EstadosViajesDto { get; set; } = new EstadosViajesDto();
     public TaxistaDto TaxistaDto { get; set; } = new TaxistaDto();
-
-
 
     protected override async Task OnInitializedAsync()
     {

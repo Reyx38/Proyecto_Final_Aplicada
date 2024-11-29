@@ -1,55 +1,55 @@
 ﻿@page "/Viajes/ViajesDisponible"
+@rendermode InteractiveServer
 @inject ViajeServices ViajeService
-<div class="overlay">
-	<div class="tarjetas-contenedor">
+@inject CiudadServices CiudadService
+<link rel="stylesheet" href="/Estilos/Viajes/ViajesLista.css" />
 
-		@foreach(var viajes in ListViajes)
-		{
-			<TarjetaViaje 
-				Viaje="viajes" />
-		}
-	</div>
+<div class="container">
+    <div class="overlay">
+        <h3 class="text-center text-white filtro-titulo">¿A dónde quieres viajar?</h3>
+        <ul class="filters_menu">
+            @foreach (var filtro in Ciudades)
+            {
+                <li @onclick="() => SeleccionarFiltro(filtro)"
+                    class="@(FiltroActivo == filtro.Nombre ? "active" : "")">
+                    @filtro.Nombre
+                </li>
+            }
+        </ul>
+        <div class="tarjetas-contenedor">
+            @foreach (var viaje in ListViajes)
+            {
+                <TarjetaViaje Viaje="viaje" />
+            }
+        </div>
+    </div>
 </div>
-<style>
-	body {
-		font-family: Poppins, sans-serif;
-		height: 120vh;
-		margin: 0; 
-		padding: 0 ;
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: center;
-		background-image: url("/Imagenes/MenuPrincipal/RdNocturno.jpg");
-	}
-
-
-	.overlay {
-		text-align: center;
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		width: 100%;
-		height: 120vh;
-		background-color: rgba(0, 0, 0, 0.4);
-		z-index: 1;
-	}
-
-	.tarjetas-contenedor {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr); /* Tres columnas */
-		gap: 10px; /* Espaciado entre tarjetas */
-		padding: 16px;
-		z-index:2;
-	}
-
-</style>
-
-
 
 @code {
-	public List<ViajesDto> ListViajes { get; set; } = new List<ViajesDto>();
-	protected override async Task OnInitializedAsync()
-	{
-		ListViajes = await ViajeService.Listar(v => true);
-	}
+    public List<ViajesDto> ListViajes { get; set; } = new List<ViajesDto>();
+    public List<CiudadesDto> Ciudades { get; set; } = new List<CiudadesDto>();
+    public string? FiltroActivo { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Ciudades = await CiudadService.Listar(c => true); // Cargar lista de ciudades
+        ListViajes = await ViajeService.Listar(v => true); // Cargar todos los viajes inicialmente
+    }
+
+    public async Task SeleccionarFiltro(CiudadesDto ciudad)
+    {
+        ListViajes.Clear();
+
+        if(FiltroActivo != ciudad.Nombre)
+        {
+            FiltroActivo = ciudad.Nombre;
+            ListViajes = await ViajeService.Listar(v => v.Destino == ciudad.CiudadId);
+        }
+        else
+        {
+            FiltroActivo = null;
+            ListViajes = await ViajeService.Listar(v => true); 
+        }
+        
+    }
 }
