@@ -23,6 +23,8 @@ public class ViajesDto
 
 	public int EstadoId { get; set; } = 1;
 
+	public string? Descripcion { get; set; }
+
 	public List<ImagenDto> Imagenes { get; set; } = new List<ImagenDto>();
 
 	[Required(ErrorMessage = "Debe seleccionar un taxista")]

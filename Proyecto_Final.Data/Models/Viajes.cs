@@ -20,6 +20,9 @@ public class Viajes
     public int EstadoVId { get; set; }  
     public EstadosViajes? EstadoViaje { get; set; }
 
+	[Required]
+	public string? Descripcion { get; set; }
+
     [Required]
     public double Precio { get; set; }
 
