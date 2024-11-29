@@ -4,6 +4,7 @@
 @inject TaxistaServices taxistaService
 @inject CiudadServices ciudadesServices
 @inject ReservacionesServices reservacionesServices
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
@@ -57,6 +58,11 @@
 						<InputNumber class="form-control" @bind-Value="@ViajeDto.personas" placeholder="20"></InputNumber>
 					</div>
 
+					@if (ViajeDto.personas > 0)
+					{
+						CalcularMonto();
+					}
+
 					@*Precio*@
 					<div class="col-md-4">
 						<label class="form-label">Costo</label>
@@ -71,12 +77,23 @@
                                                  Cantidad="DetallesDto.Cantidad"
                                                  Precio="DetallesDto.Precio"
                                                  ArticuloSeleccionado="AgregarDetalle" />
-                        </div>
+                    </div>
+
 				</div>
-				
+				<ul class="mt-3">
+					@foreach (var detalle in ReservacionDto.ReservacionDetalles)
+					{
+						<li class="mt-2">
+							Articulo ID: @detalle.ArticuloId -- @detalle.ArticuloDto?.Descripcion -- Cantidad: @detalle.Cantidad
+							-- Precio:$ @detalle.ArticuloDto?.Precio -- PrecioTotal: $ @detalle.Precio
+							<button type="button" @onclick="() => Eliminar(detalle)" class="btnA btn-outline-danger btn-sm ms-2 bi bi-trash"></button>
+						</li>
+					}
+				</ul>
 				<div class="card-footer">
 					<button type="submit" class="btn btn-danger bi bi-trash mt-2">Guardar</button>
 					<a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
+					<a href="#" class="btn btn-danger">Realizar pago</a>
 				</div>
 			</div>
 		</div>
@@ -85,6 +102,7 @@
 </EditForm> 
 
 @code {
+	[Parameter]
 	public int ViajeId { get; set; }
 	public ViajesDto ViajeDto { get; set; } = new ViajesDto();
 	public ReservacionesDto ReservacionDto { get; set; } = new ReservacionesDto();
@@ -97,6 +115,16 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+		if (user.Identity != null && user.Identity.IsAuthenticated)
+		{
+			ViajeDto.ClienteId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+		}
+		else
+		{
+			navigationManager.NavigateTo("/Account/Login");
+		}
 		if(ViajeId > 0)
 		{
 			ViajeDto = await viajeServices.Buscar(ViajeId);
@@ -108,8 +136,8 @@
 		ListaTaxistas = await taxistaService.Listar(a => true);
 	}
 
-    private async Task AgregarDetalle((ArticulosDto articulos, int Cantidad) selection)
-    {
+	private async Task AgregarDetalle((ArticulosDto articulos, int Cantidad) selection)
+	{
 		var ArticuloExiste = ReservacionDto.ReservacionDetalles.FirstOrDefault(A => A.ArticuloId == selection.articulos.ArticuloId);
 
 		if (ArticuloExiste != null)
@@ -134,42 +162,83 @@
 
 			await Task.CompletedTask;
 		}
-    }
+	}
 
-    private async Task<bool> Validar()
-    {
+	private async Task<bool> Validar()
+	{
 		var valido = await reservacionesServices.
 		ExisteReservacion(ReservacionDto.ReservacionId, ReservacionDto.ViajeId);
 		return valido;
-    }
+	}
 
-    private async Task Guardar()
-    {
+	private void CalcularMonto()
+	{
+		if(ViajeDto.Destino == 1)
+		{
+			ViajeDto.Precio = ViajeDto.personas * 350 + ReservacionDto.ReservacionDetalles.Sum(d => d.Precio);
+		}
+		else if (ViajeDto.Destino == 2)
+		{
+			ViajeDto.Precio = ViajeDto.personas * 1200 + ReservacionDto.ReservacionDetalles.Sum(d => d.Precio);
+		}
+		else if (ViajeDto.Destino == 3)
+		{
+			ViajeDto.Precio = ViajeDto.personas * 1000 + ReservacionDto.ReservacionDetalles.Sum(d => d.Precio);
+		}
+		else if (ViajeDto.Destino == 4)
+		{
+			ViajeDto.Precio = ViajeDto.personas * 1500 + ReservacionDto.ReservacionDetalles.Sum(d => d.Precio);
+		}
+		else if (ViajeDto.Destino == 5)
+		{
+			ViajeDto.Precio = ViajeDto.personas * 1300 + ReservacionDto.ReservacionDetalles.Sum(d => d.Precio);
+		}
+	}
+
+	private async Task Guardar()
+	{
 		if (await Validar())
 		{
 			Mensaje = "Ya existe un trabajo con este ID";
 			return;
 		}
+		
+		if(ViajeDto.ViajeId == 0)
+		{
+			ViajeDto.EstadoId = 1;
+			ViajeDto.Descripcion = "";
+			var guardarViaje = await viajeServices.Guardar(ViajeDto);
+		}
+
 		ReservacionDto.Fecha = DateTime.Now;
+		ReservacionDto.Pago = false;
+		ReservacionDto.ViajeId = ViajeDto.ViajeId;
+		 await GenerarRecibo();
 		var crear = await reservacionesServices.Guardar(ReservacionDto);
 
-        if (crear)
-        {
-            Mensaje = "Se ha creado correctamente el trabajo";
-            navigationManager.NavigateTo("#");
-        }
-        else
-        {
-            Mensaje = "No se ha creado correctamente el trabajo";
-        }
+		if (crear)
+		{
+			Mensaje = "Se ha creado correctamente el trabajo";
+			navigationManager.NavigateTo("#");
+		}
+		else
+		{
+			Mensaje = "No se ha creado correctamente el trabajo";
+		}
 
-    }
+	}
 
-    public async Task Eliminar(ReservacionDetallesDto detalle)
-    {
-        ReservacionDto.ReservacionDetalles.Remove(detalle);
-        DetallesDto.Cantidad = detalle.Cantidad;
-        DetallesDto.ArticuloId = detalle.ArticuloId;
-    }
+	public async Task Eliminar(ReservacionDetallesDto detalle)
+	{
+		ReservacionDto.ReservacionDetalles.Remove(detalle);
+		DetallesDto.Cantidad = detalle.Cantidad;
+		DetallesDto.ArticuloId = detalle.ArticuloId;
+	}
+
+	public async Task GenerarRecibo()
+	{
+		var destino = await ciudadesServices.Buscar(ViajeDto.Destino);
+		ReservacionDto.Recibo = $"Usted a reservado un viaje a {destino.Nombre} para la fecha {ViajeDto.Fecha} con un precio de {ViajeDto.Precio}, gracias por preferirnos";
+	}
 
 }
