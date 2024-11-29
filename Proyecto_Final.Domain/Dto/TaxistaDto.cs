@@ -7,8 +7,6 @@ public class TaxistaDto
 
     public string NickName { get; set; }
 
-    public string Nombres { get; set; }
-
     public string Correo { get; set; }
 
     public bool ExisteVehiculo { get; set; }

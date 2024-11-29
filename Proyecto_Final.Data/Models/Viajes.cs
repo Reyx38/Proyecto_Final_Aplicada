@@ -20,13 +20,16 @@ public class Viajes
     public int EstadoVId { get; set; }  
     public EstadosViajes? EstadoViaje { get; set; }
 
+	[Required]
+	public string? Descripcion { get; set; }
+
     [Required]
     public double Precio { get; set; }
 
     [Required]
     public int personas { get; set; }
 
-    public ICollection<Imagen> Imagen { get; set; } = new List<Imagen>();
+    public ICollection<Imagen>? Imagen { get; set; } = new List<Imagen>();
 
     [ForeignKey("Taxista")]
 	public string? TaxistaId { get; set; } 
