@@ -45,9 +45,9 @@
 				</div>
 				<div class="row mb-3">
 					<div class="col-md-4">
-						<label class="form-label">Fecha</label>
-						<InputDate class="form-control" @bind-Value="Viajes.Fecha" />
-						<ValidationMessage For="@(() => Viajes.Fecha)" />
+						<label class="form-label">Fecha Inicio</label>
+						<InputDate class="form-control" @bind-Value="Viajes.FechaInicio" />
+						<ValidationMessage For="@(() => Viajes.FechaInicio)" />
 					</div>
 					<div class="col-md-4">
 						<label class="form-label">Costo por persona</label>
@@ -116,7 +116,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		ListTaxista = await TaxistaService.Listar(T => true);
-		Viajes.Fecha = DateTime.Now;
+		Viajes.FechaInicio = DateTime.Now;
 		ListCiudades = await CiudadService.Listar(T => true);
 	}
 
