@@ -15,9 +15,5 @@ public class PagosDto
     [Required(ErrorMessage = "Campo Obligatorio")]
     public double Monto { get; set; }
 
-    [ForeignKey("MetodoPago")]
-    public int MetodoPId { get; set; }
-
-    [ForeignKey("Reservacion")]
     public int ReservacionId { get; set; }
 }
