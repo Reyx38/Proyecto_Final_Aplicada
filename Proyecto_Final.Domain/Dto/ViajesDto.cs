@@ -29,4 +29,6 @@ public class ViajesDto
 
 	[Required(ErrorMessage = "Debe seleccionar un taxista")]
 	public string TaxistaId { get; set; }
+
+	public string? ClienteId { get; set; }
 }

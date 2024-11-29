@@ -29,7 +29,7 @@ public class Viajes
     [Required]
     public int personas { get; set; }
 
-    public ICollection<Imagen> Imagen { get; set; } = new List<Imagen>();
+    public ICollection<Imagen>? Imagen { get; set; } = new List<Imagen>();
 
     [ForeignKey("Taxista")]
 	public string? TaxistaId { get; set; } 
