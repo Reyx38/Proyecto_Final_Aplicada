@@ -14,9 +14,12 @@ public class Viajes
     public int Destino { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
-    public DateTime Fecha { get; set; }
+    public DateTime FechaInicio { get; set; }
 
-    [ForeignKey("EstadoViaje")]
+	[Required(ErrorMessage = "Campo obligatorio")]
+	public DateTime FechaCierre { get; set; }
+
+	[ForeignKey("EstadoViaje")]
     public int EstadoVId { get; set; }  
     public EstadosViajes? EstadoViaje { get; set; }
 
