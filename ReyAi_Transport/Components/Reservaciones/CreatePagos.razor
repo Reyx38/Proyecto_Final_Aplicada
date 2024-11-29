@@ -1,45 +1,57 @@
-﻿@inject ReservacionesServices reservacionesServices
+﻿@page "/pago/{ReservacionId:int}"
+@inject ReservacionesServices reservacionesServices
 @inject PagosServices pagosServices
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
+<link rel="stylesheet" href="/Estilos/Viajes/ViajesDetalles.css" />
 
 <EditForm Model="PagoDto" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
+    <ValidationSummary />
     <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Realizar Pago</h5>
-            </div>
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <label class="form-label fs-5">Codigo de la reservacion:  </label>
-                        <label class="form-label fs-5 "><strong>@ReservacionDto.ReservacionId.ToString()</strong></label>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fs-5">Monto a pagar:  </label>
-                        <label class="form-label fs-5 "><strong>DOP$ @ReservacionDto.Monto.ToString()</strong></label>
-                    </div>
+        <div class="overlay">
+            <div class="detalles-container">
+                <div class="card-header">
+                    <h5 class="card-title">Realizar Pago</h5>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label class="form-label">Numero de tarjeta</label>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label class="form-label fs-5">Codigo de la reservacion:  </label>
+                            <label class="form-label fs-5 "><strong>@ReservacionDto.ReservacionId.ToString()</strong></label>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fs-5">Monto a pagar:  </label>
+                            <label class="form-label fs-5 "><strong>DOP$ @ReservacionDto.Monto.ToString()</strong></label>
+                        </div>
                     </div>
+                   
+                    <!-- Formulario -->
+                    <div class="row mb-3 align-items-center">
+                        <!-- Número de Tarjeta -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Número de tarjeta:</label>
+                            <InputText type="password"
+                                       class="form-control"
+                                       @bind-Value="numeroTarjeta"
+                                       placeholder="Ingrese su número de tarjeta">
+                            </InputText>
+                        </div>
 
-                    <div class="col-md-4">
-                        <label class="form-label">Monto</label>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    @*Tarjeta*@
-                    <div class="col-md-4">
-                        <InputText type="password" class="form-control" @bind-Value="numeroTarjeta"></InputText>
-                    </div>
-                    @*Monto*@
-                    <div class="col-md-4">
-                        <InputNumber class="form-control" @bind-Value="PagoDto.Monto" placeholder="DOP$000000.00"></InputNumber>
+                        <!-- Monto -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Monto:</label>
+                            <InputNumber class="form-control"
+                                         @bind-Value="PagoDto.Monto"
+                                         placeholder="DOP$ 0.00">
+                            </InputNumber>
+                        </div>
                     </div>
                     
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-outline-success mt-2">Guardar</button>
+                        <a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,6 +71,8 @@
     </div>
 }
 
+
+
 @code {
     [Parameter]
     public int ReservacionId { get; set; }
@@ -66,9 +80,9 @@
     public ReservacionesDto ReservacionDto { get; set; } = new ReservacionesDto();
     public PagosDto PagoDto { get; set; } = new PagosDto();
 
-    private string numeroTarjeta;
+    private string numeroTarjeta { get; set; } = string.Empty;
     private bool? esValido;
-    public string Mensaje { get; set; }
+    public string Mensaje { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -136,9 +150,9 @@
                     Mensaje = "Ya existe un pago para esta reservacion";
                     return;
                 }
-                PagoDto.MetodoPId = 1;
                 PagoDto.ReservacionId = ReservacionDto.ReservacionId;
                 var realizado = await pagosServices.Guardar(PagoDto);
+                ReservacionDto.Pago = true;
                 var actualizar = await reservacionesServices.Guardar(ReservacionDto);
 
                 if (realizado == true && actualizar == true)
