@@ -11,7 +11,10 @@ public class ViajesDto
 	public int Destino { get; set; }
 
 	[Required(ErrorMessage = "Campo obligatorio")]
-	public DateTime Fecha { get; set; }
+	public DateTime FechaInicio { get; set; }
+
+	[Required(ErrorMessage = "Campo obligatorio")]
+	public DateTime FechaCierre { get; set; }
 
 	[Required(ErrorMessage = "Campo obligatorio")]
 	[Range(0.01, double.MaxValue, ErrorMessage = "El costo por persona debe ser mayor a 0.")]
@@ -23,8 +26,12 @@ public class ViajesDto
 
 	public int EstadoId { get; set; } = 1;
 
+	public string? Descripcion { get; set; }
+
 	public List<ImagenDto> Imagenes { get; set; } = new List<ImagenDto>();
 
 	[Required(ErrorMessage = "Debe seleccionar un taxista")]
 	public string TaxistaId { get; set; }
+
+	public string? ClienteId { get; set; }
 }

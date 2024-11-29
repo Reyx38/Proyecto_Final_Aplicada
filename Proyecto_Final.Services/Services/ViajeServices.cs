@@ -19,11 +19,13 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
        {
            ViajeId = p.ViajeId,
            Destino = p.Destino,
-           Fecha = p.Fecha,
+           FechaInicio = p.FechaInicio,
+           FechaCierre = p.FechaCierre,
            EstadoId = p.EstadoVId,
            personas = p.personas,
            Precio = p.Precio,
            TaxistaId = p.TaxistaId,
+Detalle/magenes
 		   Imagenes = p.Imagen.Select(i => new ImagenDto() // Mapear la colección de imágenes  
 		   {
 			   Id = i.ImagenId,
@@ -33,6 +35,10 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
 			   Titulo = i.Titulo,
 		   }).ToList()
 	   })
+
+           Descripcion = p.Descripcion
+       })
+
        .FirstOrDefaultAsync();
         return viaje ?? new ViajesDto();
     }
@@ -52,11 +58,13 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         {
             ViajeId = viajeDto.ViajeId,
             Destino = viajeDto.Destino,
-            Fecha = viajeDto.Fecha,
-            personas = viajeDto.personas,
+			FechaInicio = viajeDto.FechaInicio,
+			FechaCierre = viajeDto.FechaCierre,
+			personas = viajeDto.personas,
             EstadoVId = viajeDto.EstadoId,
             TaxistaId = viajeDto.TaxistaId,
             Precio = viajeDto.Precio,
+            Descripcion = viajeDto.Descripcion,
             Imagen = viajeDto.Imagenes.Select(imagen => new Imagen
             {
                 ImagenUrl = imagen.ImagenUrl,
@@ -78,10 +86,12 @@ private async Task<bool> Modificar(ViajesDto viajeDto)
     {
         ViajeId = viajeDto.ViajeId,
         Destino = viajeDto.Destino,
-        Fecha = viajeDto.Fecha,
+        FechaInicio = viajeDto.FechaInicio,
+        FechaCierre = viajeDto.FechaCierre,
         EstadoVId = viajeDto.EstadoId,
         TaxistaId = viajeDto.TaxistaId,
-        Precio = viajeDto.Precio
+        Precio = viajeDto.Precio,
+        Descripcion = viajeDto.Descripcion,
     };
     contexto.Update(viaje);
     var modificado = await contexto.SaveChangesAsync() > 0;
@@ -108,14 +118,16 @@ public async Task<List<ViajesDto>> Listar(Expression<Func<ViajesDto, bool>> crit
         return await contexto.Viajes
             .Include(v => v.Imagen)
             .Select(p => new ViajesDto()
-        {
+            {
             ViajeId = p.ViajeId,
             Destino = p.Destino,
             EstadoId = p.EstadoVId,
-            Fecha = p.Fecha,
-            Precio = p.Precio,
+			FechaInicio = p.FechaInicio,
+			FechaCierre = p.FechaCierre,
+			Precio = p.Precio,
             personas = p.personas,
             TaxistaId = p.TaxistaId,
+            Descripcion = p.Descripcion,
                 Imagenes = p.Imagen.Select(i => new ImagenDto() // Mapear la colección de imágenes  
                 {
                     Id = i.ImagenId,

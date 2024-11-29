@@ -1,0 +1,208 @@
+﻿@page "/reservacion/{ViajeId:int}"
+
+@inject ViajeServices viajeServices
+@inject ReservacionDetallesServices detallesServices
+@inject TaxistaServices taxistaService
+@inject CiudadServices ciudadesServices
+@inject ReservacionesServices reservacionesServices
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+<link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
+
+<EditForm Model="ReservacionDto" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+	<div class="overlay"></div>
+	<div class="container">
+		<div class="card">
+			<div class="card-header">
+				<h2>Reservacion</h2>
+			</div>
+			<div class="card-body">
+				<div class="row mb-3">
+					<div class="col-12">
+						<label class="form-label fs-5">Conductor:  </label>
+						<label class="form-label fs-5 "><strong>@taxista.NickName</strong></label>
+					
+						<label class="form-label fs-5 ms-4">Destino:  </label>
+						<label class="form-label fs-5"><strong>@destino.Nombre</strong></label>
+					</div>
+				</div>
+			
+				<div class="row mb-3">
+					@*Fecha Viaje*@
+					<div class="col-md-4">
+						<label class="form-label">Fecha</label>
+					</div>
+					@*Cantidad de personas*@
+					<div class="col-md-4">
+						<label class="form-label">Cantidad de pasajeros</label>
+					</div>
+					@*Precio*@
+					<div class="col-md-4">
+						<label class="form-label fs-6">Costo</label>
+					</div>
+				</div>
+				<div class="row mb-3">
+					@*Fecha Viaje*@
+					<div class="col-md-4">
+						<InputDate class="form-control" @bind-Value="ReservacionDto.Fecha" />
+					</div>
+					@*Cantidad de personas*@
+					<div class="col-md-4">
+						<InputNumber class="form-control" @bind-Value="ReservacionDto.CantidadPasajeros" placeholder="20"></InputNumber>
+					</div>
+					@*Precio*@
+					<div class="col-md-4">
+						<label class="form-label fs-6"><strong>DOP$ @ReservacionDto.Monto.ToString("N2")</strong></label>
+					</div>
+				</div>
+				<div class="row">
+					<label class="form-label"><strong>¿Quieres algo para el camino?</strong></label>
+					<div class="col-auto">
+                            <SeleccionarArticulos ListaArticulo="ListaArticulos"
+                                                 ArticuloId="DetallesDto.ArticuloId"
+                                                 Cantidad="DetallesDto.Cantidad"
+                                                 Precio="DetallesDto.Precio"
+                                                 ArticuloSeleccionado="AgregarDetalle" />
+                    </div>
+
+				</div>
+				<ul class="mt-3">
+					@foreach (var detalle in ReservacionDto.ReservacionDetalles)
+					{
+						<li class="mt-2">
+							Articulo ID: @detalle.ArticuloId -- @detalle.ArticuloDto?.Descripcion -- Cantidad: @detalle.Cantidad
+							-- PrecioTotal: $ @detalle.Precio
+							<button type="button" @onclick="() => Eliminar(detalle)" class="btnA btn-outline-danger btn-sm ms-2 bi bi-trash"></button>
+						</li>
+					}
+				</ul>
+				<div class="card-footer">
+					<button type="submit" class="btn btn-danger mt-2">Guardar</button>
+					<a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
+					<a href="#" class="btn btn-danger">Realizar pago</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</EditForm> 
+
+@code {
+	[Parameter]
+	public int ViajeId { get; set; }
+
+	public ViajesDto ViajeDto { get; set; } = new ViajesDto();
+
+	public ReservacionesDto ReservacionDto { get; set; } = new ReservacionesDto();
+	public ReservacionDetallesDto DetallesDto { get; set; } = new ReservacionDetallesDto();
+
+	public List<TaxistaDto> ListaTaxistas { get; set; } = new List<TaxistaDto>();
+	public List<ArticulosDto> ListaArticulos { get; set; } = new List<ArticulosDto>();
+	public List<ViajesDto> ListaViajes { get; set; } = new List<ViajesDto>();
+	public List<CiudadesDto> ListaCiudades { get; set; } = new List<CiudadesDto>();
+	public string Mensaje { get; set; }
+
+	public TaxistaDto taxista { get; set; } = new TaxistaDto();
+	public CiudadesDto destino { get; set; } = new CiudadesDto();
+
+	protected override async Task OnInitializedAsync()
+	{
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+		if (user.Identity != null && user.Identity.IsAuthenticated)
+		{
+			ViajeDto.ClienteId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+		}
+		else
+		{
+			navigationManager.NavigateTo("/Account/Login");
+		}
+
+		ViajeDto = await viajeServices.Buscar(ViajeId);
+
+		ListaArticulos = await detallesServices.Listar(a => a.ArticuloId > 0);
+		taxista = await taxistaService.Buscar(ViajeDto.TaxistaId);
+		destino = await ciudadesServices.Buscar(ViajeDto.Destino);
+	}
+
+	private async Task AgregarDetalle((ArticulosDto articulos, int Cantidad) selection)
+	{
+		var ArticuloExiste = ReservacionDto.ReservacionDetalles.FirstOrDefault(A => A.ArticuloId == selection.articulos.ArticuloId);
+
+		if (ArticuloExiste != null)
+		{
+			ArticuloExiste.Cantidad += selection.Cantidad;
+			ArticuloExiste.Costo = selection.articulos.Costo * ArticuloExiste.Cantidad;
+			ArticuloExiste.Precio = selection.articulos.Precio * ArticuloExiste.Cantidad;
+		}
+		else
+		{
+			var ReservacionDetalle = new ReservacionDetallesDto
+            {
+               ArticuloId = selection.articulos.ArticuloId,
+               Cantidad = selection.Cantidad,
+               Costo = selection.articulos.Costo * selection.Cantidad,
+               Precio = selection.articulos.Precio * selection.Cantidad, 
+            };
+
+			ReservacionDto.ReservacionDetalles.Add(ReservacionDetalle);
+
+			DetallesDto = new ReservacionDetallesDto();
+
+			await Task.CompletedTask;
+		}
+	}
+
+	private async Task<bool> Validar()
+	{
+		var valido = await reservacionesServices.
+		ExisteReservacion(ReservacionDto.ReservacionId, ReservacionDto.ViajeId, ReservacionDto.Fecha);
+		return valido;
+	}
+
+	private void CalcularMonto()
+	{
+		ReservacionDto.Monto = ViajeDto.Precio * ReservacionDto.CantidadPasajeros + ReservacionDto.ReservacionDetalles.Sum(a => a.Precio);
+	}
+
+	private async Task Guardar()
+	{
+		if (await Validar())
+		{
+			Mensaje = "Ya existe un trabajo con este ID";
+			return;
+		}
+		CalcularMonto();
+		ReservacionDto.Pago = false;
+		ReservacionDto.ViajeId = ViajeDto.ViajeId;
+		 await GenerarRecibo();
+		var crear = await reservacionesServices.Guardar(ReservacionDto);
+
+		if (crear)
+		{
+			Mensaje = "Se ha creado correctamente el trabajo";
+			navigationManager.NavigateTo("#");
+		}
+		else
+		{
+			Mensaje = "No se ha creado correctamente el trabajo";
+		}
+
+	}
+
+	public async Task Eliminar(ReservacionDetallesDto detalle)
+	{
+		ReservacionDto.ReservacionDetalles.Remove(detalle);
+		DetallesDto.Cantidad = detalle.Cantidad;
+		DetallesDto.ArticuloId = detalle.ArticuloId;
+	}
+
+	public async Task GenerarRecibo()
+	{
+		var destino = await ciudadesServices.Buscar(ViajeDto.Destino);
+		ReservacionDto.Recibo = $"Usted a reservado un viaje a {destino.Nombre} para la fecha {ReservacionDto.Fecha} con un precio de {ViajeDto.Precio}, gracias por preferirnos";
+	}
+
+}
