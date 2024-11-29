@@ -31,7 +31,15 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
            Pago = p.Pago,
            Recibo = p.Recibo,
            CantidadPasajeros = p.CantidadPasajeros,
-           Monto = p.Monto
+           Monto = p.Monto,
+           ReservacionDetalles = p.ReservacionDetalles.Select(i => new ReservacionDetallesDto()
+           {
+			   DetalleId = i.DetalleId,
+			   ArticuloId = i.ArticuloId,
+			   Cantidad = i.Cantidad,
+			   Precio = i.Precio,
+			   ReservacionId = p.ReservacionId
+		   }).ToList()
        })
        .FirstOrDefaultAsync();
         return reserva ?? new ReservacionesDto();
@@ -126,7 +134,15 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
             Pago = p.Pago,
             Recibo = p.Recibo,
 			CantidadPasajeros = p.CantidadPasajeros,
-			Monto = p.Monto
+			Monto = p.Monto,
+			ReservacionDetalles = p.ReservacionDetalles.Select(i => new ReservacionDetallesDto()
+			{
+				DetalleId = i.DetalleId,
+				ArticuloId = i.ArticuloId,
+				Cantidad = i.Cantidad,
+				Precio = i.Precio,
+				ReservacionId = p.ReservacionId
+			}).ToList()
 		})
         .Where(criterio)
         .ToListAsync();

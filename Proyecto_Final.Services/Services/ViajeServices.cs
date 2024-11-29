@@ -23,7 +23,6 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
            EstadoId = p.EstadoVId,
            Precio = p.Precio,
            TaxistaId = p.TaxistaId,
-           ClienteId = p.ClienteId,
            Descripcion = p.Descripcion
        })
        .FirstOrDefaultAsync();
@@ -50,7 +49,6 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
             EstadoVId = viajeDto.EstadoId,
             TaxistaId = viajeDto.TaxistaId,
             Precio = viajeDto.Precio,
-            ClienteId = viajeDto.ClienteId,
             Descripcion = viajeDto.Descripcion,
             Imagen = viajeDto.Imagenes.Select(imagen => new Imagen
             {
@@ -78,7 +76,6 @@ private async Task<bool> Modificar(ViajesDto viajeDto)
         TaxistaId = viajeDto.TaxistaId,
         Precio = viajeDto.Precio,
         Descripcion = viajeDto.Descripcion,
-        ClienteId = viajeDto.ClienteId
     };
     contexto.Update(viaje);
     var modificado = await contexto.SaveChangesAsync() > 0;
@@ -112,7 +109,6 @@ public async Task<List<ViajesDto>> Listar(Expression<Func<ViajesDto, bool>> crit
             Fecha = p.Fecha,
             Precio = p.Precio,
             TaxistaId = p.TaxistaId,
-            ClienteId = p.ClienteId,
             Descripcion = p.Descripcion,
                 Imagenes = p.Imagen.Select(i => new ImagenDto() // Mapear la colección de imágenes  
                 {
