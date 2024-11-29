@@ -1,4 +1,5 @@
-﻿@page "/reservacion"
+﻿@page "/reservacion/{ViajeId:int}"
+
 @inject ViajeServices viajeServices
 @inject ReservacionDetallesServices detallesServices
 @inject TaxistaServices taxistaService
@@ -20,53 +21,32 @@
 			<div class="card-body">
 				<div class="row mb-3">
 					<div class="col-12">
-						<label class="form-label">Seleccionar conductor:</label>
-						<InputSelect class="form-select" @bind-Value="ViajeDto.TaxistaId">
-							<option selected disabled value="0">-- Seleccione un Conductor --</option>
-
-							@foreach (var taxista in ListaTaxistas)
-							{
-								<option value="@taxista.TaxistaId">@taxista.NickName</option>
-							}
-						</InputSelect>
-						<ValidationMessage For="@(() => ViajeDto.TaxistaId)" />
+						<label class="form-label fs-3">Conductor:  </label>
+						<label class="form-label fs-4"><strong>@taxista.NickName</strong></label>
 					</div>
 				</div>
 				<div class="row mb-3">
 					<div class="col-12">
-						<label class="form-label">Destino</label>
-						<InputSelect class="form-select" @bind-Value="ViajeDto.Destino">
-							<option selected disabled value="0">-- Seleccione un Destino --</option>
-
-							@foreach (var Ciudades in ListaCiudades)
-							{
-								<option value="@Ciudades.CiudadId">@Ciudades.Nombre</option>
-							}
-						</InputSelect>
+						<label class="form-label fs-3">Destino</label>
+						<label class="form-label fs-4">@destino.Nombre</label>
 					</div>
 				</div>
 				<div class="row mb-3">
 					@*Fecha Viaje*@
 					<div class="col-md-4">
 						<label class="form-label">Fecha</label>
-						<InputDate class="form-control" @bind-Value="ViajeDto.Fecha" />
-						<ValidationMessage For="@(() => ViajeDto.Fecha)" />
+						<InputDate class="form-control" @bind-Value="ReservacionDto.Fecha" />
 					</div>
 					@*Cantidad de personas*@
 					<div class="col-md-4">
-						<label class="form-label">Cantidad de personas</label>
-						<InputNumber class="form-control" @bind-Value="@ViajeDto.personas" placeholder="20"></InputNumber>
+						<label class="form-label">Cantidad de pasajeros</label>
+						<InputNumber class="form-control" @bind-Value="ReservacionDto.CantidadPasajeros" placeholder="20"></InputNumber>
 					</div>
-
-					@if (ViajeDto.personas > 0)
-					{
-						CalcularMonto();
-					}
 
 					@*Precio*@
 					<div class="col-md-4">
 						<label class="form-label">Costo</label>
-						<label class="form-label"><strong>DOP$ @ViajeDto.Precio.ToString("N2")</strong></label>
+						<label class="form-label"><strong>DOP$ @ReservacionDto.Monto.ToString("N2")</strong></label>
 					</div>
 				</div>
 				<div class="row">
@@ -104,14 +84,20 @@
 @code {
 	[Parameter]
 	public int ViajeId { get; set; }
+
 	public ViajesDto ViajeDto { get; set; } = new ViajesDto();
+
 	public ReservacionesDto ReservacionDto { get; set; } = new ReservacionesDto();
 	public ReservacionDetallesDto DetallesDto { get; set; } = new ReservacionDetallesDto();
+
 	public List<TaxistaDto> ListaTaxistas { get; set; } = new List<TaxistaDto>();
 	public List<ArticulosDto> ListaArticulos { get; set; } = new List<ArticulosDto>();
 	public List<ViajesDto> ListaViajes { get; set; } = new List<ViajesDto>();
 	public List<CiudadesDto> ListaCiudades { get; set; } = new List<CiudadesDto>();
 	public string Mensaje { get; set; }
+
+	public TaxistaDto taxista { get; set; } = new TaxistaDto();
+	public CiudadesDto destino { get; set; } = new CiudadesDto();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -125,15 +111,12 @@
 		{
 			navigationManager.NavigateTo("/Account/Login");
 		}
-		if(ViajeId > 0)
-		{
-			ViajeDto = await viajeServices.Buscar(ViajeId);
-		}
-		ListaCiudades = await ciudadesServices.Listar(a => true);
+
+		ViajeDto = await viajeServices.Buscar(ViajeId);
 
 		ListaArticulos = await detallesServices.Listar(a => a.ArticuloId > 0);
-		ListaViajes = await viajeServices.Listar(a => true);
-		ListaTaxistas = await taxistaService.Listar(a => true);
+		taxista = await taxistaService.Buscar(ViajeDto.TaxistaId);
+		destino = await ciudadesServices.Buscar(ViajeDto.Destino);
 	}
 
 	private async Task AgregarDetalle((ArticulosDto articulos, int Cantidad) selection)
@@ -173,26 +156,7 @@
 
 	private void CalcularMonto()
 	{
-		if(ViajeDto.Destino == 1)
-		{
-			ViajeDto.Precio = ViajeDto.personas * 350 + ReservacionDto.ReservacionDetalles.Sum(d => d.Precio);
-		}
-		else if (ViajeDto.Destino == 2)
-		{
-			ViajeDto.Precio = ViajeDto.personas * 1200 + ReservacionDto.ReservacionDetalles.Sum(d => d.Precio);
-		}
-		else if (ViajeDto.Destino == 3)
-		{
-			ViajeDto.Precio = ViajeDto.personas * 1000 + ReservacionDto.ReservacionDetalles.Sum(d => d.Precio);
-		}
-		else if (ViajeDto.Destino == 4)
-		{
-			ViajeDto.Precio = ViajeDto.personas * 1500 + ReservacionDto.ReservacionDetalles.Sum(d => d.Precio);
-		}
-		else if (ViajeDto.Destino == 5)
-		{
-			ViajeDto.Precio = ViajeDto.personas * 1300 + ReservacionDto.ReservacionDetalles.Sum(d => d.Precio);
-		}
+		ReservacionDto.Monto = ViajeDto.Precio * ReservacionDto.CantidadPasajeros + ReservacionDto.ReservacionDetalles.Sum(a => a.Precio);
 	}
 
 	private async Task Guardar()
@@ -202,15 +166,7 @@
 			Mensaje = "Ya existe un trabajo con este ID";
 			return;
 		}
-		
-		if(ViajeDto.ViajeId == 0)
-		{
-			ViajeDto.EstadoId = 1;
-			ViajeDto.Descripcion = "";
-			var guardarViaje = await viajeServices.Guardar(ViajeDto);
-		}
-
-		ReservacionDto.Fecha = DateTime.Now;
+		CalcularMonto();
 		ReservacionDto.Pago = false;
 		ReservacionDto.ViajeId = ViajeDto.ViajeId;
 		 await GenerarRecibo();
