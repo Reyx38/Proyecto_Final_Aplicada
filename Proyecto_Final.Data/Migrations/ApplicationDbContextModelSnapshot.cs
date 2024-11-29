@@ -51,19 +51,19 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "40569742-eaff-43db-ab6f-d5c1d8fed1ec",
+                            Id = "2608b63a-bab9-41dd-adf9-b879ed7dd031",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "145c1c31-f7ff-4159-83a3-7d4452abcac3",
+                            Id = "dc0e215a-478e-48ac-b9d1-9fde3af3f4e2",
                             Name = "Taxista",
                             NormalizedName = "TAXISTA"
                         },
                         new
                         {
-                            Id = "692b7ed5-31ed-4a7b-99b5-f1122035519b",
+                            Id = "11afd50e-bbb2-403a-a2b3-b1e8fa49a5dd",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
                         });
@@ -550,8 +550,14 @@ namespace Proyecto_Final.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservacionId"));
 
+                    b.Property<int>("CantidadPasajeros")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
+
+                    b.Property<double>("Monto")
+                        .HasColumnType("float");
 
                     b.Property<bool>("Pago")
                         .HasColumnType("bit");
@@ -721,16 +727,16 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "72a32439-8857-47cd-86d3-fb8be43fc2d1",
+                            Id = "cdc68606-fe57-453f-ac96-c005d5d7bb1d",
                             AccessFailedCount = 0,
                             CiudadId = 1,
-                            ConcurrencyStamp = "9183d96e-3c08-4256-968a-1f24f2e169ff",
+                            ConcurrencyStamp = "d608a75b-e9ac-4571-92c8-708f2c12ca73",
                             Email = "juanperez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword123",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "86801ef6-08d1-4c9e-bc71-d4793318bbe8",
+                            SecurityStamp = "29ef0a88-43df-4ba2-b421-ad53ea56b746",
                             TwoFactorEnabled = false,
                             UserName = "juanperez",
                             EstadoTId = 1,
@@ -739,16 +745,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "7d0b9b2b-e276-421e-91b4-4e259ebaf650",
+                            Id = "544227ec-e49b-4019-9c64-a4c56646e9a4",
                             AccessFailedCount = 0,
                             CiudadId = 3,
-                            ConcurrencyStamp = "c294ae4a-2569-4f2d-aecb-f07f8a1f7a38",
+                            ConcurrencyStamp = "a3bc6cac-c13b-48ab-b7cb-b9ffb3ec00eb",
                             Email = "mariagonzalez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword456",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5a3bb600-c6dd-428d-b453-9c34f41f9aef",
+                            SecurityStamp = "f94651a6-e3ba-45aa-8bba-d8bb15f531b1",
                             TwoFactorEnabled = false,
                             UserName = "mariagonzalez",
                             EstadoTId = 1,
@@ -757,16 +763,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "3668a51b-4b14-435f-95aa-4477c050187c",
+                            Id = "fc147276-b439-41a9-a8f3-49c3d3c4f4e5",
                             AccessFailedCount = 0,
                             CiudadId = 2,
-                            ConcurrencyStamp = "fbce1d9c-38a1-497f-9805-5d68dc485680",
+                            ConcurrencyStamp = "a3c598af-7fb7-4f55-bb5f-65f57a607c62",
                             Email = "carlosmendoza@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0e4a0958-471e-4a69-a853-98a0642c15bb",
+                            SecurityStamp = "ae65a412-9414-4a5a-8423-ba99353e0c26",
                             TwoFactorEnabled = false,
                             UserName = "carlosmendoza",
                             EstadoTId = 1,
@@ -775,16 +781,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "5dc6b3ff-c9b6-4b80-bd1a-5ed79b0708c2",
+                            Id = "0019606b-64a0-48aa-a41e-51d063ab0547",
                             AccessFailedCount = 0,
                             CiudadId = 2,
-                            ConcurrencyStamp = "1fc3eaf0-6041-44a4-916e-5140ce3b07a1",
+                            ConcurrencyStamp = "50558626-6ad1-4eb0-9d28-9ce3be59b116",
                             Email = "luismartinez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword101",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b436b178-d663-4cdd-8e5f-60acceb0aaa3",
+                            SecurityStamp = "049aa074-5af2-434f-af80-8a9f05015b85",
                             TwoFactorEnabled = false,
                             UserName = "luismartinez",
                             EstadoTId = 1,
@@ -793,16 +799,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "10b8f86d-0620-4769-8a5e-e72ba11aab51",
+                            Id = "01b3a04f-cfab-46a8-9916-8d475be5a3b2",
                             AccessFailedCount = 0,
                             CiudadId = 1,
-                            ConcurrencyStamp = "74a4b9c6-e5a8-45d5-b561-ab18667dc26f",
+                            ConcurrencyStamp = "f510c7f6-28bc-4612-8831-cd120e674d30",
                             Email = "anafernandez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword102",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7107a9fe-97f6-4f35-a3c3-23ee039c49bf",
+                            SecurityStamp = "a111cf5e-ad21-4612-bb03-f9f80669b442",
                             TwoFactorEnabled = false,
                             UserName = "anafernandez",
                             EstadoTId = 1,
