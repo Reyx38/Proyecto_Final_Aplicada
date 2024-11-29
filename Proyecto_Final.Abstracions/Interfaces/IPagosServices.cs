@@ -13,5 +13,5 @@ public interface IPagosServices
     Task<bool> Guardar(PagosDto pagoDto);
     Task<PagosDto> Buscar(int id);
     Task<List<PagosDto>> Listar(Expression<Func<PagosDto, bool>> criterio);
-    Task<bool> ExisteReservacion(int pagoId, int reservacionId);
+    Task<bool> ExistePago(int pagoId, int reservacionId);
 }

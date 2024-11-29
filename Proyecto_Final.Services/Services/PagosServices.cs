@@ -34,7 +34,7 @@ public class PagosServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         return pago ?? new PagosDto();
     }
 
-    public async Task<bool> ExisteReservacion(int pagoId, int reservacionId)
+    public async Task<bool> ExistePago(int pagoId, int reservacionId)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Pagos
