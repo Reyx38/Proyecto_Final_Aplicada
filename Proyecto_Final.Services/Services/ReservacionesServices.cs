@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static Azure.Core.HttpHeader;
 
 namespace ReyAI_Trasport.Services.Services;
 
@@ -56,7 +57,8 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
     private async Task<bool> Insertar(ReservacionesDto reservacionDto)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
-        var reserva = new Reservaciones()
+		await AfectarCantidad(reservacionDto.ReservacionDetalles.ToArray(), true);
+		var reserva = new Reservaciones()
         {
             ReservacionId = reservacionDto.ReservacionId,
             Fecha = reservacionDto.Fecha,
@@ -83,7 +85,8 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
     private async Task<bool> Modificar(ReservacionesDto reservacionDto)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
-        var reserva = new Reservaciones()
+		await AfectarCantidad(reservacionDto.ReservacionDetalles.ToArray(), true);
+		var reserva = new Reservaciones()
         {
             ReservacionId = reservacionDto.ReservacionId,
             Fecha = reservacionDto.Fecha,
@@ -148,5 +151,17 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
         .ToListAsync();
     }
 
-    
+	public async Task AfectarCantidad(ReservacionDetallesDto[] detalles, bool resta)
+	{
+		await using var contexto = await DbFactory.CreateDbContextAsync();
+		foreach (var item in detalles)
+		{
+			var detalle = await contexto.Articulos.SingleOrDefaultAsync(d => d.ArticuloId == item.ArticuloId);
+			if (resta)
+				detalle.Existencia -= item.Cantidad;
+			else
+				detalle.Existencia += item.Cantidad;
+		}
+		await contexto.SaveChangesAsync();
+	}
 }
