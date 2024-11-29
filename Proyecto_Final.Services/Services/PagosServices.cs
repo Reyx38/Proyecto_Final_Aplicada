@@ -27,8 +27,7 @@ public class PagosServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
        {
             PagoId = p.PagoId,
             Monto = p.Monto,
-            ReservacionId = p.ReservacionId,
-            MetodoPId = p.MetodoPId
+            ReservacionId = p.ReservacionId
        })
        .FirstOrDefaultAsync();
         return pago ?? new PagosDto();
@@ -49,8 +48,7 @@ public class PagosServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         {
             PagoId = pagoDto.PagoId,
             Monto = pagoDto.Monto,
-            ReservacionId = pagoDto.ReservacionId,
-            MetodoPId = pagoDto.MetodoPId
+            ReservacionId = pagoDto.ReservacionId
         };
         contexto.Pagos.Add(pago);
         var guardo = await contexto.SaveChangesAsync() > 0;
@@ -65,8 +63,7 @@ public class PagosServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         {
             PagoId = pagoDto.PagoId,
             Monto = pagoDto.Monto,
-            ReservacionId = pagoDto.ReservacionId,
-            MetodoPId = pagoDto.MetodoPId
+            ReservacionId = pagoDto.ReservacionId
         };
         contexto.Update(pago);
         var modificado = await contexto.SaveChangesAsync() > 0;
@@ -95,8 +92,7 @@ public class PagosServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         {
             PagoId = f.PagoId,
             Monto = f.Monto,
-            ReservacionId = f.ReservacionId,
-            MetodoPId = f.MetodoPId
+            ReservacionId = f.ReservacionId
         })
         .Where(criterio)
         .ToListAsync();
