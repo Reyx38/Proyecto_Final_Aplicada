@@ -15,9 +15,8 @@ public class ReservacionDetallesDto
     public int ReservacionId { get; set; }
 
     public int ArticuloId { get; set; }
-
+    public ArticulosDto ArticuloDto { get; set; } = new ArticulosDto();
     public int Cantidad { get; set; }
-
     public double Precio { get; set; }
     public double Costo { get; set; }
 }
