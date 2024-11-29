@@ -25,21 +25,16 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
            personas = p.personas,
            Precio = p.Precio,
            TaxistaId = p.TaxistaId,
-Detalle/magenes
-		   Imagenes = p.Imagen.Select(i => new ImagenDto() // Mapear la colección de imágenes  
-		   {
-			   Id = i.ImagenId,
-			   ImagenUrl = i.ImagenUrl,
-			   Alt = i.Alt,
-			   Base64 = i.Base64,
-			   Titulo = i.Titulo,
-		   }).ToList()
-	   })
-
-           Descripcion = p.Descripcion
-       })
-
-       .FirstOrDefaultAsync();
+           Descripcion = p.Descripcion,
+           Imagenes = p.Imagen.Select(i => new ImagenDto() // Mapear la colección de imágenes  
+           {
+               Id = i.ImagenId,
+               ImagenUrl = i.ImagenUrl,
+               Alt = i.Alt,
+               Base64 = i.Base64,
+               Titulo = i.Titulo,
+           }).ToList()
+       }) .FirstOrDefaultAsync();
         return viaje ?? new ViajesDto();
     }
 

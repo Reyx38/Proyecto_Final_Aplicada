@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using ReyAI_Trasport.Domain.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Proyecto_Final.Domain.Dto;
-using ReyAI_Trasport.Domain.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReyAI_Trasport.Data.Models;
 

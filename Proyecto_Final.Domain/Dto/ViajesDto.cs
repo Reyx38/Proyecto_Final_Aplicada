@@ -31,7 +31,7 @@ public class ViajesDto
 	public List<ImagenDto> Imagenes { get; set; } = new List<ImagenDto>();
 
 	[Required(ErrorMessage = "Debe seleccionar un taxista")]
-	public string TaxistaId { get; set; }
+	public string? TaxistaId { get; set; }
 
 	public string? ClienteId { get; set; }
 }
