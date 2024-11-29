@@ -20,6 +20,7 @@ public static class ServicesRegistar
         services.AddScoped<IViajesRapidosServices, ViajesRapidosServices>();
         services.AddScoped<IDestinosCercaServices, DestinosCercasServices>();
         services.AddScoped<IReservacionDetallesServices, ReservacionDetallesServices>();
+        services.AddScoped<IPagosServices, PagosServices>();
         return services;
     }
 }
