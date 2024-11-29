@@ -23,6 +23,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ViajesRapidos> ViajesRapidos { get; set; }
     public DbSet<Articulos> Articulos { get; set; }
     public DbSet<ReservacionDetalles> ReservacionDetalles { get; set; }
+    public DbSet<Pagos> Pagos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -35,8 +36,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         );
 
         builder.Entity<MetodosPagos>().HasData(
-        new MetodosPagos { MetodoPagoId = 1, Descripcion = "Efectivo"},
-        new MetodosPagos { MetodoPagoId = 2, Descripcion = "Tarjeta de credito"}
+        new MetodosPagos { MetodoPagoId = 1, Descripcion = "Tarjeta de credito"}
         );
 
         builder.Entity<Articulos>().HasData(
