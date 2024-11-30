@@ -1,0 +1,70 @@
+﻿@page "/ListaReservaciones"
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@inject ReservacionesServices ReservacionesService
+@rendermode InteractiveServer
+
+
+<h3>Lista de Reservaciones</h3>
+<div>
+    <QuickGrid Items="@(Reservaciones.AsQueryable())" DefaultSort="@sortByFecha">
+        <PropertyColumn Title="ID Reservación" Property="@(r => r.ReservacionId)" />
+        <PropertyColumn Title="Fecha" Property="@(r => r.Fecha)" Format="dd/MM/yyyy" />
+        <PropertyColumn Title="Monto" Property="@(r => r.Monto)" />
+        <PropertyColumn Title="Pasajesros" Property="@(r => r.CantidadPasajeros)" />
+        <PropertyColumn Title="Destino (ID)" Property="@(r => r.ViajeId)" />
+        <PropertyColumn Title="Estado (ID)" Property="@(r => r.EstadoId)" />
+        
+        <TemplateColumn Title="Acciones">
+            <div>
+                <button class="btn btn-success btn-sm me-1"
+                        @onclick="@(() => CambiarEstado(context, 5))"
+                        disabled="@context.EstadoId != " Pendiente"">
+                    Aceptar
+                </button>
+                <button class="btn btn-danger btn-sm"
+                        @onclick="@(() => CambiarEstado(context, 4))"
+                        disabled="@context.EstadoId != " Pendiente"">
+                    Cancelar
+                </button>
+            </div>
+        </TemplateColumn>
+    </QuickGrid>
+</div>
+
+<p class="text-muted"><strong>@mensaje</strong></p>
+
+@code {
+    private List<ReservacionesDto> Reservaciones = new();
+    private string mensaje = string.Empty;
+
+    // Configuración de ordenamiento por defecto (por fecha de la reservación)
+    GridSort<ReservacionesDto> sortByFecha = GridSort<ReservacionesDto>
+        .ByAscending(r => r.Fecha);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarReservaciones();
+    }
+
+    private async Task CargarReservaciones()
+    {
+        Reservaciones = await ReservacionesService.Listar(r => true); // Cargar todas las reservaciones
+    }
+
+    private async Task CambiarEstado(ReservacionesDto reservacion, int nuevoEstado)
+    {
+        reservacion.EstadoId = nuevoEstado;
+        var guardado = await ReservacionesService.Guardar(reservacion);
+        if (guardado)
+        {
+            mensaje = $"Reservación {reservacion.ReservacionId} marcada como {nuevoEstado}.";
+            await CargarReservaciones(); // Refresca la lista
+        }
+        else
+        {
+            mensaje = "Error al actualizar el estado.";
+        }
+    }
+
+}
