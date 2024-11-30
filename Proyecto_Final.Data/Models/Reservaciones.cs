@@ -30,7 +30,7 @@ public class Reservaciones
 
     [ForeignKey("Estado")]
     public int EstadoId { get; set; }
-    public EstadosViajes Estado { get; set; }
+    public EstadosResrvaciones Estado { get; set; }
 
 	[ForeignKey("ReservacionId")]
     public ICollection<ReservacionDetalles>? ReservacionDetalles { get; set; } = new List<ReservacionDetalles>();
