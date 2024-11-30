@@ -1,0 +1,194 @@
+﻿@page "/ListaViajesRapidos/User"
+
+@inject ViajesRapidosServices viajesRapidoService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+<link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
+
+<div class="container">
+    <div class="overlay">
+        <div class="detalles-container">
+            <div class="card-header">
+                <h5 class="card-title">Lista de Viajes Rapidos</h5>
+            </div>
+            <div class="card-body">
+                @*labels*@
+                <div class="row">
+
+                    @*Filtrar por*@
+                    <div class="col-3">
+                        <label class="col-form-label"><strong>Filtrar por</strong></label>
+                    </div>
+
+                    @*ValorFiltro*@
+                    <div class="col-4">
+                        <label class="col-form-label"><strong>B&uacute;squeda</strong></label>
+                    </div>
+                </div>
+
+                @*Inputs y botones*@
+                <div class="row align-items-center">
+                    @*filtro*@
+                    <div class="col-3">
+                        <InputSelect class="form-select" @bind-Value="Filtro">
+                            <option value="" selected disabled>Elija una opci&oacute;n</option>
+                            <option value="Destino">Destino</option>
+                            <option value="ID Viaje">ID Viaje</option>
+                            <option value="Estado">Estado</option>
+                            <option value="Fecha">Fecha</option>
+
+                        </InputSelect>
+                    </div>
+
+                    @*Busqueda*@
+                    <div class="col-4">
+                        <div class="input-group">
+                            <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+                            <button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
+                        </div>
+                    </div>
+
+                    @*Restablecer*@
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-outline-secondary bi bi-arrow-clockwise" @onclick="Restablecer"></button>
+                    </div>
+                    <div class="row mt-3">
+
+                        @if (Filtro == "Fecha")
+                        {
+                            @*Desde*@
+                            <div class="col-3">
+                                <label class="col-form-label"><strong>Desde</strong></label>
+                                <InputDate class="form-control" @bind-Value="Desde"></InputDate>
+                            </div>
+
+                            @*Hasta*@
+                            <div class="col-3">
+                                <label class="col-form-label"><strong>Hasta</strong></label>
+                                <div class="input-group">
+                                    <InputDate class="form-control" @bind-Value="Hasta"></InputDate>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div>
+                        <QuickGrid Items="@(ViajeRapidosDto.AsQueryable())" DefaultSort="@sortByFecha">
+                            <div class="flex items-center">
+                                <PropertyColumn Title="ID Viaje" Property="@(r => r.ViajeRapidoId)" />
+                                <PropertyColumn Title="Fecha" Property="@(r => r.Fecha)" Format="dd/MM/yyyy" />
+                                <PropertyColumn Title="Monto" Property="@(r => r.Precio)" />
+                                <PropertyColumn Title="Pasajesros" Property="@(r => r.personas)" />
+                                <PropertyColumn Title="Destino" Property="@(r => r.Destino)" />
+                                <PropertyColumn Title="Estado" Property="@(r => r.Estado)" />
+
+                            </div>
+
+                            <TemplateColumn Title="Acciones">
+                                <div class="flex items-center">
+                                    <button class="btn btn-danger btn-sm"
+                                            @onclick="@(() => CambiarEstado(context, 4))">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </TemplateColumn>
+                        </QuickGrid>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p><strong>@mensaje</strong></p>
+
+@code {
+    public List<ViajesRapidosDto> ViajeRapidosDto = new();
+    public ViajesRapidosDto ViajeDto { get; set; } = new ViajesRapidosDto();
+    private string mensaje = string.Empty;
+    public string Filtro { get; set; } = string.Empty;
+    public string ValorFiltro { get; set; } = string.Empty;
+    public DateTime? Desde { get; set; }
+    public DateTime? Hasta { get; set; }
+
+    // Configuración de ordenamiento por defecto (por fecha de la reservación)
+    GridSort<ReservacionesDto> sortByFecha = GridSort<ReservacionesDto>
+        .ByAscending(r => r.Fecha);
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            ViajeDto.ClienteId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        }
+        else
+        {
+            mensaje = "Usuario no autenticado";
+            navigationManager.NavigateTo("/Account/Login");
+        }
+        await CargarLista();
+    }
+
+    private async Task CargarLista()
+    {
+        ViajeRapidosDto = await viajesRapidoService.Listar(r => r.ClienteId == ViajeDto.ClienteId); // Cargar todas las reservaciones
+    }
+
+    private async Task CambiarEstado(ViajesRapidosDto viaje, int nuevoEstado)
+    {
+        viaje.EstadoVId = nuevoEstado;
+        var guardado = await viajesRapidoService.Guardar(viaje);
+        if (guardado)
+        {
+            mensaje = $"Viaje Rapido {viaje.ViajeRapidoId} marcado como {viaje.Estado}.";
+            await CargarLista(); // Refresca la lista
+        }
+        else
+        {
+            mensaje = "Error al actualizar el estado.";
+        }
+    }
+
+    private async Task Buscar()
+    {
+        if (ValorFiltro.Trim() != "")
+        {
+            if (Filtro == "Destino")
+            {
+                ViajeRapidosDto = await viajesRapidoService.Listar(e => e.ClienteId == ViajeDto.ClienteId && e.Destino.ToLower().Contains(ValorFiltro.ToLower()));
+            }
+            else if (Filtro == "Estado")
+            {
+                ViajeRapidosDto = await viajesRapidoService.Listar(e => e.ClienteId == ViajeDto.ClienteId && e.Estado.ToLower().Contains(ValorFiltro.ToLower()));
+            }
+            else if (Filtro == "ID Viaje" && int.TryParse(ValorFiltro, out int viajeId))
+            {
+                ViajeRapidosDto = await viajesRapidoService.Listar(e => e.ClienteId == ViajeDto.ClienteId && e.ViajeRapidoId == viajeId);
+            }
+        }
+        else if (Filtro == "Fecha")
+        {
+            ViajeRapidosDto = await viajesRapidoService
+            .Listar(f => f.ClienteId == ViajeDto.ClienteId && f.Fecha >= Desde && f.Fecha <= Hasta);
+        }
+        else
+        {
+            ViajeRapidosDto = await viajesRapidoService.Listar(r => r.ClienteId == ViajeDto.ClienteId);
+        }
+
+    }
+
+    private async Task Restablecer()
+    {
+        ViajeRapidosDto = await viajesRapidoService.Listar(r => r.ClienteId == ViajeDto.ClienteId);
+        Filtro = string.Empty;
+        ValorFiltro = string.Empty;
+    }
+
+}

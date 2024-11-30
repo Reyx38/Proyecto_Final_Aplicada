@@ -40,7 +40,4 @@ public class Viajes
 	public string? TaxistaId { get; set; } 
 	public ApplicationUser? Taxista { get; set; }
 
-	[ForeignKey("Cliente")]
-    public string? ClienteId { get; set; }
-    public ApplicationUser? Cliente { get; set; }
 }

@@ -12,10 +12,12 @@ public class ViajesRapidosDto
     public int ViajeRapidoId { get; set; }
 
     public int DestinoCercaId { get; set; }
+    public string? Destino { get; set; }
 
     public DateTime Fecha { get; set; }
 
     public int EstadoVId { get; set; }
+    public string? Estado { get; set; }
 
     public double Precio { get; set; }
 

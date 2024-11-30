@@ -32,6 +32,10 @@ public class Reservaciones
     public int EstadoId { get; set; }
     public EstadosResrvaciones Estado { get; set; }
 
-	[ForeignKey("ReservacionId")]
+    [ForeignKey("Cliente")]
+    public string? ClienteId { get; set; }
+    public ApplicationUser? Cliente { get; set; }
+
+    [ForeignKey("ReservacionId")]
     public ICollection<ReservacionDetalles>? ReservacionDetalles { get; set; } = new List<ReservacionDetalles>();
 }
