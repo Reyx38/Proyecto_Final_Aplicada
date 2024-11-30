@@ -33,6 +33,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
            Recibo = p.Recibo,
            CantidadPasajeros = p.CantidadPasajeros,
            Monto = p.Monto,
+           EstadoId = p.EstadoId,
            ReservacionDetalles = p.ReservacionDetalles.Select(i => new ReservacionDetallesDto()
            {
 			   DetalleId = i.DetalleId,
@@ -67,6 +68,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
             Recibo = reservacionDto.Recibo,
 			CantidadPasajeros = reservacionDto.CantidadPasajeros,
 			Monto = reservacionDto.Monto,
+            EstadoId = reservacionDto.EstadoId,
 			ReservacionDetalles = reservacionDto.ReservacionDetalles.Select(detalle => new ReservacionDetalles
             {
                 DetalleId = detalle.DetalleId,
@@ -95,6 +97,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
             Recibo = reservacionDto.Recibo,
 			CantidadPasajeros = reservacionDto.CantidadPasajeros,
 			Monto = reservacionDto.Monto,
+            EstadoId = reservacionDto.EstadoId,
 			ReservacionDetalles = reservacionDto.ReservacionDetalles.Select(detalle => new ReservacionDetalles
             {
                 DetalleId = detalle.DetalleId,
@@ -138,6 +141,9 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
             Recibo = p.Recibo,
 			CantidadPasajeros = p.CantidadPasajeros,
 			Monto = p.Monto,
+            EstadoId = p.EstadoId,
+            EstadosReservacionesDto = p.Estado.Descripcion,
+            ViajeDto = p.Viaje.Ciudad.Nombre,
 			ReservacionDetalles = p.ReservacionDetalles.Select(i => new ReservacionDetallesDto()
 			{
 				DetalleId = i.DetalleId,

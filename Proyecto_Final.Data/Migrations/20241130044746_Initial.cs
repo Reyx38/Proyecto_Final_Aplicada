@@ -57,6 +57,19 @@ namespace Proyecto_Final.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EstadosResrvaciones",
+                columns: table => new
+                {
+                    EstadosRId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EstadosResrvaciones", x => x.EstadosRId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EstadosTaxistas",
                 columns: table => new
                 {
@@ -298,6 +311,12 @@ namespace Proyecto_Final.Data.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
+                        name: "FK_Viajes_Ciudades_Destino",
+                        column: x => x.Destino,
+                        principalTable: "Ciudades",
+                        principalColumn: "CiudadId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Viajes_EstadosViajes_EstadoVId",
                         column: x => x.EstadoVId,
                         principalTable: "EstadosViajes",
@@ -380,11 +399,18 @@ namespace Proyecto_Final.Data.Migrations
                     Pago = table.Column<bool>(type: "bit", nullable: false),
                     Recibo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Monto = table.Column<double>(type: "float", nullable: false),
-                    CantidadPasajeros = table.Column<int>(type: "int", nullable: false)
+                    CantidadPasajeros = table.Column<int>(type: "int", nullable: false),
+                    EstadoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reservaciones", x => x.ReservacionId);
+                    table.ForeignKey(
+                        name: "FK_Reservaciones_EstadosResrvaciones_EstadoId",
+                        column: x => x.EstadoId,
+                        principalTable: "EstadosResrvaciones",
+                        principalColumn: "EstadosRId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reservaciones_Viajes_ViajeId",
                         column: x => x.ViajeId,
@@ -459,9 +485,9 @@ namespace Proyecto_Final.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "b2bde424-5bd6-4724-98aa-edf3d837b3bf", null, "Admin", "ADMIN" },
-                    { "bb42ec2a-b489-48ed-a2e4-9f184bdf5bac", null, "Cliente", "CLIENTE" },
-                    { "f690bca8-b06e-4e6f-a656-5299621d2dd3", null, "Taxista", "TAXISTA" }
+                    { "0d840019-2109-44a4-9886-feee3a30949d", null, "Admin", "ADMIN" },
+                    { "15c152e2-7202-42ee-845b-be362468b6c7", null, "Cliente", "CLIENTE" },
+                    { "3932903a-c333-4316-9309-26806b4ed068", null, "Taxista", "TAXISTA" }
                 });
 
             migrationBuilder.InsertData(
@@ -474,6 +500,16 @@ namespace Proyecto_Final.Data.Migrations
                     { 3, "Santigo" },
                     { 4, "Samana" },
                     { 5, "Puerto Plata" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EstadosResrvaciones",
+                columns: new[] { "EstadosRId", "Descripcion" },
+                values: new object[,]
+                {
+                    { 1, "Pendiente" },
+                    { 2, "Aceptada" },
+                    { 3, "Cancelada" }
                 });
 
             migrationBuilder.InsertData(
@@ -506,11 +542,11 @@ namespace Proyecto_Final.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "CiudadId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "EstadoTId", "ExisteLicencia", "ExisteVehiculo", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "6c35d0b6-9e09-49c7-b21b-4f910638d9c5", 0, 1, "bce2aba1-6f5e-4cb2-b2e7-0a360a625a30", "Taxistas", "juanperez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword123", null, false, "932a4b7f-ccf6-4b0e-ba68-19afec24cd6a", false, "juanperez" },
-                    { "84a8e656-9bcd-4232-ba3c-424a8a4b8e7f", 0, 1, "e056b0a2-d6b5-4cb9-b0f2-77786f345a22", "Taxistas", "anafernandez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword102", null, false, "1b8094b1-9411-4c6c-870e-a29060cfaf4f", false, "anafernandez" },
-                    { "99e1429a-dff2-4dd8-8626-a8e541ee692f", 0, 2, "ab400c96-7037-45c7-9b85-7ab2a99904a8", "Taxistas", "carlosmendoza@example.com", false, 1, true, true, false, null, null, null, "hashedpassword789", null, false, "6bc5af67-02e2-4b10-9965-df4b89eed21a", false, "carlosmendoza" },
-                    { "ce15628e-aa2b-4b95-9de0-8f6f6e2a92a2", 0, 3, "ff8e6454-33a8-4969-a086-f07388d0a819", "Taxistas", "mariagonzalez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword456", null, false, "56a1e92f-2796-44ef-9925-66b1ada4bf21", false, "mariagonzalez" },
-                    { "f9d82d02-93ac-4c97-abb1-760653ca67a2", 0, 2, "607c5610-0e1a-4809-a826-158c65b5f35a", "Taxistas", "luismartinez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword101", null, false, "a79ce600-f5ac-4a4d-94b9-09ebf4ae1696", false, "luismartinez" }
+                    { "007ddb59-d190-45a7-b396-1bc0fa91ece4", 0, 2, "f1455dde-dca0-4a9f-9d47-3dc331749ef2", "Taxistas", "carlosmendoza@example.com", false, 1, true, true, false, null, null, null, "hashedpassword789", null, false, "48f30653-3b00-4400-bfc9-f9fff86746ca", false, "carlosmendoza" },
+                    { "bd20b7b8-2ceb-47e9-a382-bdda8966e075", 0, 1, "69d492d3-1217-4b4b-9691-1507c623ac0a", "Taxistas", "anafernandez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword102", null, false, "f087dc0d-03d9-4f1e-a2d6-eb24fe934f7b", false, "anafernandez" },
+                    { "d657c80f-5a99-4534-812b-c4b6c3f80201", 0, 2, "e9b4bd15-0a4e-4d28-aa4b-e9a450468761", "Taxistas", "luismartinez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword101", null, false, "8449b36f-bb1b-4ced-83cf-2e9cd9070bca", false, "luismartinez" },
+                    { "dc4316d1-d0a5-4914-98a2-27261606286b", 0, 1, "9e224b0c-e6cf-4535-a81a-b30cdde91722", "Taxistas", "juanperez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword123", null, false, "e3111e2f-da8c-4db3-a466-cdd64e7873bd", false, "juanperez" },
+                    { "de8da9f1-12e5-4d06-bee8-2385fae1db24", 0, 3, "64f05ab8-d3b0-4796-b943-ae1c53de1211", "Taxistas", "mariagonzalez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword456", null, false, "d4e311de-b1e7-47ca-a156-934379ce9323", false, "mariagonzalez" }
                 });
 
             migrationBuilder.InsertData(
@@ -599,6 +635,11 @@ namespace Proyecto_Final.Data.Migrations
                 column: "ReservacionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reservaciones_EstadoId",
+                table: "Reservaciones",
+                column: "EstadoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reservaciones_ViajeId",
                 table: "Reservaciones",
                 column: "ViajeId");
@@ -612,6 +653,11 @@ namespace Proyecto_Final.Data.Migrations
                 name: "IX_Viajes_ClientesId",
                 table: "Viajes",
                 column: "ClientesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Viajes_Destino",
+                table: "Viajes",
+                column: "Destino");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Viajes_EstadoVId",
@@ -688,6 +734,9 @@ namespace Proyecto_Final.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "DestinosCerca");
+
+            migrationBuilder.DropTable(
+                name: "EstadosResrvaciones");
 
             migrationBuilder.DropTable(
                 name: "Viajes");
