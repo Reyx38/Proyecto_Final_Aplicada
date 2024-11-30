@@ -11,100 +11,102 @@
 <PageTitle>Log in</PageTitle>
 
 <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
-    <DataAnnotationsValidator />
-    <div class="container shadow-lg">
-        <div class="card shadow-lg" style="width: 800px">
-            <div class="image-section">
-                <div class="line-decorator"></div>
-                <img src="/Imagenes/SignIn/LogoAR.png" width="900" />
-                <div class="line-decorator"></div>
-            </div>
-        </div>
-        <div class="card shadow-lg" style="width: 700px">
-            <div class="form-section">
-                <div class="line-decorator"></div>
-                <div class="image-top">
-                    <img src="/Imagenes/SignIn/ImagenSuperiorLogin.png" width="193" />
-                </div>
-                <div class="form-group">
-                    <InputText class="form-control" @bind-Value="Input.username" placeholder="Nickname"></InputText>
-                    <ValidationMessage For="@(() => Input.username)" />
-                </div>
-                <div class="form-group">
-                    <InputText type="password" class="form-control" @bind-Value="Input.Password" placeholder="Contraseña"></InputText>
-                    <ValidationMessage For="@(() => Input.Password)" />
-                </div>
-                <button type="submit" class="btn btn-outline">
-                    Iniciar sesión
-                </button>
-                   <a href="Account/ForgotPassword">Olvidaste tu contraseña?</a>
-                   <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Registrar nuevo usuario</a>
-                <div class="line-decorator"></div>
-            </div>
-        </div>
-    </div>
+	<DataAnnotationsValidator />
+	<div class="overlay">
+		<div class="container shadow-lg">
+			<div class="card shadow-lg" style="width: 800px">
+				<div class="image-section">
+					<div class="line-decorator"></div>
+					<img src="/Imagenes/SignIn/LogoAR.png" width="900" />
+					<div class="line-decorator"></div>
+				</div>
+			</div>
+			<div class="card shadow-lg" style="width: 700px">
+				<div class="form-section">
+					<div class="line-decorator"></div>
+					<div class="image-top">
+						<img src="/Imagenes/SignIn/ImagenSuperiorLogin.png" width="193" />
+					</div>
+					<div class="form-group">
+						<InputText class="form-control" @bind-Value="Input.username" placeholder="Nickname"></InputText>
+						<ValidationMessage For="@(() => Input.username)" />
+					</div>
+					<div class="form-group">
+						<InputText type="password" class="form-control" @bind-Value="Input.Password" placeholder="Contraseña"></InputText>
+						<ValidationMessage For="@(() => Input.Password)" />
+					</div>
+					<button type="submit" class="btn btn-outline">
+						Iniciar sesión
+					</button>
+					<a href="Account/ForgotPassword">Olvidaste tu contraseña?</a>
+					<a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Registrar nuevo usuario</a>
+					<div class="line-decorator"></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </EditForm>
-       
+
 
 @code {
-    private string? errorMessage;
+	private string? errorMessage;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+	[CascadingParameter]
+	private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromForm]
-    private InputModel Input { get; set; } = new();
+	[SupplyParameterFromForm]
+	private InputModel Input { get; set; } = new();
 
-    [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
+	[SupplyParameterFromQuery]
+	private string? ReturnUrl { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (HttpMethods.IsGet(HttpContext.Request.Method))
-        {
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-        }
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		if (HttpMethods.IsGet(HttpContext.Request.Method))
+		{
+			// Clear the existing external cookie to ensure a clean login process
+			await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+		}
+	}
 
-    public async Task LoginUser()
-    {
-        // This doesn't count login failures towards account lockout
-        // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-        var result = await SignInManager.PasswordSignInAsync(Input.username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-        if (result.Succeeded)
-        {
-            Logger.LogInformation("User logged in.");
-            RedirectManager.RedirectTo(ReturnUrl);
-        }
-        else if (result.RequiresTwoFactor)
-        {
-            RedirectManager.RedirectTo(
-                "Account/LoginWith2fa",
-                new() { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
-        }
-        else if (result.IsLockedOut)
-        {
-            Logger.LogWarning("User account locked out.");
-            RedirectManager.RedirectTo("Account/Lockout");
-        }
-        else
-        {
-            errorMessage = "Error: Invalid login attempt.";
-        }
-    }
+	public async Task LoginUser()
+	{
+		// This doesn't count login failures towards account lockout
+		// To enable password failures to trigger account lockout, set lockoutOnFailure: true
+		var result = await SignInManager.PasswordSignInAsync(Input.username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+		if (result.Succeeded)
+		{
+			Logger.LogInformation("User logged in.");
+			RedirectManager.RedirectTo(ReturnUrl);
+		}
+		else if (result.RequiresTwoFactor)
+		{
+			RedirectManager.RedirectTo(
+				"Account/LoginWith2fa",
+				new() { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
+		}
+		else if (result.IsLockedOut)
+		{
+			Logger.LogWarning("User account locked out.");
+			RedirectManager.RedirectTo("Account/Lockout");
+		}
+		else
+		{
+			errorMessage = "Error: Invalid login attempt.";
+		}
+	}
 
-    private sealed class InputModel
-    {
-        [Required]
-        [EmailAddress]
-        public string username { get; set; } = "";
+	private sealed class InputModel
+	{
+		[Required]
+		[EmailAddress]
+		public string username { get; set; } = "";
 
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; } = "";
+		[Required]
+		[DataType(DataType.Password)]
+		public string Password { get; set; } = "";
 
-        [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
-    }
+		[Display(Name = "Remember me?")]
+		public bool RememberMe { get; set; }
+	}
 }
