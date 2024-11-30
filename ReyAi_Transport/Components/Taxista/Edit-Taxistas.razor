@@ -1,0 +1,143 @@
+﻿@page "/Taxista/Editar/{TaxistaId?}"
+@rendermode InteractiveServer
+@inject CiudadServices CiudadService
+@inject TaxistaServices TaxistaService
+@inject NavigationManager NavigationManager
+<link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
+
+<PageTitle>Agregar Conductor</PageTitle>
+<EditForm Model="@TaxistaDto" OnValidSubmit="Guardar" FormName="CrearTAXISTA">
+	<div class="overlay"></div>
+
+	<div class="container">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">Crear Taxista </div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="form-group">
+						<label class="form-label">Username</label>
+						<InputText class="form-control" @bind-Value="@TaxistaDto.NickName" />
+						<ValidationMessage For="@(() => TaxistaDto.NickName)" />
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="form-group">
+						<label class="form-label">Ciudad</label>
+						<InputSelect class="form-select" @bind-Value="@TaxistaDto.CiudadId">
+							<option selected disabled value="0">-- Seleccione un Destino --</option>
+							@foreach (var ciudad in ListCiudades)
+							{
+								<option value="@ciudad.CiudadId">@ciudad.Nombre</option>
+							}
+						</InputSelect>
+						<ValidationMessage For="@(() => TaxistaDto.CiudadId)" />
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="form-group">
+					<label class="form-label">Contraseña</label>
+					<InputText type="password" class="form-control" @bind-Value="TaxistaDto.Password" placeholder="Contraseña"></InputText>
+					<ValidationMessage For="@(() => TaxistaDto.Password)" />
+				</div>
+				<div class="form-group">
+					<label class="form-label">Confirmar contraseña</label>
+					<InputText type="password" class="form-control" @bind-Value="ConfirmPassword" placeholder="Contraseña"></InputText>
+					<ValidationMessage For="@(() => TaxistaDto.Password)" />
+				</div>
+			</div>
+
+			<div class=" card-footer">
+				<a href="/" class="btn btn-light">Volver</a>
+				<button type="submit" class="btn btn-Guardar">Guardar</button>
+			</div>
+
+		</div>
+
+	</div>
+</EditForm>
+<style>
+	.container InputCheckbox {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		height: 0;
+		width: 0;
+	}
+
+	.container {
+		display: block;
+		position: relative;
+		cursor: pointer;
+		font-size: 20px;
+		user-select: none;
+		animation: jello-horizontal 0.9s both;
+	}
+
+	.checkmark:hover {
+		animation: jello-horizontal 0.9s both;
+	}
+
+	/* Create a custom checkbox */
+	.checkmark {
+		position: relative;
+		top: 0;
+		left: 0;
+		height: 1.3em;
+		width: 1.3em;
+		border-radius: 50%;
+		background-color: #eee;
+	}
+
+	/* When the checkbox is checked, add a blue background */
+	.container input:checked ~ .checkmark {
+		background-color: royalblue;
+	}
+
+	/* Create the checkmark/indicator (hidden when not checked) */
+	.checkmark:after {
+		content: "";
+		position: absolute;
+		display: none;
+	}
+
+	/* Show the checkmark when checked */
+	.container input:checked ~ .checkmark:after {
+		display: block;
+	}
+
+	/* Style the checkmark/indicator */
+	.container .checkmark:after {
+		left: 0.45em;
+		top: 0.25em;
+		width: 0.25em;
+		height: 0.5em;
+		border: solid white;
+		border-width: 0 0.15em 0.15em 0;
+		transform: rotate(45deg);
+	}
+
+</style>
+
+@code {
+	[Parameter]
+	public string TaxistaId { get; set; } = "";
+	public TaxistaDto TaxistaDto { get; set; } = new();
+	public List<CiudadesDto> ListCiudades { get; set; } = [];
+	public string ConfirmPassword { get; set; } = "";
+
+	protected override async Task OnInitializedAsync()
+	{
+		ListCiudades = await CiudadService.Listar(c => true);
+		TaxistaDto = await TaxistaService.Buscar(TaxistaId);
+	}
+	public async Task Guardar()
+	{
+		await TaxistaService.Guardar(TaxistaDto);
+		NavigationManager.NavigateTo("/");
+	}
+}
