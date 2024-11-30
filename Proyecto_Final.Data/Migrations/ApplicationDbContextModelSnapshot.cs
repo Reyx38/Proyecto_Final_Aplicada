@@ -51,19 +51,19 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "69e0f8fc-a7f3-4340-9f98-f6b2b7b3a4c9",
+                            Id = "0d840019-2109-44a4-9886-feee3a30949d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "3a91a5d7-71d7-452c-b27c-accbc77cc68c",
+                            Id = "3932903a-c333-4316-9309-26806b4ed068",
                             Name = "Taxista",
                             NormalizedName = "TAXISTA"
                         },
                         new
                         {
-                            Id = "c804134c-3648-4d65-a24c-82dd8dda7787",
+                            Id = "15c152e2-7202-42ee-845b-be362468b6c7",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
                         });
@@ -751,6 +751,8 @@ namespace Proyecto_Final.Data.Migrations
 
                     b.HasIndex("ClientesId");
 
+                    b.HasIndex("Destino");
+
                     b.HasIndex("EstadoVId");
 
                     b.HasIndex("TaxistaId");
@@ -785,16 +787,16 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "157fdd8b-c7fc-4e22-8045-99f0c275e16d",
+                            Id = "dc4316d1-d0a5-4914-98a2-27261606286b",
                             AccessFailedCount = 0,
                             CiudadId = 1,
-                            ConcurrencyStamp = "adf49474-7c35-4ccf-8e19-bfe4c479d493",
+                            ConcurrencyStamp = "9e224b0c-e6cf-4535-a81a-b30cdde91722",
                             Email = "juanperez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword123",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1ad5880d-01ba-4599-a862-79244359aa31",
+                            SecurityStamp = "e3111e2f-da8c-4db3-a466-cdd64e7873bd",
                             TwoFactorEnabled = false,
                             UserName = "juanperez",
                             EstadoTId = 1,
@@ -803,16 +805,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "d903c0ba-dcf0-44a9-99d0-08305c45f076",
+                            Id = "de8da9f1-12e5-4d06-bee8-2385fae1db24",
                             AccessFailedCount = 0,
                             CiudadId = 3,
-                            ConcurrencyStamp = "a26056ae-2392-4ab5-86b0-cf7239c5bf5c",
+                            ConcurrencyStamp = "64f05ab8-d3b0-4796-b943-ae1c53de1211",
                             Email = "mariagonzalez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword456",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4544c0f1-e2c3-44ef-820b-cb473c718857",
+                            SecurityStamp = "d4e311de-b1e7-47ca-a156-934379ce9323",
                             TwoFactorEnabled = false,
                             UserName = "mariagonzalez",
                             EstadoTId = 1,
@@ -821,16 +823,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "423c7369-a45f-458f-9fea-7e38eb16bcef",
+                            Id = "007ddb59-d190-45a7-b396-1bc0fa91ece4",
                             AccessFailedCount = 0,
                             CiudadId = 2,
-                            ConcurrencyStamp = "b4bdec70-41e2-425a-8f1d-ef1cf27312a0",
+                            ConcurrencyStamp = "f1455dde-dca0-4a9f-9d47-3dc331749ef2",
                             Email = "carlosmendoza@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f3a28e0c-9006-4c50-b4a4-20de74ad01dd",
+                            SecurityStamp = "48f30653-3b00-4400-bfc9-f9fff86746ca",
                             TwoFactorEnabled = false,
                             UserName = "carlosmendoza",
                             EstadoTId = 1,
@@ -839,16 +841,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "f7b071c4-ea1b-4dc2-b148-25acb6f93740",
+                            Id = "d657c80f-5a99-4534-812b-c4b6c3f80201",
                             AccessFailedCount = 0,
                             CiudadId = 2,
-                            ConcurrencyStamp = "d3a5bead-0417-4a97-81f9-510c241924a8",
+                            ConcurrencyStamp = "e9b4bd15-0a4e-4d28-aa4b-e9a450468761",
                             Email = "luismartinez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword101",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "64a8f80a-d380-40e8-a81e-5d7d63c06f33",
+                            SecurityStamp = "8449b36f-bb1b-4ced-83cf-2e9cd9070bca",
                             TwoFactorEnabled = false,
                             UserName = "luismartinez",
                             EstadoTId = 1,
@@ -857,16 +859,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "9c43efea-fd59-488d-90f8-7088172e97b0",
+                            Id = "bd20b7b8-2ceb-47e9-a382-bdda8966e075",
                             AccessFailedCount = 0,
                             CiudadId = 1,
-                            ConcurrencyStamp = "5b6982ac-2375-4937-bf07-639d7e85bd65",
+                            ConcurrencyStamp = "69d492d3-1217-4b4b-9691-1507c623ac0a",
                             Email = "anafernandez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword102",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "67747c43-07c9-4942-857f-f74cdf138d33",
+                            SecurityStamp = "f087dc0d-03d9-4f1e-a2d6-eb24fe934f7b",
                             TwoFactorEnabled = false,
                             UserName = "anafernandez",
                             EstadoTId = 1,
@@ -1047,6 +1049,12 @@ namespace Proyecto_Final.Data.Migrations
                         .WithMany("Viajes")
                         .HasForeignKey("ClientesId");
 
+                    b.HasOne("ReyAI_Trasport.Data.Models.Ciudades", "Ciudad")
+                        .WithMany()
+                        .HasForeignKey("Destino")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ReyAI_Trasport.Data.Models.EstadosViajes", "EstadoViaje")
                         .WithMany()
                         .HasForeignKey("EstadoVId")
@@ -1056,6 +1064,8 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasOne("ReyAI_Trasport.Data.ApplicationUser", "Taxista")
                         .WithMany()
                         .HasForeignKey("TaxistaId");
+
+                    b.Navigation("Ciudad");
 
                     b.Navigation("Cliente");
 
