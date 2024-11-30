@@ -183,14 +183,14 @@
         }
         else
         {
-            Reservaciones = await ReservacionesService.Listar(e => e.ReservacionId > 0);
+            Reservaciones = await ReservacionesService.Listar(r => r.ClienteId == ReservacionDto.ClienteId);
         }
 
     }
 
     private async Task Restablecer()
     {
-        Reservaciones = await ReservacionesService.Listar(e => e.ReservacionId > 0);
+        Reservaciones = await ReservacionesService.Listar(r => r.ClienteId == ReservacionDto.ClienteId);
         Filtro = string.Empty;
         ValorFiltro = string.Empty;
     }
