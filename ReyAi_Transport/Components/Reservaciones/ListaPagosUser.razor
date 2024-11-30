@@ -136,28 +136,28 @@
             if (Filtro == "Monto" && double.TryParse(ValorFiltro, out double monto))
             {
                 Pagos = await pagosServices
-                .Listar(e => e.Monto == monto);
+                .Listar(e => e.ClienteId == PagoDto.ClienteId && e.Monto == monto);
             }
             else if (Filtro == "ID Pago" && int.TryParse(ValorFiltro, out int pagoId))
             {
-                Pagos = await pagosServices.Listar(e => e.PagoId == pagoId);
+                Pagos = await pagosServices.Listar(e => e.ClienteId == PagoDto.ClienteId && e.PagoId == pagoId);
             }
         }
         else if (Filtro == "Fecha")
         {
             Pagos = await pagosServices
-            .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
+            .Listar(f => f.ClienteId == PagoDto.ClienteId && f.Fecha >= Desde && f.Fecha <= Hasta);
         }
         else
         {
-            Pagos = await pagosServices.Listar(e => e.PagoId > 0);
+            Pagos = await pagosServices.Listar(e => e.ClienteId == PagoDto.ClienteId && e.PagoId > 0);
         }
 
     }
 
     private async Task Restablecer()
     {
-        Pagos = await pagosServices.Listar(r => r.ClienteId == PagoDto.ClienteId);
+        Pagos = await pagosServices.Listar(r => r.ClienteId == PagoDto.ClienteId && r.ClienteId == PagoDto.ClienteId);
         Filtro = string.Empty;
         ValorFiltro = string.Empty;
     }
