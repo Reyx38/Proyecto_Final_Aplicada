@@ -101,6 +101,36 @@
     max-height: 250px;
 }
 
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 9px 12px;
+    gap: 8px;
+    height: 40px;
+    width: 201px;
+    border: none;
+    background: #FF342B;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.lable {
+    line-height: 22px;
+    font-size: 17px;
+    color: #fff;
+    font-family: sans-serif;
+    letter-spacing: 1px;
+}
+
+.button:hover {
+    background: #e52e26;
+}
+
+    .button:hover .svg-icon {
+        animation: slope 1s linear infinite;
+=======
+
 .btn a {
     border-radius: 5px;
     width: 150px;
@@ -143,4 +173,5 @@
     .form-control a:focus {
         border-color: rgb(255, 109, 58);
         box-shadow: rgba(255, 109, 58, 0.5) 0px 0px 5px;
+
     }

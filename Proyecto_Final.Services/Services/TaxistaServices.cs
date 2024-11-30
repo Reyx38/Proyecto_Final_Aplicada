@@ -18,7 +18,7 @@ namespace ReyAI_Trasport.Services.Services
            {
                TaxistaId = p.Id,
                NickName = p.UserName,
-               Correo = p.Email,
+               Password = p.PasswordHash,
                ExisteVehiculo = p.ExisteVehiculo,
                ExisteLicencia = p.ExisteLicencia,
                EstadoTId = p.EstadoTId,
@@ -52,7 +52,7 @@ namespace ReyAI_Trasport.Services.Services
             {
                 Id = taxistaDto.TaxistaId,
                 UserName = taxistaDto.NickName,
-                Email = taxistaDto.Correo,
+                PasswordHash = taxistaDto.Password,
                 ExisteVehiculo = taxistaDto.ExisteVehiculo,
                 ExisteLicencia = taxistaDto.ExisteLicencia,
                 EstadoTId = taxistaDto.EstadoTId, 
@@ -71,8 +71,8 @@ namespace ReyAI_Trasport.Services.Services
             {
 				Id = taxistaDto.TaxistaId,
                 UserName = taxistaDto.NickName,
-                Email = taxistaDto.Correo,
-                ExisteVehiculo = taxistaDto.ExisteVehiculo,
+				PasswordHash = taxistaDto.Password,
+				ExisteVehiculo = taxistaDto.ExisteVehiculo,
                 ExisteLicencia = taxistaDto.ExisteLicencia,
                 EstadoTId = taxistaDto.EstadoTId,
                 CiudadId = taxistaDto.CiudadId
@@ -104,8 +104,8 @@ namespace ReyAI_Trasport.Services.Services
             {
                 TaxistaId = f.Id,
                 NickName = f.UserName,
-                Correo = f.Email,
-                ExisteVehiculo = f.ExisteVehiculo,
+				Password = f.PasswordHash,
+				ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
                 EstadoTId = f.EstadoTId,
                 CiudadId = f.CiudadId

@@ -1,4 +1,6 @@
 ﻿@page "/Viajes/Create"
+@using Microsoft.AspNetCore.Authorization
+
 
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 @rendermode InteractiveServer
@@ -6,21 +8,20 @@
 @inject TaxistaServices TaxistaService
 @inject CiudadServices CiudadService
 @inject NavigationManager NavigationManager
-<EditForm Model="@Viajes" OnValidSubmit="Guardar" FormName="CrearViajes">
+<EditForm Model="@Viajes" OnValidSubmit="Guardar">
 	<DataAnnotationsValidator />
 	<div class="overlay"></div>
 	<div class="container">
 		<div class="card">
-			<div class="card-header">
+			<div class="card-header text-center">
 				<h2>Crear Viaje</h2>
 			</div>
 			<div class="card-body">
 				<div class="row mb-3">
-					<div class="col-12">
+					<div class="col-6">
 						<label class="form-label">Seleccionar conductor:</label>
-						<InputSelect class="form-select" @bind-Value="Viajes.TaxistaId">
+						<InputSelect class="form-select" @bind-Value="@Viajes.TaxistaId">
 							<option selected disabled value="0">-- Seleccione un Conductor --</option>
-
 							@foreach (var taxista in ListTaxista)
 							{
 								<option value="@taxista.TaxistaId">@taxista.NickName</option>
@@ -28,46 +29,60 @@
 						</InputSelect>
 						<ValidationMessage For="@(() => Viajes.TaxistaId)" />
 					</div>
-				</div>
-				<div class="row mb-3">
-					<div class="col-12">
-						<label class="form-label">Destino</label>
-						<InputSelect class="form-select" @bind-Value="Viajes.Destino">
-							<option selected disabled value="0">-- Seleccione un Destino --</option>
 
-							@foreach (var Ciudades in ListCiudades)
+					<div class="col-6">
+						<label class="form-label">Destino</label>
+						<InputSelect class="form-select" @bind-Value="@Viajes.Destino">
+							<option selected disabled value="0">-- Seleccione un Destino --</option>
+							@foreach (var ciudad in ListCiudades)
 							{
-								<option value="@Ciudades.CiudadId">@Ciudades.Nombre</option>
+								<option value="@ciudad.CiudadId">@ciudad.Nombre</option>
 							}
 						</InputSelect>
-						<ValidationMessage For="@(() => Viajes.TaxistaId)" />
+						<ValidationMessage For="@(() => Viajes.Destino)" />
 					</div>
 				</div>
+				<div class="mb-3">
+					<label class="form-label">Descripción de viaje</label>
+					<textarea class="form-control" @bind="@Viajes.Descripcion" rows="2"></textarea>
+				</div>
 				<div class="row mb-3">
-					<div class="col-md-4">
-						<label class="form-label">Fecha Inicio</label>
-						<InputDate class="form-control" @bind-Value="Viajes.FechaInicio" />
+					<div class="col-6">
+						<label class="form-label">Fecha de Inicio</label>
+						<InputDate class="form-control" @bind-Value="@Viajes.FechaInicio" />
 						<ValidationMessage For="@(() => Viajes.FechaInicio)" />
 					</div>
-					<div class="col-md-4">
+					<div class="col-6">
+						<label class="form-label">Fecha de Cierre</label>
+						<InputDate class="form-control" @bind-Value="@Viajes.FechaCierre" />
+						<ValidationMessage For="@(() => Viajes.FechaCierre)" />
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<div class="col-6">
 						<label class="form-label">Costo por persona</label>
 						<InputNumber class="form-control" @bind-Value="@Viajes.Precio" placeholder="80000.00$"></InputNumber>
 						<ValidationMessage For="@(() => Viajes.Precio)" />
 					</div>
-					<div class="col-md-4">
-						<label class="form-label">limite de personas</label>
+
+					<div class="col-6">
+						<label class="form-label">Límite de personas</label>
 						<InputNumber class="form-control" @bind-Value="@Viajes.personas" placeholder="20"></InputNumber>
 						<ValidationMessage For="@(() => Viajes.personas)" />
 					</div>
 				</div>
-				<div class="row">
-					<label class="formFileMultiple">Insertar Imagenes del sitio</label>
-					<InputFile class="form-control" multiple OnChange="AgregarImagenes"></InputFile>
 
+				<!-- Nueva fila para el selector de imágenes -->
+				<div class="row">
+					<label class="form-label">Insertar Imágenes del sitio</label>
+					<InputFile class="form-control" multiple OnChange="AgregarImagenes" />
+				</div>
+				<div class="row">
 					<table class="table table-hover text-center mt-3">
 						<thead class="table table-striped text-white">
 							<tr>
-								<th class="text-white"><strong>Imagenes</strong></th>
+								<th class="text-white"><strong>Imágenes</strong></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -78,7 +93,7 @@
 										{
 											@foreach (var im in Viajes.Imagenes)
 											{
-												<div class="col-2 mb-3 text-center">
+												<div class="col-4 mb-3 text-center">
 													<img src="@im.Base64" alt="@im.Alt" title="@im.Titulo" class="img-fluid" />
 													<button @onclick="() => RemoverDetalle(im)" class="btn-custom">Remover</button>
 												</div>
@@ -86,25 +101,23 @@
 										}
 										else
 										{
-											<p class="text-white">No hay imagenes seleccionadas</p>
+											<p class="text-white">No hay imágenes seleccionadas</p>
 										}
-
 									</div>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
-				<div class="card-footer">
-					<button type="submit" class="btn btn-danger bi bi-trash mt-2">Guardar</button>
-					<a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
-				</div>
 			</div>
 		</div>
+
+		<div class="card-footer text-center">
+			<button type="submit" class="btn btn-Guardar">Guardar</button>
+			<a href="/" class="btn btn-light">Volver</a>
+		</div>
 	</div>
-
 </EditForm>
-
 
 
 @code {
@@ -116,6 +129,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		ListTaxista = await TaxistaService.Listar(T => true);
+		Viajes.FechaCierre = DateTime.Now;
 		Viajes.FechaInicio = DateTime.Now;
 		ListCiudades = await CiudadService.Listar(T => true);
 	}

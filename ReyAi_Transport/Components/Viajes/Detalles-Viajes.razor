@@ -8,6 +8,7 @@
 @inject CiudadServices CiudadesService
 @inject TaxistaServices taxistasService
 @inject EstadoServices EstadoServices
+@inject NavigationManager NavigationManager
 <div class="container">
 	<div class="overlay">
 		<div class="detalles-container">
@@ -37,13 +38,55 @@
 			</div>
 
 			<div class="informacion-adicional">
-				<p class="precio">Precio:DOP  $<span>@Viaje.Precio.ToString("N2")</span> </p>
+				<p>Descripicion: <br/> @Viaje.Descripcion</p>
+				<p class="f small">
+					Fecha de inicio-Fecha de cierre <br />
+					@Viaje.FechaInicio.ToString("dd/MM/yyyy") --- @Viaje.FechaCierre.ToString("dd/MM/yyyy")
+				</p>
 				<p class="taxista">Taxista asignado: <span>@TaxistaDto.NickName</span></p>
 				<p class="estado">Estado del viaje: <span>@EstadosViajesDto.Descripcion</span></p>
+				<p class="precio">Precio por persona:DOP  $<span>@Viaje.Precio.ToString("N2")</span> </p>
 			</div>
+			<button @onclick="() => Reservar(Viaje.ViajeId)" class="button">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none" class="svg-icon"><g stroke-width="2" stroke-linecap="round" stroke="#fff"><rect y="5" x="4" width="16" rx="2" height="16"></rect><path d="m8 3v4"></path><path d="m16 3v4"></path><path d="m4 11h16"></path></g></svg>
+				<span class="lable">Reservar</span>
+			</button>
 		</div>
 	</div>
 </div>
+<style>
+	/* From Uiverse.io by andrew-demchenk0 */ 
+.a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 9px 12px;
+  gap: 8px;
+  height: 40px;
+  width: 201px;
+  border: none;
+  background: #FF342B;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.lable {
+  line-height: 22px;
+  font-size: 17px;
+  color: #fff;
+  font-family: sans-serif;
+  letter-spacing: 1px;
+}
+
+.button:hover {
+  background: #e52e26;
+}
+
+.button:hover .svg-icon {
+  animation: slope 1s linear infinite;
+}
+
+</style>
 
 
 @code {
@@ -61,5 +104,9 @@
 		CiudadDto = await CiudadesService.Buscar(Viaje.Destino);
 		TaxistaDto = await taxistasService.Buscar(Viaje.TaxistaId);
 		EstadosViajesDto = await EstadoServices.Buscar(Viaje.EstadoId);
+	}
+	public void Reservar(int id)
+	{
+		NavigationManager.NavigateTo($"/Reservacion/{id}");
 	}
 }
