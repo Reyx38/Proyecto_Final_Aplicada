@@ -3,36 +3,48 @@
 
 @inject ReservacionesServices ReservacionesService
 @rendermode InteractiveServer
+<link rel="stylesheet" href="/Estilos/Viajes/ViajesDetalles.css" />
 
-
-<h3>Lista de Reservaciones</h3>
-<div>
-    <QuickGrid Items="@(Reservaciones.AsQueryable())" DefaultSort="@sortByFecha">
-        <PropertyColumn Title="ID Reservación" Property="@(r => r.ReservacionId)" />
-        <PropertyColumn Title="Fecha" Property="@(r => r.Fecha)" Format="dd/MM/yyyy" />
-        <PropertyColumn Title="Monto" Property="@(r => r.Monto)" />
-        <PropertyColumn Title="Pasajesros" Property="@(r => r.CantidadPasajeros)" />
-        <PropertyColumn Title="Destino (ID)" Property="@(r => r.ViajeId)" />
-        <PropertyColumn Title="Estado (ID)" Property="@(r => r.EstadoId)" />
-        
-        <TemplateColumn Title="Acciones">
-            <div>
-                <button class="btn btn-success btn-sm me-1"
-                        @onclick="@(() => CambiarEstado(context, 5))"
-                        disabled="@context.EstadoId != " Pendiente"">
-                    Aceptar
-                </button>
-                <button class="btn btn-danger btn-sm"
-                        @onclick="@(() => CambiarEstado(context, 4))"
-                        disabled="@context.EstadoId != " Pendiente"">
-                    Cancelar
-                </button>
+<div class="container">
+    <div class="overlay">
+        <div class="detalles-container">
+            <div class="card-header">
+                <h5 class="card-title">Lista de reservaciones</h5>
             </div>
-        </TemplateColumn>
-    </QuickGrid>
+            <div class="card-body">
+                <div>
+                    <QuickGrid Items="@(Reservaciones.AsQueryable())" DefaultSort="@sortByFecha">
+                        <div class="flex items-center">
+                            <PropertyColumn Title="ID Reservación" Property="@(r => r.ReservacionId)" />
+                            <PropertyColumn Title="Fecha" Property="@(r => r.Fecha)" Format="dd/MM/yyyy" />
+                            <PropertyColumn Title="Monto" Property="@(r => r.Monto)" />
+                            <PropertyColumn Title="Pasajesros" Property="@(r => r.CantidadPasajeros)" />
+                            <PropertyColumn Title="Destino (ID)" Property="@(r => r.ViajeId)" />
+                            <PropertyColumn Title="Estado (ID)" Property="@(r => r.EstadoId)" />
+
+                        </div>
+                      
+                        <TemplateColumn Title="Acciones">
+                            <div class="flex items-center">
+                                <button class="btn btn-success btn-sm me-1"
+                                        @onclick="@(() => CambiarEstado(context, 2))">
+                                    Aceptar
+                                </button>
+                                <button class="btn btn-danger btn-sm"
+                                        @onclick="@(() => CambiarEstado(context, 3))">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </TemplateColumn>
+                    </QuickGrid>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<p class="text-muted"><strong>@mensaje</strong></p>
+
+<p><strong>@mensaje</strong></p>
 
 @code {
     private List<ReservacionesDto> Reservaciones = new();
