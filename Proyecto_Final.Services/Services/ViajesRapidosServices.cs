@@ -111,4 +111,13 @@ public class ViajesRapidosServices(IDbContextFactory<ApplicationDbContext> DbFac
         .Where(criterio)
         .ToListAsync();
     }
+
+    public async Task<bool> Eliminar(int id)
+    {
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+
+        return await contexto.ViajesRapidos
+            .Where(m => m.ViajeRapidoId == id)
+            .ExecuteDeleteAsync() > 0;
+    }
 }

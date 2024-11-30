@@ -95,6 +95,9 @@
                                             @onclick="@(() => CambiarEstado(context, 3))">
                                         Cancelar
                                     </button>
+                                    <button class="btn btn-danger btn-sm bi bi-trash"
+                                            @onclick="@(() => AbrirModal(context))">
+                                    </button>
                                 </div>
                             </TemplateColumn>
                         </QuickGrid>
@@ -110,6 +113,24 @@
 
 <p><strong>@mensaje</strong></p>
 
+<div class="modal fade @(MostrarModal ? "show d-block" : "d-none")" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmacion de eliminar</h5>
+                <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estas seguro de eliminar la recervacion <strong>@ReservacionDto.ReservacionId</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @code {
     private List<ReservacionesDto> Reservaciones = new();
     public ReservacionesDto ReservacionDto { get; set; } = new ReservacionesDto();
@@ -119,7 +140,7 @@
     public string ValorFiltro { get; set; } = string.Empty;
     public DateTime? Desde { get; set; }
     public DateTime? Hasta { get; set; }
-
+    public bool MostrarModal { get; set; } = false;
     // Configuración de ordenamiento por defecto (por fecha de la reservación)
     GridSort<ReservacionesDto> sortByFecha = GridSort<ReservacionesDto>
         .ByAscending(r => r.Fecha);
@@ -203,5 +224,32 @@
     {
         navigationManager.NavigateTo($"/pago/{reservacionId}");
     }
-
+    private void AbrirModal(ReservacionesDto reservacion)
+    {
+        ReservacionDto = reservacion;
+        MostrarModal = true;
+    }
+    private void CerrarModal()
+    {
+        MostrarModal = false;
+        ReservacionDto = new ReservacionesDto();
+    }
+    private async Task Eliminar()
+    {
+        if (ReservacionDto.EstadoId == 3)
+        {
+            var eliminado = await ReservacionesService.Eliminar(ReservacionDto.ReservacionId);
+            if (eliminado)
+            {
+                mensaje = $"Reservación {ReservacionDto.ReservacionId} eliminada con éxito.";
+                await CargarReservaciones();
+            }
+            else
+            {
+                mensaje = "Error al eliminar la reservación.";
+                CerrarModal();
+            }
+            CerrarModal();
+        }
+    }
 }
