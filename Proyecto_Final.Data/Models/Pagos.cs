@@ -17,6 +17,9 @@ public class Pagos
     [Required(ErrorMessage = "Campo Obligatorio")]
     public double Monto { get; set;}
 
+    [Required(ErrorMessage = "Campo Obligatorio")]
+    public DateTime Fecha { get; set; } = DateTime.Now;
+
     [ForeignKey("Reservacion")]
     public int ReservacionId { get; set; }
     public Reservaciones Reservacion { get; set; }

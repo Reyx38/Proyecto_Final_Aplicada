@@ -27,6 +27,7 @@ public class PagosServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
        {
             PagoId = p.PagoId,
             Monto = p.Monto,
+            Fecha = p.Fecha,
             ReservacionId = p.ReservacionId
        })
        .FirstOrDefaultAsync();
@@ -48,6 +49,7 @@ public class PagosServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         {
             PagoId = pagoDto.PagoId,
             Monto = pagoDto.Monto,
+            Fecha = pagoDto.Fecha,
             ReservacionId = pagoDto.ReservacionId
         };
         contexto.Pagos.Add(pago);
@@ -92,7 +94,9 @@ public class PagosServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
         {
             PagoId = f.PagoId,
             Monto = f.Monto,
-            ReservacionId = f.ReservacionId
+            Fecha = f.Fecha,
+            ReservacionId = f.ReservacionId,
+            ClienteId = f.Reservacion.ClienteId
         })
         .Where(criterio)
         .ToListAsync();

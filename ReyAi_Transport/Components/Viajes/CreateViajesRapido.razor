@@ -2,9 +2,13 @@
 
 @inject ViajesRapidosServices viajesRapidosServices
 @inject TaxistaServices taxistasServices
+@inject ReservacionesServices reservacionService
 @inject DestinosCercasServices destinosCercaService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager navigationManager
 @rendermode InteractiveServer
+@*Crear las notificaciones y terminar de ajustar la redireccion*@
+
 <link rel="stylesheet" href="/Estilos/CrearViaje/StyleCrearViajes.css" />
 <EditForm model="ViajeRapidoDto" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
@@ -79,6 +83,7 @@
 @code {
     public List<TaxistaDto> ListaTaxistas { get; set; } = new List<TaxistaDto>();
     public List<DestinoCercaDto> ListaDestinos { get; set; } = new List<DestinoCercaDto>();
+    public List<ReservacionesDto> Reservaciones { get; set; } = new List<ReservacionesDto>();
     public ViajesRapidosDto ViajeRapidoDto { get; set; } = new ViajesRapidosDto();
     public string Mensaje { get; set; } = string.Empty;
 
@@ -118,7 +123,7 @@
     {
         var destino = await destinosCercaService.Buscar(ViajeRapidoDto.DestinoCercaId);
         var taxista = await taxistasServices.Buscar(ViajeRapidoDto.TaxistaId);
-        if(destino.CiudadId == taxista.CiudadId)
+        if(destino.CiudadId == taxista.CiudadId && taxista.EstadoTId == 1)
         {
             return true;
         }
@@ -130,11 +135,22 @@
 
     public async Task Guardar()
     {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        // Verificar si el usuario no está autenticado
+        if (user.Identity == null || !user.Identity.IsAuthenticated)
+        {
+            Mensaje = "Debe iniciar sesión para guardar un viaje rápido.";
+            return;
+            navigationManager.NavigateTo("/Account/Login");
+        }
         if(await Validar())
         {
             Mensaje = "Ya tienes un viaje";
             return;
         }
+        
         ViajeRapidoDto.Fecha = DateTime.Now;
         ViajeRapidoDto.EstadoVId = 1;
         if(ViajeRapidoDto.personas > 0 && ViajeRapidoDto.Precio > 0 && ViajeRapidoDto.DestinoCercaId != 0 && ViajeRapidoDto.TaxistaId != null)
@@ -149,7 +165,7 @@
             }
             else
             {
-                Mensaje = "Taxista no es de la misma ciudad";
+                Mensaje = "Taxista no esta en la zona";
             }
 
         }
@@ -157,6 +173,7 @@
         {
             Mensaje = "Ingrese todos los datos";
         }
-        
+
     }
+
 }

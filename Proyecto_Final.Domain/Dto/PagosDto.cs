@@ -14,6 +14,9 @@ public class PagosDto
 
     [Required(ErrorMessage = "Campo Obligatorio")]
     public double Monto { get; set; }
+    [Required(ErrorMessage = "Campo Obligatorio")]
+    public DateTime Fecha { get; set; } = DateTime.Now;
 
     public int ReservacionId { get; set; }
+    public string? ClienteId { get; set; }
 }
