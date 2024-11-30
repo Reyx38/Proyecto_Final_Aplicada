@@ -123,7 +123,7 @@
     {
         var destino = await destinosCercaService.Buscar(ViajeRapidoDto.DestinoCercaId);
         var taxista = await taxistasServices.Buscar(ViajeRapidoDto.TaxistaId);
-        if(destino.CiudadId == taxista.CiudadId)
+        if(destino.CiudadId == taxista.CiudadId && taxista.EstadoTId == 1)
         {
             return true;
         }
@@ -150,11 +150,7 @@
             Mensaje = "Ya tienes un viaje";
             return;
         }
-        if(await VerificarTaxista())
-        {
-            Mensaje = "El taxista no esta disponible";
-            return;
-        }
+        
         ViajeRapidoDto.Fecha = DateTime.Now;
         ViajeRapidoDto.EstadoVId = 1;
         if(ViajeRapidoDto.personas > 0 && ViajeRapidoDto.Precio > 0 && ViajeRapidoDto.DestinoCercaId != 0 && ViajeRapidoDto.TaxistaId != null)
@@ -169,7 +165,7 @@
             }
             else
             {
-                Mensaje = "Taxista no es de la misma ciudad";
+                Mensaje = "Taxista no esta en la zona";
             }
 
         }
@@ -180,16 +176,4 @@
 
     }
 
-    private async Task<bool> VerificarTaxista()
-    {
-        Reservaciones = await reservacionService.Listar(a => true);
-        foreach(var t in Reservaciones)
-        {
-            if(await reservacionService.ReservacionesTaxistas(t.ViajeId, ViajeRapidoDto.TaxistaId, ViajeRapidoDto.Fecha))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
 }
