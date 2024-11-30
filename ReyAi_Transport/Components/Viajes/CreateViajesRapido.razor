@@ -2,6 +2,7 @@
 
 @inject ViajesRapidosServices viajesRapidosServices
 @inject TaxistaServices taxistasServices
+@inject ReservacionesServices reservacionService
 @inject DestinosCercasServices destinosCercaService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager navigationManager
@@ -82,6 +83,7 @@
 @code {
     public List<TaxistaDto> ListaTaxistas { get; set; } = new List<TaxistaDto>();
     public List<DestinoCercaDto> ListaDestinos { get; set; } = new List<DestinoCercaDto>();
+    public List<ReservacionesDto> Reservaciones { get; set; } = new List<ReservacionesDto>();
     public ViajesRapidosDto ViajeRapidoDto { get; set; } = new ViajesRapidosDto();
     public string Mensaje { get; set; } = string.Empty;
 
@@ -148,6 +150,11 @@
             Mensaje = "Ya tienes un viaje";
             return;
         }
+        if(await VerificarTaxista())
+        {
+            Mensaje = "El taxista no esta disponible";
+            return;
+        }
         ViajeRapidoDto.Fecha = DateTime.Now;
         ViajeRapidoDto.EstadoVId = 1;
         if(ViajeRapidoDto.personas > 0 && ViajeRapidoDto.Precio > 0 && ViajeRapidoDto.DestinoCercaId != 0 && ViajeRapidoDto.TaxistaId != null)
@@ -170,6 +177,19 @@
         {
             Mensaje = "Ingrese todos los datos";
         }
-        
+
+    }
+
+    private async Task<bool> VerificarTaxista()
+    {
+        Reservaciones = await reservacionService.Listar(a => true);
+        foreach(var t in Reservaciones)
+        {
+            if(await reservacionService.ReservacionesTaxistas(t.ViajeId, ViajeRapidoDto.TaxistaId, ViajeRapidoDto.Fecha))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
