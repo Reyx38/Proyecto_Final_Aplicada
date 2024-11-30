@@ -28,6 +28,10 @@ public class Reservaciones
 	[Required(ErrorMessage = "Campo obligatorio")]
     public int CantidadPasajeros { get; set; }
 
+    [ForeignKey("Estado")]
+    public int EstadoId { get; set; }
+    public EstadosViajes Estado { get; set; }
+
 	[ForeignKey("ReservacionId")]
     public ICollection<ReservacionDetalles>? ReservacionDetalles { get; set; } = new List<ReservacionDetalles>();
 }

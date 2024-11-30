@@ -22,7 +22,9 @@ public class ReservacionesDto
 
 	public double Monto { get; set; }
 
-	public int CantidadPasajeros { get; set; }
+    public int EstadoId { get; set; }
+
+    public int CantidadPasajeros { get; set; }
 
 	public ICollection<ReservacionDetallesDto> ReservacionDetalles { get; set; } = new List<ReservacionDetallesDto>();
 }
