@@ -26,6 +26,8 @@ public class ReservacionesDto
     public int EstadoId { get; set; }
     public  string? EstadosReservacionesDto { get; set; }
 
+    public string? ClienteId { get; set; }
+
     public int CantidadPasajeros { get; set; }
 
 	public ICollection<ReservacionDetallesDto> ReservacionDetalles { get; set; } = new List<ReservacionDetallesDto>();

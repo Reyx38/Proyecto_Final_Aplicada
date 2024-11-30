@@ -1,6 +1,8 @@
-﻿@page "/ListaReservaciones"
+﻿@page "/ListaReservaciones/Users"
 
 @inject ReservacionesServices ReservacionesService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager navigationManager
 @rendermode InteractiveServer
 <link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
 
@@ -85,8 +87,8 @@
                             <TemplateColumn Title="Acciones">
                                 <div class="flex items-center">
                                     <button class="btn btn-success btn-sm me-1"
-                                            @onclick="@(() => CambiarEstado(context, 2))">
-                                        Aceptar
+                                            @onclick="@(() => IrAPago(context.ReservacionId))">
+                                        Pagar
                                     </button>
                                     <button class="btn btn-danger btn-sm"
                                             @onclick="@(() => CambiarEstado(context, 3))">
@@ -109,6 +111,7 @@
 
 @code {
     private List<ReservacionesDto> Reservaciones = new();
+    public ReservacionesDto ReservacionDto { get; set; } = new ReservacionesDto();
     private string mensaje = string.Empty;
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
@@ -121,12 +124,24 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            ReservacionDto.ClienteId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        }
+        else
+        {
+            mensaje = "Usuario no autenticado";
+            navigationManager.NavigateTo("/Account/Login");
+        }
         await CargarReservaciones();
     }
 
     private async Task CargarReservaciones()
     {
-        Reservaciones = await ReservacionesService.Listar(r => true); // Cargar todas las reservaciones
+        Reservaciones = await ReservacionesService.Listar(r => r.ClienteId == ReservacionDto.ClienteId); // Cargar todas las reservaciones
     }
 
     private async Task CambiarEstado(ReservacionesDto reservacion, int nuevoEstado)
@@ -144,40 +159,45 @@
         }
     }
 
-        private async Task Buscar()
+    private async Task Buscar()
+    {
+        if (ValorFiltro.Trim() != "")
         {
-            if (ValorFiltro.Trim() != "")
+            if (Filtro == "Destino")
             {
-                if (Filtro == "Destino")
-                {
-                    Reservaciones = await ReservacionesService.Listar(e => e.ViajeDto.ToLower().Contains(ValorFiltro.ToLower()));
-                }
-                else if (Filtro == "Estado")
-                {
-                    Reservaciones = await ReservacionesService.Listar(e => e.EstadosReservacionesDto.ToLower().Contains(ValorFiltro.ToLower()));
+                Reservaciones = await ReservacionesService.Listar(e => e.ViajeDto.ToLower().Contains(ValorFiltro.ToLower()));
+            }
+            else if (Filtro == "Estado")
+            {
+                Reservaciones = await ReservacionesService.Listar(e => e.EstadosReservacionesDto.ToLower().Contains(ValorFiltro.ToLower()));
             }
             else if (Filtro == "ID Reservacion" && int.TryParse(ValorFiltro, out int reservacionId))
             {
                 Reservaciones = await ReservacionesService.Listar(e => e.ReservacionId == reservacionId);
             }
-            }
-            else if (Filtro == "Fecha")
-            {
-                Reservaciones = await ReservacionesService
-                .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
-            }
-            else
-            {
-                Reservaciones = await ReservacionesService.Listar(e => e.ReservacionId > 0);
-            }
-
         }
-
-        private async Task Restablecer()
+        else if (Filtro == "Fecha")
+        {
+            Reservaciones = await ReservacionesService
+            .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
+        }
+        else
         {
             Reservaciones = await ReservacionesService.Listar(e => e.ReservacionId > 0);
-            Filtro = string.Empty;
-            ValorFiltro = string.Empty;
         }
+
+    }
+
+    private async Task Restablecer()
+    {
+        Reservaciones = await ReservacionesService.Listar(e => e.ReservacionId > 0);
+        Filtro = string.Empty;
+        ValorFiltro = string.Empty;
+    }
+
+    private void IrAPago(int reservacionId)
+    {
+        navigationManager.NavigateTo($"/pago/{reservacionId}");
+    }
 
 }

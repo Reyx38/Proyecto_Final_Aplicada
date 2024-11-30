@@ -289,17 +289,11 @@ namespace Proyecto_Final.Data.Migrations
                     Precio = table.Column<double>(type: "float", nullable: false),
                     personas = table.Column<int>(type: "int", nullable: false),
                     TaxistaId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ClientesId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Viajes", x => x.ViajeId);
-                    table.ForeignKey(
-                        name: "FK_Viajes_AspNetUsers_ClienteId",
-                        column: x => x.ClienteId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Viajes_AspNetUsers_ClientesId",
                         column: x => x.ClientesId,
@@ -400,11 +394,17 @@ namespace Proyecto_Final.Data.Migrations
                     Recibo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Monto = table.Column<double>(type: "float", nullable: false),
                     CantidadPasajeros = table.Column<int>(type: "int", nullable: false),
-                    EstadoId = table.Column<int>(type: "int", nullable: false)
+                    EstadoId = table.Column<int>(type: "int", nullable: false),
+                    ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reservaciones", x => x.ReservacionId);
+                    table.ForeignKey(
+                        name: "FK_Reservaciones_AspNetUsers_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Reservaciones_EstadosResrvaciones_EstadoId",
                         column: x => x.EstadoId,
@@ -485,9 +485,9 @@ namespace Proyecto_Final.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0d840019-2109-44a4-9886-feee3a30949d", null, "Admin", "ADMIN" },
-                    { "15c152e2-7202-42ee-845b-be362468b6c7", null, "Cliente", "CLIENTE" },
-                    { "3932903a-c333-4316-9309-26806b4ed068", null, "Taxista", "TAXISTA" }
+                    { "35c7edfb-622d-43f9-8ea6-daced99ce105", null, "Taxista", "TAXISTA" },
+                    { "f81c651e-e3f8-452a-9722-ebed9daec520", null, "Admin", "ADMIN" },
+                    { "feed2315-91e9-4fe7-95f3-307e9947d0fc", null, "Cliente", "CLIENTE" }
                 });
 
             migrationBuilder.InsertData(
@@ -542,11 +542,11 @@ namespace Proyecto_Final.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "CiudadId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "EstadoTId", "ExisteLicencia", "ExisteVehiculo", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "007ddb59-d190-45a7-b396-1bc0fa91ece4", 0, 2, "f1455dde-dca0-4a9f-9d47-3dc331749ef2", "Taxistas", "carlosmendoza@example.com", false, 1, true, true, false, null, null, null, "hashedpassword789", null, false, "48f30653-3b00-4400-bfc9-f9fff86746ca", false, "carlosmendoza" },
-                    { "bd20b7b8-2ceb-47e9-a382-bdda8966e075", 0, 1, "69d492d3-1217-4b4b-9691-1507c623ac0a", "Taxistas", "anafernandez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword102", null, false, "f087dc0d-03d9-4f1e-a2d6-eb24fe934f7b", false, "anafernandez" },
-                    { "d657c80f-5a99-4534-812b-c4b6c3f80201", 0, 2, "e9b4bd15-0a4e-4d28-aa4b-e9a450468761", "Taxistas", "luismartinez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword101", null, false, "8449b36f-bb1b-4ced-83cf-2e9cd9070bca", false, "luismartinez" },
-                    { "dc4316d1-d0a5-4914-98a2-27261606286b", 0, 1, "9e224b0c-e6cf-4535-a81a-b30cdde91722", "Taxistas", "juanperez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword123", null, false, "e3111e2f-da8c-4db3-a466-cdd64e7873bd", false, "juanperez" },
-                    { "de8da9f1-12e5-4d06-bee8-2385fae1db24", 0, 3, "64f05ab8-d3b0-4796-b943-ae1c53de1211", "Taxistas", "mariagonzalez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword456", null, false, "d4e311de-b1e7-47ca-a156-934379ce9323", false, "mariagonzalez" }
+                    { "0770e84e-521c-4634-af49-0846f5690646", 0, 3, "81e37d32-ff35-45e6-95b6-41ad358687eb", "Taxistas", "mariagonzalez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword456", null, false, "21603b36-890e-46ff-bb1e-44b32526b2bb", false, "mariagonzalez" },
+                    { "2508ab36-bd9a-481f-bfff-d87e6902e7f4", 0, 2, "759fdbb0-9672-44e4-81b0-60f06bed23ea", "Taxistas", "carlosmendoza@example.com", false, 1, true, true, false, null, null, null, "hashedpassword789", null, false, "8e915cdd-d8c3-44f5-af71-5a49bf37dafe", false, "carlosmendoza" },
+                    { "67eb6d59-52b9-41f6-874e-5233c813f999", 0, 1, "a6ee075d-fd42-42ec-b887-b1e7e25d320b", "Taxistas", "anafernandez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword102", null, false, "2bd0f2e6-edfd-4d0b-846d-4783d2950f08", false, "anafernandez" },
+                    { "813b875c-f73f-48d6-a763-95207bf96819", 0, 2, "7bbd1b26-bb53-4e2f-9734-50ec60152efc", "Taxistas", "luismartinez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword101", null, false, "ebb6984c-35d5-4709-8c49-e5df715b78e6", false, "luismartinez" },
+                    { "f59e996a-f2ec-4da6-84e5-243c9f86cac4", 0, 1, "707de70a-3fcf-45fd-b1bc-e758fdf54009", "Taxistas", "juanperez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword123", null, false, "bc79cde5-cda2-481a-91d2-9b46225338c9", false, "juanperez" }
                 });
 
             migrationBuilder.InsertData(
@@ -635,6 +635,11 @@ namespace Proyecto_Final.Data.Migrations
                 column: "ReservacionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reservaciones_ClienteId",
+                table: "Reservaciones",
+                column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reservaciones_EstadoId",
                 table: "Reservaciones",
                 column: "EstadoId");
@@ -643,11 +648,6 @@ namespace Proyecto_Final.Data.Migrations
                 name: "IX_Reservaciones_ViajeId",
                 table: "Reservaciones",
                 column: "ViajeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Viajes_ClienteId",
-                table: "Viajes",
-                column: "ClienteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Viajes_ClientesId",
