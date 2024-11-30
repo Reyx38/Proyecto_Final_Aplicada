@@ -26,9 +26,9 @@
                         </div>
                     </div>
                    
-                    <!-- Formulario -->
+                    @*Formulario*@
                     <div class="row mb-3 align-items-center">
-                        <!-- Número de Tarjeta -->
+                        @* Número de Tarjeta*@
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Número de tarjeta:</label>
                             <InputText type="password"
@@ -38,7 +38,7 @@
                             </InputText>
                         </div>
 
-                        <!-- Monto -->
+                        @*Monto*@
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Monto:</label>
                             <InputNumber class="form-control"
@@ -87,6 +87,12 @@
     protected override async Task OnInitializedAsync()
     {
         ReservacionDto = await reservacionesServices.Buscar(ReservacionId);
+        if(ReservacionDto.EstadoId == 1 || ReservacionDto.EstadoId == 3)
+        {
+            Mensaje = "La reservacion aun no ha sido aceptada";
+            //agregar una notificacion y un tiempo antes de volver al inicio
+            navigationManager.NavigateTo("/");
+        }
     }
 
     private void Validar()
