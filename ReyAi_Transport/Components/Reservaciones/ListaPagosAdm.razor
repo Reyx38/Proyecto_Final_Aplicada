@@ -1,8 +1,7 @@
-﻿@page "/ListaReservaciones/Users"
+﻿@page "/ListaPagos"
 
 @inject ReservacionesServices ReservacionesService
-@inject AuthenticationStateProvider AuthenticationStateProvider
-@inject NavigationManager navigationManager
+@inject PagosServices pagosServices
 @rendermode InteractiveServer
 <link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
 
@@ -33,9 +32,8 @@
                     <div class="col-3">
                         <InputSelect class="form-select" @bind-Value="Filtro">
                             <option value="" selected disabled>Elija una opci&oacute;n</option>
-                            <option value="Destino">Destino</option>
-                            <option value="ID Reservacion">ID Reservacion</option>
-                            <option value="Estado">Estado</option>
+                            <option value="ID Pago">ID Pagoo</option>
+                            <option value="Monto">Monto</option>
                             <option value="Fecha">Fecha</option>
 
                         </InputSelect>
@@ -73,29 +71,14 @@
                         }
                     </div>
                     <div>
-                        <QuickGrid Items="@(Reservaciones.AsQueryable())" DefaultSort="@sortByFecha">
+                        <QuickGrid Items="@(Pagos.AsQueryable())" DefaultSort="@sortByFecha">
                             <div class="flex items-center">
-                                <PropertyColumn Title="ID Reservación" Property="@(r => r.ReservacionId)" />
+                                <PropertyColumn Title="ID Pago" Property="@(r => r.ReservacionId)" />
                                 <PropertyColumn Title="Fecha" Property="@(r => r.Fecha)" Format="dd/MM/yyyy" />
                                 <PropertyColumn Title="Monto" Property="@(r => r.Monto)" />
-                                <PropertyColumn Title="Pasajesros" Property="@(r => r.CantidadPasajeros)" />
-                                <PropertyColumn Title="Destino" Property="@(r => r.ViajeDto)" />
-                                <PropertyColumn Title="Estado" Property="@(r => r.EstadosReservacionesDto)" />
 
                             </div>
 
-                            <TemplateColumn Title="Acciones">
-                                <div class="flex items-center">
-                                    <button class="btn btn-success btn-sm me-1"
-                                            @onclick="@(() => IrAPago(context.ReservacionId))">
-                                        Pagar
-                                    </button>
-                                    <button class="btn btn-danger btn-sm"
-                                            @onclick="@(() => CambiarEstado(context, 3))">
-                                        Cancelar
-                                    </button>
-                                </div>
-                            </TemplateColumn>
                         </QuickGrid>
                     </div>
                 </div>
@@ -110,8 +93,7 @@
 <p><strong>@mensaje</strong></p>
 
 @code {
-    private List<ReservacionesDto> Reservaciones = new();
-    public ReservacionesDto ReservacionDto { get; set; } = new ReservacionesDto();
+    private List<PagosDto> Pagos = new();
     private string mensaje = string.Empty;
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
@@ -119,85 +101,50 @@
     public DateTime? Hasta { get; set; }
 
     // Configuración de ordenamiento por defecto (por fecha de la reservación)
-    GridSort<ReservacionesDto> sortByFecha = GridSort<ReservacionesDto>
+    GridSort<PagosDto> sortByFecha = GridSort<PagosDto>
         .ByAscending(r => r.Fecha);
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity != null && user.Identity.IsAuthenticated)
-        {
-            ReservacionDto.ClienteId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        }
-        else
-        {
-            mensaje = "Usuario no autenticado";
-            navigationManager.NavigateTo("/Account/Login");
-        }
         await CargarReservaciones();
     }
 
     private async Task CargarReservaciones()
     {
-        Reservaciones = await ReservacionesService.Listar(r => r.ClienteId == ReservacionDto.ClienteId); // Cargar todas las reservaciones
-    }
-
-    private async Task CambiarEstado(ReservacionesDto reservacion, int nuevoEstado)
-    {
-        reservacion.EstadoId = nuevoEstado;
-        var guardado = await ReservacionesService.Guardar(reservacion);
-        if (guardado)
-        {
-            mensaje = $"Reservación {reservacion.ReservacionId} marcada como {nuevoEstado}.";
-            await CargarReservaciones(); // Refresca la lista
-        }
-        else
-        {
-            mensaje = "Error al actualizar el estado.";
-        }
+        Pagos = await pagosServices.Listar(r => true);
     }
 
     private async Task Buscar()
     {
         if (ValorFiltro.Trim() != "")
         {
-            if (Filtro == "Destino")
+            if (Filtro == "Monto" && double.TryParse(ValorFiltro, out double monto))
             {
-                Reservaciones = await ReservacionesService.Listar(e => e.ViajeDto.ToLower().Contains(ValorFiltro.ToLower()));
+                Pagos = await pagosServices
+                .Listar(e => e.Monto == monto);
             }
-            else if (Filtro == "Estado")
+            else if (Filtro == "ID Pago" && int.TryParse(ValorFiltro, out int pagoId))
             {
-                Reservaciones = await ReservacionesService.Listar(e => e.EstadosReservacionesDto.ToLower().Contains(ValorFiltro.ToLower()));
-            }
-            else if (Filtro == "ID Reservacion" && int.TryParse(ValorFiltro, out int reservacionId))
-            {
-                Reservaciones = await ReservacionesService.Listar(e => e.ReservacionId == reservacionId);
+                Pagos = await pagosServices.Listar(e => e.PagoId == pagoId);
             }
         }
         else if (Filtro == "Fecha")
         {
-            Reservaciones = await ReservacionesService
+            Pagos = await pagosServices
             .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
         }
         else
         {
-            Reservaciones = await ReservacionesService.Listar(r => r.ClienteId == ReservacionDto.ClienteId);
+            Pagos = await pagosServices.Listar(e => e.PagoId > 0);
         }
 
     }
 
     private async Task Restablecer()
     {
-        Reservaciones = await ReservacionesService.Listar(r => r.ClienteId == ReservacionDto.ClienteId);
+        Pagos = await pagosServices.Listar(e => e.PagoId > 0);
         Filtro = string.Empty;
         ValorFiltro = string.Empty;
-    }
-
-    private void IrAPago(int reservacionId)
-    {
-        navigationManager.NavigateTo($"/pago/{reservacionId}");
     }
 
 }
