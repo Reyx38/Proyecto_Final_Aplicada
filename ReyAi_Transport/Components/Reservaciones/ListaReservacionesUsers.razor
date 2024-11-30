@@ -86,8 +86,8 @@
                             <TemplateColumn Title="Acciones">
                                 <div class="flex items-center">
                                     <button class="btn btn-success btn-sm me-1"
-                                            @onclick="@(() => CambiarEstado(context, 2))">
-                                        Aceptar
+                                            @onclick="@(() => IrAPago(context.ReservacionId))">
+                                        Pagar
                                     </button>
                                     <button class="btn btn-danger btn-sm"
                                             @onclick="@(() => CambiarEstado(context, 3))">
@@ -188,6 +188,11 @@
         Reservaciones = await ReservacionesService.Listar(e => e.ReservacionId > 0);
         Filtro = string.Empty;
         ValorFiltro = string.Empty;
+    }
+
+    private void IrAPago(int reservacionId)
+    {
+        navigationManager.NavigateTo($"/pago/{reservacionId}");
     }
 
 }
