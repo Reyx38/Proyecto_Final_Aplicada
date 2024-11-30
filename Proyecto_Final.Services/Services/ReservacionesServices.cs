@@ -142,6 +142,8 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
 			CantidadPasajeros = p.CantidadPasajeros,
 			Monto = p.Monto,
             EstadoId = p.EstadoId,
+            EstadosReservacionesDto = p.Estado.Descripcion,
+            ViajeDto = p.Viaje.Ciudad.Nombre,
 			ReservacionDetalles = p.ReservacionDetalles.Select(i => new ReservacionDetallesDto()
 			{
 				DetalleId = i.DetalleId,

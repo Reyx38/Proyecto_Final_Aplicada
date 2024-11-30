@@ -16,6 +16,7 @@ public class ReservacionesDto
     public DateTime Fecha { get; set; }
 
     public int ViajeId { get; set; }
+    public string? ViajeDto { get; set; }
 
     public bool Pago { get; set; }
     public string? Recibo { get; set; }
@@ -23,6 +24,7 @@ public class ReservacionesDto
 	public double Monto { get; set; }
 
     public int EstadoId { get; set; }
+    public  string? EstadosReservacionesDto { get; set; }
 
     public int CantidadPasajeros { get; set; }
 
