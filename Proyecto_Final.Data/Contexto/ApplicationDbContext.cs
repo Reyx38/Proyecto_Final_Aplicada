@@ -32,7 +32,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         new EstadosViajes { EstadosVId = 1, Descripcion = "Pendiente" },
         new EstadosViajes { EstadosVId = 2, Descripcion = "En Curso" },
         new EstadosViajes { EstadosVId = 3, Descripcion = "Completado" },
-        new EstadosViajes { EstadosVId = 4, Descripcion = "Cancelado" }
+        new EstadosViajes { EstadosVId = 4, Descripcion = "Cancelado" },
+        new EstadosViajes { EstadosVId = 5, Descripcion = "Aceptada" }
         );
 
         builder.Entity<MetodosPagos>().HasData(
