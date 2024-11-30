@@ -47,16 +47,35 @@
 				<p class="estado">Estado del viaje: <span>@EstadosViajesDto.Descripcion</span></p>
 				<p class="precio">Precio por persona:DOP  $<span>@Viaje.Precio.ToString("N2")</span> </p>
 			</div>
-			<button @onclick="() => Reservar(Viaje.ViajeId)" class="button">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none" class="svg-icon"><g stroke-width="2" stroke-linecap="round" stroke="#fff"><rect y="5" x="4" width="16" rx="2" height="16"></rect><path d="m8 3v4"></path><path d="m16 3v4"></path><path d="m4 11h16"></path></g></svg>
-				<span class="lable">Reservar</span>
-			</button>
+			<div class="row">
+				<div class="col">
+					<button @onclick="() => Reservar(Viaje.ViajeId)" class="button">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none" class="svg-icon"><g stroke-width="2" stroke-linecap="round" stroke="#fff"><rect y="5" x="4" width="16" rx="2" height="16"></rect><path d="m8 3v4"></path><path d="m16 3v4"></path><path d="m4 11h16"></path></g></svg>
+						<span class="lable">Eliminar</span>
+					</button>
+				</div>
+				<div class="col">
+					<button @onclick="() => Reservar(Viaje.ViajeId)" class="button">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none" class="svg-icon"><g stroke-width="2" stroke-linecap="round" stroke="#fff"><rect y="5" x="4" width="16" rx="2" height="16"></rect><path d="m8 3v4"></path><path d="m16 3v4"></path><path d="m4 11h16"></path></g></svg>
+						<span class="lable">Editar</span>
+					</button>
+				</div>
+				<div class="col">
+					<button @onclick="() => Reservar(Viaje.ViajeId)" class="button">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none" class="svg-icon"><g stroke-width="2" stroke-linecap="round" stroke="#fff"><rect y="5" x="4" width="16" rx="2" height="16"></rect><path d="m8 3v4"></path><path d="m16 3v4"></path><path d="m4 11h16"></path></g></svg>
+						<span class="lable">Reservar</span>
+					</button>
+				</div>
+				
+			</div>
+		
+			
 		</div>
 	</div>
 </div>
 <style>
 	/* From Uiverse.io by andrew-demchenk0 */ 
-.a {
+.button {
   display: flex;
   justify-content: center;
   align-items: center;
