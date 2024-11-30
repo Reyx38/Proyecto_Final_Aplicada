@@ -22,7 +22,8 @@ namespace ReyAI_Trasport.Services.Services
                ExisteVehiculo = p.ExisteVehiculo,
                ExisteLicencia = p.ExisteLicencia,
                EstadoTId = p.EstadoTId,
-               CiudadId = p.CiudadId
+               CiudadId = p.CiudadId,
+               NombreCiudad = p.Ciudad.Nombre
            })
            .FirstOrDefaultAsync();
             return taxista ?? new TaxistaDto();
@@ -55,7 +56,7 @@ namespace ReyAI_Trasport.Services.Services
                 PasswordHash = taxistaDto.Password,
                 ExisteVehiculo = taxistaDto.ExisteVehiculo,
                 ExisteLicencia = taxistaDto.ExisteLicencia,
-                EstadoTId = taxistaDto.EstadoTId, 
+                EstadoTId = 1, 
                 CiudadId = taxistaDto.CiudadId
             };
             contexto.Taxistas.Add(taxista);
@@ -108,10 +109,19 @@ namespace ReyAI_Trasport.Services.Services
 				ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
                 EstadoTId = f.EstadoTId,
-                CiudadId = f.CiudadId
+                CiudadId = f.CiudadId,
+                NombreCiudad = f.Ciudad.Nombre
+
             })
             .Where(criterio)
             .ToListAsync();
         }
-    }
+
+        public async Task<bool> ViajePendiente(string id)
+        {
+			await using var contexto = await DbFactory.CreateDbContextAsync();
+            return await contexto.Viajes
+                .AnyAsync(v => v.EstadoVId == 1 ||  v.EstadoVId == 2 && v.TaxistaId == id);
+		}
+	}
 }
