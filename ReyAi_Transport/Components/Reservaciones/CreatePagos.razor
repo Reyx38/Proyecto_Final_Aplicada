@@ -157,6 +157,7 @@
                     return;
                 }
                 PagoDto.ReservacionId = ReservacionDto.ReservacionId;
+                PagoDto.Fecha = DateTime.Now;
                 var realizado = await pagosServices.Guardar(PagoDto);
                 ReservacionDto.Pago = true;
                 var actualizar = await reservacionesServices.Guardar(ReservacionDto);
