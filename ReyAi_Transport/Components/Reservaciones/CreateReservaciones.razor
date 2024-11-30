@@ -115,6 +115,16 @@
 		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User;
 
+		if (user.Identity != null && user.Identity.IsAuthenticated)
+		{
+			ReservacionDto.ClienteId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+		}
+		else
+		{
+			Mensaje = "Usuario no autenticado";
+			navigationManager.NavigateTo("/Account/Login");
+		}
+
 		ReservacionDto.Fecha = DateTime.Now;
 		ReservacionDto.ViajeId = ViajeId;
 		ListaArticulos = await detallesServices.Listar(a => a.ArticuloId > 0);
@@ -160,7 +170,7 @@
 
 	private async void CalcularMonto()
 	{
-		ViajeDto = await viajeServices.Buscar(ViajeId);
+		ViajeDto = await viajeServices.Buscar(ReservacionDto.ViajeId);
 
 		ReservacionDto.Monto = ViajeDto.Precio * ReservacionDto.CantidadPasajeros + ReservacionDto.ReservacionDetalles.Sum(a => a.Precio);
 	}
