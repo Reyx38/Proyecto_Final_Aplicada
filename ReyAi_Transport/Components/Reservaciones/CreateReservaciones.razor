@@ -190,6 +190,7 @@
 			return;
 		}
 		CalcularMonto();
+		ReservacionDto.EstadoId = 1;
 		ReservacionDto.Pago = false;
 		await GenerarRecibo();
 		var crear = await reservacionesServices.Guardar(ReservacionDto);
