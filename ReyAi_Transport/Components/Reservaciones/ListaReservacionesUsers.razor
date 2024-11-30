@@ -2,6 +2,7 @@
 
 @inject ReservacionesServices ReservacionesService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject TaxistaServices taxistaServices
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 <link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
@@ -112,6 +113,7 @@
 @code {
     private List<ReservacionesDto> Reservaciones = new();
     public ReservacionesDto ReservacionDto { get; set; } = new ReservacionesDto();
+    private TaxistaDto Taxista { get; set; } = new TaxistaDto();
     private string mensaje = string.Empty;
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
@@ -146,6 +148,8 @@
 
     private async Task CambiarEstado(ReservacionesDto reservacion, int nuevoEstado)
     {
+        Taxista.EstadoTId = 1;
+        var guardarT = await taxistaServices.Guardar(Taxista);
         reservacion.EstadoId = nuevoEstado;
         var guardado = await ReservacionesService.Guardar(reservacion);
         if (guardado)
