@@ -4,7 +4,10 @@
 @inject TaxistaServices taxistasServices
 @inject DestinosCercasServices destinosCercaService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager navigationManager
 @rendermode InteractiveServer
+@*Crear las notificaciones y terminar de ajustar la redireccion*@
+
 <link rel="stylesheet" href="/Estilos/CrearViaje/StyleCrearViajes.css" />
 <EditForm model="ViajeRapidoDto" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
@@ -130,6 +133,16 @@
 
     public async Task Guardar()
     {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        // Verificar si el usuario no está autenticado
+        if (user.Identity == null || !user.Identity.IsAuthenticated)
+        {
+            Mensaje = "Debe iniciar sesión para guardar un viaje rápido.";
+            return;
+            navigationManager.NavigateTo("/Account/Login");
+        }
         if(await Validar())
         {
             Mensaje = "Ya tienes un viaje";
