@@ -104,7 +104,9 @@ public class ViajesRapidosServices(IDbContextFactory<ApplicationDbContext> DbFac
             Precio = p.Precio,
             TaxistaId = p.TaxistaId,
             ClienteId = p.ClienteId,
-            personas = p.personas
+            personas = p.personas,
+            Estado = p.EstadoViaje.Descripcion,
+            Destino = p.DestinoCerca.Descripcion
         })
         .Where(criterio)
         .ToListAsync();

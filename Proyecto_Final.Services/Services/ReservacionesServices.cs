@@ -55,6 +55,13 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
             .AnyAsync(e => e.ReservacionId != reservacionId
             && e.ViajeId == ViajeId && e.Fecha == fecha);
     }
+    public async Task<bool> ReservacionesTaxistas(int reservacionId, string taxista, DateTime fecha)
+    {
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        return await contexto.Reservaciones
+            .AnyAsync(e => e.ReservacionId != reservacionId
+            && e.Viaje.TaxistaId == taxista && e.Fecha == fecha);
+    }
 
     private async Task<bool> Insertar(ReservacionesDto reservacionDto)
     {

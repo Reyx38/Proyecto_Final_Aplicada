@@ -1,9 +1,6 @@
-﻿@page "/ListaPagos/Users"
+﻿@page "/ListaViajesRapidos"
 
-@inject ReservacionesServices ReservacionesService
-@inject PagosServices pagosServices
-@inject AuthenticationStateProvider AuthenticationStateProvider
-@inject NavigationManager navigationManager
+@inject ViajesRapidosServices viajesRapidoService
 @rendermode InteractiveServer
 <link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
 
@@ -11,7 +8,7 @@
     <div class="overlay">
         <div class="detalles-container">
             <div class="card-header">
-                <h5 class="card-title">Lista de Pagos realizados</h5>
+                <h5 class="card-title">Lista de Viajes rapidos</h5>
             </div>
             <div class="card-body">
                 @*labels*@
@@ -34,8 +31,9 @@
                     <div class="col-3">
                         <InputSelect class="form-select" @bind-Value="Filtro">
                             <option value="" selected disabled>Elija una opci&oacute;n</option>
-                            <option value="ID Pago">ID Pagoo</option>
-                            <option value="Monto">Monto</option>
+                            <option value="Destino">Destino</option>
+                            <option value="ID Viaje">ID Viaje</option>
+                            <option value="Estado">Estado</option>
                             <option value="Fecha">Fecha</option>
 
                         </InputSelect>
@@ -73,14 +71,33 @@
                         }
                     </div>
                     <div>
-                        <QuickGrid Items="@(Pagos.AsQueryable())" DefaultSort="@sortByFecha">
+                        <QuickGrid Items="@(ViajeRapidosDto.AsQueryable())" DefaultSort="@sortByFecha">
                             <div class="flex items-center">
-                                <PropertyColumn Title="ID Pago" Property="@(r => r.ReservacionId)" />
+                                <PropertyColumn Title="ID Viaje" Property="@(r => r.ViajeRapidoId)" />
                                 <PropertyColumn Title="Fecha" Property="@(r => r.Fecha)" Format="dd/MM/yyyy" />
-                                <PropertyColumn Title="Monto" Property="@(r => r.Monto)" />
+                                <PropertyColumn Title="Monto" Property="@(r => r.Precio)" />
+                                <PropertyColumn Title="Pasajesros" Property="@(r => r.personas)" />
+                                <PropertyColumn Title="Destino" Property="@(r => r.Destino)" />
+                                <PropertyColumn Title="Estado" Property="@(r => r.Estado)" />
 
                             </div>
 
+                            <TemplateColumn Title="Acciones">
+                                <div class="flex items-center">
+                                    <button class="btn btn-primary btn-sm me-1 bi bi-clipboard2-check"
+                                            @onclick="@(() => CambiarEstado(context, 2))">
+                                        
+                                    </button>
+                                    <button class="btn btn-success btn-sm me-1 bi bi-check-square"
+                                            @onclick="@(() => CambiarEstado(context, 3))">
+                                        
+                                    </button>
+                                    <button class="btn btn-danger btn-sm bi bi-clipboard2-x"
+                                            @onclick="@(() => CambiarEstado(context, 4))">
+                                        
+                                    </button>
+                                </div>
+                            </TemplateColumn>
                         </QuickGrid>
                     </div>
                 </div>
@@ -95,8 +112,7 @@
 <p><strong>@mensaje</strong></p>
 
 @code {
-    private List<PagosDto> Pagos = new();
-    public PagosDto PagoDto { get; set; } = new PagosDto();
+    public List<ViajesRapidosDto> ViajeRapidosDto = new();
     private string mensaje = string.Empty;
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
@@ -104,60 +120,66 @@
     public DateTime? Hasta { get; set; }
 
     // Configuración de ordenamiento por defecto (por fecha de la reservación)
-    GridSort<PagosDto> sortByFecha = GridSort<PagosDto>
+    GridSort<ReservacionesDto> sortByFecha = GridSort<ReservacionesDto>
         .ByAscending(r => r.Fecha);
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
+        await CargarLista();
+    }
 
-        if (user.Identity != null && user.Identity.IsAuthenticated)
+    private async Task CargarLista()
+    {
+        ViajeRapidosDto = await viajesRapidoService.Listar(r => true); // Cargar todas las reservaciones
+    }
+
+    private async Task CambiarEstado(ViajesRapidosDto viaje, int nuevoEstado)
+    {
+        viaje.EstadoVId = nuevoEstado;
+        var guardado = await viajesRapidoService.Guardar(viaje);
+        if (guardado)
         {
-            PagoDto.ClienteId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            mensaje = $"Viaje Rapido {viaje.ViajeRapidoId} marcado como {viaje.Estado}.";
+            await CargarLista(); // Refresca la lista
         }
         else
         {
-            mensaje = "Usuario no autenticado";
-            navigationManager.NavigateTo("/Account/Login");
+            mensaje = "Error al actualizar el estado.";
         }
-        await CargarReservaciones();
-    }
-
-    private async Task CargarReservaciones()
-    {
-        Pagos = await pagosServices.Listar(r => r.ClienteId == PagoDto.ClienteId);
     }
 
     private async Task Buscar()
     {
         if (ValorFiltro.Trim() != "")
         {
-            if (Filtro == "Monto" && double.TryParse(ValorFiltro, out double monto))
+            if (Filtro == "Destino")
             {
-                Pagos = await pagosServices
-                .Listar(e => e.ClienteId == PagoDto.ClienteId && e.Monto == monto);
+                ViajeRapidosDto = await viajesRapidoService.Listar(e => e.Destino.ToLower().Contains(ValorFiltro.ToLower()));
             }
-            else if (Filtro == "ID Pago" && int.TryParse(ValorFiltro, out int pagoId))
+            else if (Filtro == "Estado")
             {
-                Pagos = await pagosServices.Listar(e => e.ClienteId == PagoDto.ClienteId && e.PagoId == pagoId);
+                ViajeRapidosDto = await viajesRapidoService.Listar(e => e.Estado.ToLower().Contains(ValorFiltro.ToLower()));
+            }
+            else if (Filtro == "ID Viaje" && int.TryParse(ValorFiltro, out int viajeId))
+            {
+                ViajeRapidosDto = await viajesRapidoService.Listar(e => e.ViajeRapidoId == viajeId);
             }
         }
         else if (Filtro == "Fecha")
         {
-            Pagos = await pagosServices
-            .Listar(f => f.ClienteId == PagoDto.ClienteId && f.Fecha >= Desde && f.Fecha <= Hasta);
+            ViajeRapidosDto = await viajesRapidoService
+            .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
         }
         else
         {
-            Pagos = await pagosServices.Listar(e => e.ClienteId == PagoDto.ClienteId && e.PagoId > 0);
+            ViajeRapidosDto = await viajesRapidoService.Listar(e => e.ViajeRapidoId > 0);
         }
 
     }
 
     private async Task Restablecer()
     {
-        Pagos = await pagosServices.Listar(r => r.ClienteId == PagoDto.ClienteId && r.ClienteId == PagoDto.ClienteId);
+        ViajeRapidosDto = await viajesRapidoService.Listar(e => e.ViajeRapidoId > 0);
         Filtro = string.Empty;
         ValorFiltro = string.Empty;
     }
