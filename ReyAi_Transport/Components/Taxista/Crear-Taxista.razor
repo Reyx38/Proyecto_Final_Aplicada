@@ -1,6 +1,8 @@
 ﻿@page "/Taxista/Crear"
 @rendermode InteractiveServer
 @inject CiudadServices CiudadService
+@inject TaxistaServices TaxistaService
+@inject NavigationManager NavigationManager
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 
 <PageTitle>Agregar Conductor</PageTitle>
@@ -131,5 +133,8 @@
 		ListCiudades = await CiudadService.Listar(c => true);
 	}
 	public async Task Guardar()
-	{ }
+	{
+		await TaxistaService.Guardar(TaxistaDto);
+		NavigationManager.NavigateTo("/");
+	}
 }
