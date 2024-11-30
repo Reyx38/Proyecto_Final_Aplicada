@@ -1,0 +1,150 @@
+﻿@page "/ListaPagos"
+
+@inject ReservacionesServices ReservacionesService
+@inject PagosServices pagosServices
+@rendermode InteractiveServer
+<link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
+
+<div class="container">
+    <div class="overlay">
+        <div class="detalles-container">
+            <div class="card-header">
+                <h5 class="card-title">Lista de reservaciones</h5>
+            </div>
+            <div class="card-body">
+                @*labels*@
+                <div class="row">
+
+                    @*Filtrar por*@
+                    <div class="col-3">
+                        <label class="col-form-label"><strong>Filtrar por</strong></label>
+                    </div>
+
+                    @*ValorFiltro*@
+                    <div class="col-4">
+                        <label class="col-form-label"><strong>B&uacute;squeda</strong></label>
+                    </div>
+                </div>
+
+                @*Inputs y botones*@
+                <div class="row align-items-center">
+                    @*filtro*@
+                    <div class="col-3">
+                        <InputSelect class="form-select" @bind-Value="Filtro">
+                            <option value="" selected disabled>Elija una opci&oacute;n</option>
+                            <option value="ID Pago">ID Pagoo</option>
+                            <option value="Monto">Monto</option>
+                            <option value="Fecha">Fecha</option>
+
+                        </InputSelect>
+                    </div>
+
+                    @*Busqueda*@
+                    <div class="col-4">
+                        <div class="input-group">
+                            <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+                            <button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
+                        </div>
+                    </div>
+
+                    @*Restablecer*@
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-outline-secondary bi bi-arrow-clockwise" @onclick="Restablecer"></button>
+                    </div>
+                    <div class="row mt-3">
+
+                        @if (Filtro == "Fecha")
+                        {
+                            @*Desde*@
+                            <div class="col-3">
+                                <label class="col-form-label"><strong>Desde</strong></label>
+                                <InputDate class="form-control" @bind-Value="Desde"></InputDate>
+                            </div>
+
+                            @*Hasta*@
+                            <div class="col-3">
+                                <label class="col-form-label"><strong>Hasta</strong></label>
+                                <div class="input-group">
+                                    <InputDate class="form-control" @bind-Value="Hasta"></InputDate>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div>
+                        <QuickGrid Items="@(Pagos.AsQueryable())" DefaultSort="@sortByFecha">
+                            <div class="flex items-center">
+                                <PropertyColumn Title="ID Pago" Property="@(r => r.ReservacionId)" />
+                                <PropertyColumn Title="Fecha" Property="@(r => r.Fecha)" Format="dd/MM/yyyy" />
+                                <PropertyColumn Title="Monto" Property="@(r => r.Monto)" />
+
+                            </div>
+
+                        </QuickGrid>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p><strong>@mensaje</strong></p>
+
+@code {
+    private List<PagosDto> Pagos = new();
+    private string mensaje = string.Empty;
+    public string Filtro { get; set; } = string.Empty;
+    public string ValorFiltro { get; set; } = string.Empty;
+    public DateTime? Desde { get; set; }
+    public DateTime? Hasta { get; set; }
+
+    // Configuración de ordenamiento por defecto (por fecha de la reservación)
+    GridSort<PagosDto> sortByFecha = GridSort<PagosDto>
+        .ByAscending(r => r.Fecha);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarReservaciones();
+    }
+
+    private async Task CargarReservaciones()
+    {
+        Pagos = await pagosServices.Listar(r => true);
+    }
+
+    private async Task Buscar()
+    {
+        if (ValorFiltro.Trim() != "")
+        {
+            if (Filtro == "Monto" && double.TryParse(ValorFiltro, out double monto))
+            {
+                Pagos = await pagosServices
+                .Listar(e => e.Monto == monto);
+            }
+            else if (Filtro == "ID Pago" && int.TryParse(ValorFiltro, out int pagoId))
+            {
+                Pagos = await pagosServices.Listar(e => e.PagoId == pagoId);
+            }
+        }
+        else if (Filtro == "Fecha")
+        {
+            Pagos = await pagosServices
+            .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
+        }
+        else
+        {
+            Pagos = await pagosServices.Listar(e => e.PagoId > 0);
+        }
+
+    }
+
+    private async Task Restablecer()
+    {
+        Pagos = await pagosServices.Listar(e => e.PagoId > 0);
+        Filtro = string.Empty;
+        ValorFiltro = string.Empty;
+    }
+
+}
