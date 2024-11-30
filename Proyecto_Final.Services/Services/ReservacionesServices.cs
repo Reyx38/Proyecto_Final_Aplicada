@@ -33,7 +33,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
            Recibo = p.Recibo,
            CantidadPasajeros = p.CantidadPasajeros,
            Monto = p.Monto,
-           EstadoId = p.Estado,
+           EstadoId = p.EstadoId,
            ReservacionDetalles = p.ReservacionDetalles.Select(i => new ReservacionDetallesDto()
            {
 			   DetalleId = i.DetalleId,
