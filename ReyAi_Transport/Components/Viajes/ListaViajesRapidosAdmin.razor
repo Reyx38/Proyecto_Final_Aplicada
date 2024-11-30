@@ -96,8 +96,12 @@
                                             @onclick="@(() => CambiarEstado(context, 4))">
                                         
                                     </button>
+                                    <button class="btn btn-danger btn-sm bi bi-trash"
+                                            @onclick="@(() => AbrirModal(context))">
+                                    </button>
                                 </div>
                             </TemplateColumn>
+                            
                         </QuickGrid>
                     </div>
                 </div>
@@ -110,6 +114,23 @@
 </div>
 
 <p><strong>@mensaje</strong></p>
+<div class="modal fade @(MostrarModal ? "show d-block" : "d-none")" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmacion de eliminar</h5>
+                <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estas seguro de eliminar el viaje rapido <strong>@ViajeDto.ViajeRapidoId</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     public List<ViajesRapidosDto> ViajeRapidosDto = new();
@@ -118,7 +139,8 @@
     public string ValorFiltro { get; set; } = string.Empty;
     public DateTime? Desde { get; set; }
     public DateTime? Hasta { get; set; }
-
+    public bool MostrarModal { get; set; } = false;
+    public ViajesRapidosDto ViajeDto { get; set; } = new ViajesRapidosDto();
     // Configuración de ordenamiento por defecto (por fecha de la reservación)
     GridSort<ReservacionesDto> sortByFecha = GridSort<ReservacionesDto>
         .ByAscending(r => r.Fecha);
@@ -183,5 +205,32 @@
         Filtro = string.Empty;
         ValorFiltro = string.Empty;
     }
-
+    private void AbrirModal(ViajesRapidosDto viaje)
+    {
+        ViajeDto = viaje;
+        MostrarModal = true;
+    }
+    private void CerrarModal()
+    {
+        MostrarModal = false;
+        ViajeDto = new ViajesRapidosDto();
+    }
+    private async Task Eliminar()
+    {
+        if (ViajeDto.EstadoVId == 4)
+        {
+            var eliminado = await viajesRapidoService.Eliminar(ViajeDto.ViajeRapidoId);
+            if (eliminado)
+            {
+                mensaje = $"Reservación {ViajeDto.ViajeRapidoId} eliminada con éxito.";
+                await CargarLista();
+            }
+            else
+            {
+                mensaje = "Error al eliminar la reservación.";
+                CerrarModal();
+            }
+            CerrarModal();
+        }
+    }
 }
