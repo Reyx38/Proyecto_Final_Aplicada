@@ -95,7 +95,8 @@ public class PagosServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
             PagoId = f.PagoId,
             Monto = f.Monto,
             Fecha = f.Fecha,
-            ReservacionId = f.ReservacionId
+            ReservacionId = f.ReservacionId,
+            ClienteId = f.Reservacion.ClienteId
         })
         .Where(criterio)
         .ToListAsync();

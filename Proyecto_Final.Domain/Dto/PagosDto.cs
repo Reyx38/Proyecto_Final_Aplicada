@@ -18,4 +18,5 @@ public class PagosDto
     public DateTime Fecha { get; set; } = DateTime.Now;
 
     public int ReservacionId { get; set; }
+    public string? ClienteId { get; set; }
 }
