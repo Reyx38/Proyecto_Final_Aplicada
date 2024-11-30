@@ -168,7 +168,33 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
         .ToListAsync();
     }
 
-	public async Task AfectarCantidad(ReservacionDetallesDto[] detalles, bool resta)
+    public async Task<bool> Eliminar(int id)
+    {
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        var reservacion = contexto.Reservaciones.Find(id);
+        if (reservacion == null)
+            return false;
+        var reserva = new ReservacionesDto()
+        {
+            
+            ReservacionDetalles = reservacion.ReservacionDetalles.Select(detalle => new ReservacionDetallesDto
+            {
+                DetalleId = detalle.DetalleId,
+                ArticuloId = detalle.ArticuloId,
+                Cantidad = detalle.Cantidad,
+                Precio = detalle.Precio,
+                ReservacionId = detalle.ReservacionId
+            }).ToList()
+        };
+
+        await AfectarCantidad(reserva.ReservacionDetalles.ToArray(), false);
+        return await contexto.Reservaciones
+            .Include(m => m.ReservacionDetalles)
+            .Where(m => m.ReservacionId == reservacion.ReservacionId)
+            .ExecuteDeleteAsync() > 0;
+    }
+
+    public async Task AfectarCantidad(ReservacionDetallesDto[] detalles, bool resta)
 	{
 		await using var contexto = await DbFactory.CreateDbContextAsync();
 		foreach (var item in detalles)
