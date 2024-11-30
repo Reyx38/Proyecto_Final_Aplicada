@@ -19,12 +19,9 @@
                         <button class="btn btn-buscar" type="button" @onclick="AplicarFiltro">Buscar</button>
                     </div>
                 </div>
-
-                <!-- Enlace entre los botones de filtro -->
                 <div class="col-md-1 text-center d-flex align-items-center justify-content-center">
                     <a href="/Taxista/Crear" class="btn btn-sm btn-accion btn-contratar me-2">Crear</a>
                 </div>
-
                 <div class="col-md-3 text-md-end">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-disponible" @onclick="MostrarDisponibles">Disponible</button>
@@ -51,23 +48,15 @@
                             <tr>
                                 <td>@(taxista.TaxistaId.Length > 10 ? taxista.TaxistaId.Substring(0, 10) : taxista.TaxistaId)</td>
                                 <td>@taxista.NickName</td>
-                                <td>@taxista.CiudadId</td>
+                                <td>@taxista.NombreCiudad</td>
                                 <td>
                                     <span class="estado @(taxista.EstadoTId == 1 ? "disponible" : "ocupado")">
-                                        @if (taxista.EstadoTId == 1)
-                                        {
-                                            Estado = "Disponible";
-                                        }
-                                        else
-                                        {
-                                            Estado = "Ocupado";
-                                        }
-                                        @Estado
+                                        @(taxista.EstadoTId == 1 ? "Disponible" : "Ocupado")
                                     </span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-accion btn-contratar me-2" @onclick="@(() => Contratar(taxista))">Editar</button>
-                                    <button class="btn btn-sm btn-accion btn-despedir" @onclick="@(() => Despedir(taxista))">Despedir</button>
+                                    <a href="/Taxista/Editar/@taxista.TaxistaId" class="btn btn-sm btn-accion btn-contratar me-2">Editar</a>
+                                    <button class="btn btn-sm btn-accion btn-despedir" @onclick="@(() => AbrirModalDespedir(taxista))">Despedir</button>
                                 </td>
                             </tr>
                         }
@@ -78,10 +67,30 @@
     </div>
 </div>
 
+<!-- Modal para despedir -->
+<div class="modal fade @(MostrarModal ? "show d-block" : "d-none")" tabindex="-1" style="background-color: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar Despido</h5>
+                <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas despedir a <strong>@TaxistaSeleccionado?.NickName</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                <button type="button" class="btn btn-danger" @onclick="DespedirConfirmado">Despedir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @code {
     public List<TaxistaDto> ListTaxistas { get; set; } = new();
     public string Filtro { get; set; } = "";
-    public string Estado { get; set; } = "";
+    public TaxistaDto? TaxistaSeleccionado { get; set; }
+    public bool MostrarModal { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -111,13 +120,28 @@
         ListTaxistas = await TaxistaService.Listar(t => t.EstadoTId != 1);
     }
 
-    private void Contratar(TaxistaDto taxista)
+    private void AbrirModalDespedir(TaxistaDto taxista)
     {
-        // Acción para contratar
+        TaxistaSeleccionado = taxista;
+        MostrarModal = true;
     }
 
-    private void Despedir(TaxistaDto taxista)
+    private void CerrarModal()
     {
-        // Acción para despedir
+        MostrarModal = false;
+        TaxistaSeleccionado = null;
     }
+
+    private async Task DespedirConfirmado()
+    {
+        if (TaxistaSeleccionado != null)
+        {
+            // Lógica para despedir al taxista
+            await TaxistaService.Eliminar(TaxistaSeleccionado.TaxistaId);
+            ListTaxistas = await TaxistaService.Listar(t => true); // Actualizar la lista
+        }
+        CerrarModal();
+    }
+
+    
 }

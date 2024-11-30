@@ -1,4 +1,4 @@
-﻿@page "/Taxista/Crear"
+﻿@page "/Taxista/Editar/{TaxistaId?}"
 @rendermode InteractiveServer
 @inject CiudadServices CiudadService
 @inject TaxistaServices TaxistaService
@@ -124,6 +124,8 @@
 </style>
 
 @code {
+	[Parameter]
+	public string TaxistaId { get; set; } = "";
 	public TaxistaDto TaxistaDto { get; set; } = new();
 	public List<CiudadesDto> ListCiudades { get; set; } = [];
 	public string ConfirmPassword { get; set; } = "";
@@ -131,6 +133,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		ListCiudades = await CiudadService.Listar(c => true);
+		TaxistaDto = await TaxistaService.Buscar(TaxistaId);
 	}
 	public async Task Guardar()
 	{

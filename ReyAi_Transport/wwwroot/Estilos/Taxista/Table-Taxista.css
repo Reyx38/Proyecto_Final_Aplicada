@@ -18,20 +18,21 @@
     background-color: rgba(0, 0, 0, 0.4);
     z-index: 3;
 }
+
 .listado-taxistas .titulo {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #4a90e2;
+    color: #ffaf7a;
     text-transform: uppercase;
 }
 
 .filtros .input-busqueda {
-    border: 2px solid #4a90e2;
+    border: 2px solid #00b7c5;
     border-radius: 5px;
 }
 
 .filtros .btn-buscar {
-    background-color: #4a90e2;
+    background-color: #00b7c5;
     color: white;
     border-radius: 0 5px 5px 0;
 }
@@ -81,7 +82,7 @@
 
     .tabla-taxistas th {
         background-color: #f8f9fa;
-        color: #4a90e2;
+        color: #00b7c5;
         font-weight: bold;
     }
 
@@ -107,7 +108,7 @@
 }
 
 .btn-contratar {
-    background-color: #007bff;
+    background-color: #ffaf7a;
 }
 
 .btn-despedir {
