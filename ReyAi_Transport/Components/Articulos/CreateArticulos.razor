@@ -1,0 +1,104 @@
+﻿@page "/Create/Articulos"
+
+@inject ArticulosServices articulosServices
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
+
+<PageTitle>Articulos</PageTitle>
+<EditForm Model="ArticuloDto" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+	<div class="overlay"></div>
+	<div class="container">
+		<div class="overlay card">
+			<div class="card-header">
+				<h2>Registro de articulos</h2>
+			</div>
+			<div class="card-body">
+
+				<div class="row mb-3">
+					@*Descripcion*@
+					<div class="col-md-4">
+						<label class="form-label">Descripcion</label>
+					</div>
+					@*Costo*@
+					<div class="col-md-4">
+						<label class="form-label">Costo</label>
+					</div>
+					@*Precio*@
+					<div class="col-md-4">
+						<label class="form-label fs-6">Precio</label>
+					</div>
+					
+				</div>
+				<div class="row mb-3">
+					@*Descripcion*@
+					<div class="col-md-4">
+						<InputText class="form-control" @bind-Value="ArticuloDto.Descripcion"></InputText>
+					</div>
+					@*Costo*@
+					<div class="col-md-4">
+						<InputNumber class="form-control" @bind-Value="ArticuloDto.Costo"  placeholder="DOP$"></InputNumber>
+					</div>
+					@*Precio*@
+					<div class="col-md-4">
+						<InputNumber class="form-control" @bind-Value="ArticuloDto.Precio" placeholder="DOP$"></InputNumber>
+					</div>
+					
+				</div>
+				<div class="row mb-3">
+					
+					@*Existencia*@
+					<div class="col-md-4">
+						<label class="form-label fs-6">Existencia</label>
+					</div>
+				</div>
+				<div class="row mb-3">
+				
+					@*Existencia*@
+					<div class="col-md-4">
+						<InputNumber class="form-control" @bind-Value="ArticuloDto.Existencia"></InputNumber>
+					</div>
+				</div>
+					
+				<div class="card-footer">
+					<a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
+					<button type="submit" class="btn btn-danger mt-2">Guardar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</EditForm>
+
+@code {
+    public ArticulosDto ArticuloDto { get; set; } = new ArticulosDto();
+    public string Mensaje { get; set; }
+
+    private async Task<bool> Validar()
+    {
+        var valido = await articulosServices.ExisteArticulo(ArticuloDto.Descripcion, ArticuloDto.ArticuloId);
+        return valido;
+    }
+
+    private async Task Guardar()
+    {
+        if (await Validar())
+        {
+            Mensaje = "Ya existe un articulo con esta descripcion";
+            return;
+        }
+
+        var crear = await articulosServices.Guardar(ArticuloDto);
+
+        if (crear)
+        {
+            Mensaje = "Se a creado con exito";
+        }
+        else
+        {
+            Mensaje = "No se a creado con exito";
+        }
+    }
+}
