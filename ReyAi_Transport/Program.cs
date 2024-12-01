@@ -24,6 +24,7 @@ builder.Services.AddScoped<EstadoServices>();
 builder.Services.AddScoped<ReservacionesServices>();
 builder.Services.AddScoped<ReservacionDetallesServices>();
 builder.Services.AddScoped<PagosServices>();
+builder.Services.AddScoped<ArticulosServices>();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
