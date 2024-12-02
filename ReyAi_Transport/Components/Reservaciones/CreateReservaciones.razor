@@ -30,32 +30,34 @@
 					</InputSelect>
 				</div>
 
-				<div class="row mb-3">
-					@*Fecha Viaje*@
-					<div class="col-md-4">
-						<label class="form-label">Fecha</label>
+				<div class="row">
+					<div class="row mb-3">
+						@*Fecha Viaje*@
+						<div class="col-md-4">
+							<label class="form-label">Fecha</label>
+						</div>
+						@*Cantidad de personas*@
+						<div class="col-md-4">
+							<label class="form-label">Cantidad de pasajeros</label>
+						</div>
+						@*Precio*@
+						<div class="col-md-4">
+							<label class="form-label fs-6">Costo</label>
+						</div>
 					</div>
-					@*Cantidad de personas*@
-					<div class="col-md-4">
-						<label class="form-label">Cantidad de pasajeros</label>
-					</div>
-					@*Precio*@
-					<div class="col-md-4">
-						<label class="form-label fs-6">Costo</label>
-					</div>
-				</div>
-				<div class="row mb-3">
-					@*Fecha Viaje*@
-					<div class="col-md-4">
-						<InputDate class="form-control" @bind-Value="ReservacionDto.Fecha" />
-					</div>
-					@*Cantidad de personas*@
-					<div class="col-md-4">
-						<InputNumber class="form-control" @bind-Value="ReservacionDto.CantidadPasajeros" @onchange="CalcularMonto" placeholder="20"></InputNumber>
-					</div>
-					@*Precio*@
-					<div class="col-md-4">
-						<label class="form-label fs-6"><strong>DOP$ @ReservacionDto.Monto.ToString("N2")</strong></label>
+					<div class="row mb-3">
+						@*Fecha Viaje*@
+						<div class="col-md-4">
+							<InputDate class="form-control" @bind-Value="ReservacionDto.Fecha" />
+						</div>
+						@*Cantidad de personas*@
+						<div class="col-md-4">
+							<InputNumber class="form-control" @bind-Value="ReservacionDto.CantidadPasajeros" @onchange="CalcularMonto" placeholder="20"></InputNumber>
+						</div>
+						@*Precio*@
+						<div class="col-md-4">
+							<label class="form-label fs-6"><strong>DOP$ @ReservacionDto.Monto.ToString("N2")</strong></label>
+						</div>
 					</div>
 				</div>
 				<div class="row">

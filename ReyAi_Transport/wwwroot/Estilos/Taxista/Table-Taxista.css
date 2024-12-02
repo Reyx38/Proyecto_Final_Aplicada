@@ -54,7 +54,7 @@
         opacity: 0.9;
     }
 
-/* Enlace de filtro */
+ Enlace de filtro 
 .enlace-filtro {
     font-size: 1rem;
     color: #4a90e2;
@@ -66,18 +66,18 @@
         text-decoration: underline;
     }
 
-/* Tabla */
+ Tabla 
 .tabla-taxistas {
     border-collapse: collapse;
     font-size: 1rem;
     width: 100%;
-    margin: 0 auto; /* Centrar la tabla */
+    margin: 0 auto;  Centrar la tabla 
 }
 
     .tabla-taxistas th,
     .tabla-taxistas td {
-        text-align: center; /* Centrar el texto horizontalmente */
-        vertical-align: middle; /* Centrar el texto verticalmente */
+        text-align: center;  Centrar el texto horizontalmente 
+        vertical-align: middle;  Centrar el texto verticalmente 
     }
 
     .tabla-taxistas th {
@@ -100,7 +100,7 @@
         border-radius: 5px;
     }
 
-/* Botones de acción */
+ Botones de acción 
 .btn-accion {
     color: white;
     padding: 5px 10px;

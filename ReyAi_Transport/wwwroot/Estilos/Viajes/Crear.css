@@ -75,15 +75,16 @@
 
 .btn {
     border-radius: 5px;
-    width: 150px; 
-    padding: 10px; 
-    margin: 5px; 
+    width: 150px;
+    padding: 10px;
+    margin: 5px;
 }
+
 .btnA {
     border-radius: 6px;
-    width: 150px; 
-    padding: 6px; 
-    margin: 3px; 
+    width: 150px;
+    padding: 6px;
+    margin: 3px;
 }
 
 .btn-Guardar {
@@ -92,10 +93,10 @@
     color: white;
 }
 
-    .btn-danger:hover {
-        background-color: rgb(255, 175, 122);
-        border-color: rgb(255, 175, 122);
-    }
+.btn-danger:hover {
+    background-color: rgb(255, 175, 122);
+    border-color: rgb(255, 175, 122);
+}
 
 .btn-light {
     color: rgb(0, 183, 197);
@@ -119,10 +120,97 @@
     color: rgb(255, 109, 58);
     font-weight: bold;
 }
+
 .btn-custom {
     border: 1px solid red;
     background-color: red;
     padding: 10px 5px;
     border-radius: 4px;
     font-size: 12px;
+}
+
+/* Media Queries para responsividad */
+
+@media (max-width: 1024px) {
+    .container {
+        max-width: 700px;
+    }
+
+    .card-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .btn {
+        width: 140px; 
+        padding: 8px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    body {
+        height: 100vh; 
+        padding: 0 20px;
+    }
+
+    .container {
+        max-width: 100%;
+        margin: 10px 0;
+        border-radius: 10px;
+    }
+
+    .card-header h2 {
+        font-size: 1.4rem; 
+    }
+
+    .form-control, .form-select {
+        font-size: 1rem; 
+    }
+
+    .btn {
+        width: 100%; 
+        padding: 12px;
+    }
+
+    .table img {
+        width: 120px; 
+        height: auto; 
+    }
+
+    .btn-custom {
+        padding: 8px 4px;
+        font-size: 11px; 
+    }
+}
+
+/* Pantallas pequeñas (smartphones pequeños) */
+@media (max-width: 480px) {
+    .container {
+        max-width: 100%;
+        margin: 10px 0;
+        border-radius: 8px;
+    }
+
+    .card-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .form-control, .form-select {
+        font-size: 0.9rem; 
+    }
+
+    .btn {
+        width: 100%;
+        padding: 14px; 
+    }
+
+    .table img {
+        width: 100px; 
+        height: auto;
+    }
+
+    .btn-custom {
+        padding: 8px 4px;
+        font-size: 10px; 
+    }
 }
