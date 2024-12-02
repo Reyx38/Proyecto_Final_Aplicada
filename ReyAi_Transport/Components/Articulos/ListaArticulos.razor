@@ -1,0 +1,187 @@
+﻿@page "/Articulos"
+
+@inject ArticulosServices articulosServices
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+<link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
+<div class="container">
+    <div class="overlay">
+        <div class="detalles-container">
+            <div class="card-header">
+                <h5 class="card-title">Lista de articulos</h5>
+            </div>
+            <div class="card-body">
+                @*labels*@
+                <div class="row">
+
+                    @*Filtrar por*@
+                    <div class="col-3">
+                        <label class="col-form-label"><strong>Filtrar por</strong></label>
+                    </div>
+
+                    @*ValorFiltro*@
+                    <div class="col-4">
+                        <label class="col-form-label"><strong>B&uacute;squeda</strong></label>
+                    </div>
+                </div>
+
+                @*Inputs y botones*@
+                <div class="row align-items-center">
+                    @*filtro*@
+                    <div class="col-3">
+                        <InputSelect class="form-select" @bind-Value="Filtro">
+                            <option value="" selected disabled>Elija una opci&oacute;n</option>
+                            <option value="Descripcion">Descripcion</option>
+                            <option value="ID">ID</option>
+                        </InputSelect>
+                    </div>
+
+                    @*Busqueda*@
+                    <div class="col-4">
+                        <div class="input-group">
+                            <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+                            <button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
+                        </div>
+                    </div>
+
+                    @*Restablecer*@
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-outline-secondary bi bi-arrow-clockwise" @onclick="Restablecer"></button>
+                    </div>
+                    @*Crear*@
+                    <div class="col-auto">
+                        <a href="/Create/Articulos" class="btn btn-outline-primary"> Crear </a>
+                    </div>
+                    
+                    <div >
+                        <QuickGrid Items="@(Articulos.AsQueryable())" DefaultSort="@sortByFecha" Class="quickgrid">
+                            <div class="flex items-center">
+                                <PropertyColumn Title="ID" Property="@(r => r.ArticuloId)" />
+                                <PropertyColumn Title="Descripcion" Property="@(r => r.Descripcion)" />
+                                <PropertyColumn Title="Costo" Property="@(r => r.Costo)" />
+                                <PropertyColumn Title="Precio" Property="@(r => r.Precio)" />
+                                <PropertyColumn Title="Existencia" Property="@(r => r.Existencia)" />
+
+                            </div>
+
+                            <TemplateColumn Title="Acciones">
+                                <div class="flex items-center">
+                                    <button class="btn btn-primary btn-sm bi bi-pencil-square"
+                                            @onclick="@(() => Edit(context))">
+                                    </button>
+                                    <button class="btn btn-danger btn-sm bi bi-trash"
+                                            @onclick="@(() => AbrirModal(context))">
+                                    </button>
+                                </div>
+                            </TemplateColumn>
+                        </QuickGrid>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade @(MostrarModal ? "show d-block" : "d-none")" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmacion de eliminar</h5>
+                <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estas seguro de eliminar el viaje rapido <strong>@ArticuloSeleccionado.Descripcion</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<ArticulosDto> Articulos = new();
+
+    private string mensaje = string.Empty;
+    public string Filtro { get; set; } = string.Empty;
+    public string ValorFiltro { get; set; } = string.Empty;
+    public DateTime? Desde { get; set; }
+    public DateTime? Hasta { get; set; }
+    public bool MostrarModal { get; set; } = false;
+    public ArticulosDto ArticuloSeleccionado { get; set; } = new ArticulosDto();
+    // Configuración de ordenamiento por defecto (por fecha de la reservación)
+    GridSort<ArticulosDto> sortByFecha = GridSort<ArticulosDto>
+        .ByAscending(r => r.Existencia);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarReservaciones();
+    }
+
+    private async Task CargarReservaciones()
+    {
+        Articulos = await articulosServices.Listar(r => true); // Cargar todas las reservaciones
+    }
+
+    private async Task Buscar()
+    {
+        if (ValorFiltro.Trim() != "")
+        {
+            if (Filtro == "Descripcion")
+            {
+                Articulos = await articulosServices.Listar(e => e.Descripcion.ToLower().Contains(ValorFiltro.ToLower()));
+            }
+            else if (Filtro == "ID" && int.TryParse(ValorFiltro, out int id))
+            {
+                Articulos = await articulosServices.Listar(e => e.ArticuloId == id);
+            }
+        }
+        else
+        {
+            Articulos = await articulosServices.Listar(e => e.ArticuloId > 0);
+        }
+
+    }
+
+    private void Edit(ArticulosDto articulo)
+    {
+        navigationManager.NavigateTo($"/Create/Articulos/{articulo.ArticuloId}");
+    }
+
+    private async Task Restablecer()
+    {
+        Articulos = await articulosServices.Listar(e => e.ArticuloId > 0);
+        Filtro = string.Empty;
+        ValorFiltro = string.Empty;
+    }
+
+    private void AbrirModal(ArticulosDto articulo)
+    {
+        ArticuloSeleccionado = articulo;
+        MostrarModal = true;
+    }
+    private void CerrarModal()
+    {
+        MostrarModal = false;
+        ArticuloSeleccionado = new ArticulosDto();
+    }
+    private async Task Eliminar()
+    {
+        var eliminado = await articulosServices.Eliminar(ArticuloSeleccionado.ArticuloId);
+        if (eliminado)
+        {
+            mensaje = $"Articulo {ArticuloSeleccionado.ArticuloId} eliminado con éxito.";
+            await CargarReservaciones();
+        }
+        else
+        {
+            mensaje = "Error al eliminar el articulo.";
+            CerrarModal();
+        }
+        CerrarModal();
+    }
+}

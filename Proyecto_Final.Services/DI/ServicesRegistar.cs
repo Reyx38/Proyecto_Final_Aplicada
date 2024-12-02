@@ -21,6 +21,7 @@ public static class ServicesRegistar
         services.AddScoped<IDestinosCercaServices, DestinosCercasServices>();
         services.AddScoped<IReservacionDetallesServices, ReservacionDetallesServices>();
         services.AddScoped<IPagosServices, PagosServices>();
+        services.AddScoped<IArticulosServices, ArticulosServices>();
         return services;
     }
 }
