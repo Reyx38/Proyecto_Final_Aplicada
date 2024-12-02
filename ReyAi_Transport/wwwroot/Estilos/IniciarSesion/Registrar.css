@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    background-image: url("/Imagenes/ImagenesCompartidas/RD.jpg"); 
+    background-image: url("/Imagenes/ImagenesCompartidas/RD.jpg");
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -13,7 +13,8 @@
     align-items: center;
     justify-content: center;
     background: white;
-    width: 800px;
+    width: 900px;
+    height: 500px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     padding: 20px;
@@ -57,7 +58,7 @@
 }
 
 .btn {
-    width: 75%;
+    width: 100%;
     padding: 10px;
     background-color: #F7A072;
     color: white;

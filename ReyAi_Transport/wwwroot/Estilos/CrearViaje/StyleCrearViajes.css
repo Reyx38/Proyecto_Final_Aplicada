@@ -1,4 +1,50 @@
 ﻿
+/*.cont {
+    width: 100%;*/ /* O ajusta según sea necesario */
+    /*height: 332px;*/ /* Cambia este valor para ajustar la altura */
+    /*max-width: 100%;
+    border: 3px solid rgba(250, 250, 250, 0.1);
+    margin: 0 auto;
+    border-radius: 1rem;
+    position: relative;
+}
+
+.row {
+    display: flex;
+    justify-content: flex-start;*/ /* Alineación a la izquierda o ajusta como necesites */
+/*}
+
+
+.glass-effect {
+    background-color: rgba(0, 0, 0, 0.2);*/ /* Fondo semi-transparente */
+    /*backdrop-filter: blur(10px);*/ /* Efecto de desenfoque en el fondo */
+    /*border-radius: 1rem;
+    padding: 10px;
+}
+
+.form-label {
+    color: rgb(255 255 255);
+    text-align: center;
+}
+
+.form-control, .form-select {
+    border: 1px solid rgb(0, 183, 197);
+    transition: border-color 0.3s;
+    border-radius: 15px;
+}
+
+    .form-control:focus, .form-select:focus {
+        border-color: rgb(255, 109, 58);
+        box-shadow: rgba(255, 109, 58, 0.5) 0px 0px 5px;
+    }
+
+.btn {
+    border-radius: 5px;
+    width: 150px;
+    padding: 10px;
+    margin: 5px;
+}*/
+
 .cont {
     width: 100%; /* O ajusta según sea necesario */
     height: 332px; /* Cambia este valor para ajustar la altura */
@@ -13,7 +59,6 @@
     display: flex;
     justify-content: flex-start; /* Alineación a la izquierda o ajusta como necesites */
 }
-
 
 .glass-effect {
     background-color: rgba(0, 0, 0, 0.2); /* Fondo semi-transparente */
@@ -43,4 +88,51 @@
     width: 150px;
     padding: 10px;
     margin: 5px;
+}
+
+/* Responsividad con media queries */
+@media (max-width: 1024px) {
+    .cont {
+        height: auto; /* Ajustar la altura para pantallas medianas */
+    }
+
+    .btn {
+        width: 120px; /* Reducir el tamaño del botón en pantallas medianas */
+    }
+}
+
+@media (max-width: 768px) {
+    .cont {
+        height: auto; /* Ajustar la altura para pantallas más pequeñas */
+        padding: 10px; /* Agregar un poco de padding para mejor espacio en móviles */
+    }
+
+    .row {
+        flex-direction: column; /* Cambiar a columna para pantallas más pequeñas */
+        align-items: center; /* Centrar los elementos */
+    }
+
+    .form-label {
+        font-size: 0.9rem; /* Reducir el tamaño de la fuente de las etiquetas */
+    }
+
+    .form-control, .form-select {
+        width: 100%; /* Asegurar que los campos de entrada ocupen todo el ancho en pantallas pequeñas */
+        margin-bottom: 10px; /* Espaciado entre los campos */
+    }
+
+    .btn {
+        width: 100%; /* Hacer el botón del 100% de ancho */
+    }
+}
+
+@media (max-width: 480px) {
+    .cont {
+        padding: 5px; /* Reducir padding en pantallas muy pequeñas */
+    }
+
+    .btn {
+        width: 100%; /* Botones de 100% de ancho en dispositivos más pequeños */
+        padding: 12px; /* Aumentar el padding del botón en pantallas pequeñas */
+    }
 }

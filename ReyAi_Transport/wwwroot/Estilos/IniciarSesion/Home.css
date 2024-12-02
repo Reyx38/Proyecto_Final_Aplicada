@@ -1,5 +1,6 @@
 ﻿body {
     font-family: Poppins, sans-serif;
+    display: flex;
     justify-content: center;
     align-items: center;
     height: 90vh;
@@ -7,6 +8,7 @@
     background-repeat: no-repeat;
     background-position: center center;
     background-image: url("/Imagenes/MenuPrincipal/RdNocturno.jpg");
+    margin: 0;
 }
 
 .overlay {
@@ -22,6 +24,7 @@
 
 .text-section {
     margin-top: 100px;
+    text-align: center; 
 }
 
     .text-section h1 {
@@ -45,3 +48,53 @@
     .cta-button:hover {
         background-color: #e5b800;
     }
+
+/* Responsividad con media queries */
+@media (max-width: 1024px) {
+    .text-section h1 {
+        font-size: 3rem; 
+    }
+
+    .cta-button {
+        font-size: 1.25rem; 
+        padding: 8px 16px; 
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        height: auto;
+    }
+
+    .text-section {
+        margin-top: 50px;
+    }
+
+        .text-section h1 {
+            font-size: 2.5rem;
+        }
+
+    .cta-button {
+        font-size: 1.2rem;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        height: auto;
+    }
+
+    .text-section {
+        margin-top: 20px;
+    }
+
+        .text-section h1 {
+            font-size: 2rem;
+        }
+
+    .cta-button {
+        font-size: 1rem;
+        padding: 8px 14px;
+    }
+}
