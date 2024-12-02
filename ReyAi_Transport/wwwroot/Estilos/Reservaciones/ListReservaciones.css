@@ -1,4 +1,4 @@
-﻿body {
+﻿/*body {
     font-family: Poppins, sans-serif;
     height: 100vh;
     margin: 0;
@@ -7,19 +7,19 @@
     background-repeat: no-repeat;
     background-position: center;
     background-image: url("/Imagenes/MenuPrincipal/RdNocturno.jpg");
-}
+}*/
 
 /* Stripe effect */
-::deep tbody tr {
+/*::deep tbody tr {
     background-color: rgba(236, 237, 255,0.04);
 }
 
     ::deep tbody tr:nth-child(even) {
         background: rgba(208, 232, 255,0.4);
-    }
+    }*/
 
 /* Button styles*/
-button {
+/*button {
     background: #4969ee;
     color: white;
     padding: 0.2rem 1rem;
@@ -57,4 +57,139 @@ button {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 25px;
+}*/
+
+
+body {
+    font-family: Poppins, sans-serif;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("/Imagenes/MenuPrincipal/RdNocturno.jpg");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333; /* Fallback color */
+}
+
+/* Stripe effect */
+::deep tbody tr {
+    background-color: rgba(236, 237, 255, 0.04);
+}
+
+    ::deep tbody tr:nth-child(even) {
+        background: rgba(208, 232, 255, 0.4);
+    }
+
+/* Button styles */
+button {
+    background: #4969ee;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.25rem;
+    margin: 0.25rem 0.5rem;
+    max-width: 100%;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #6884f9;
+    }
+
+    button:active {
+        background-color: #192e86;
+    }
+
+/* Overlay styles */
+.overlay {
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 2;
+}
+
+/* Container styles */
+.detalles-container {
+    max-width: 900px;
+    width: 100%;
+    margin: 25px auto;
+    padding: 25px;
+    justify-content: center;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* QuickGrid styling (assumed layout) */
+.quickgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Flexible grid */
+    gap: 1rem;
+    padding: 1rem;
+}
+
+    .quickgrid > div {
+        background: #fff;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+
+        .quickgrid > div:hover {
+            transform: translateY(-5px);
+        }
+
+/* Responsiveness with media queries */
+@media (max-width: 1200px) {
+    .detalles-container {
+        max-width: 80%; /* Adjust container width for medium screens */
+    }
+
+    .quickgrid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* More flexible grid */
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        background-size: cover;
+    }
+
+    .detalles-container {
+        padding: 15px; /* Less padding for small screens */
+    }
+
+    button {
+        padding: 0.5rem 1rem; /* Adjust button size */
+    }
+
+    .quickgrid {
+        grid-template-columns: 1fr; /* Single column grid for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        background-size: contain; /* Ensure background fits small screens */
+    }
+
+    .detalles-container {
+        padding: 10px; /* Less padding for tiny screens */
+    }
+
+    button {
+        padding: 0.5rem; /* Adjust button padding */
+        font-size: 0.9rem; /* Smaller font size */
+    }
 }
