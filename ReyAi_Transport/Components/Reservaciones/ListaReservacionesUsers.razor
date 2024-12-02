@@ -100,6 +100,14 @@
                                     </button>
                                 </div>
                             </TemplateColumn>
+                            <TemplateColumn Title="Eliminar">
+                                <div class="flex items-center">
+                                    
+                                    <button class="btn btn-danger btn-sm bi bi-trash"
+                                            @onclick="@(() => AbrirModal(context))">
+                                    </button>
+                                </div>
+                            </TemplateColumn>
                         </QuickGrid>
                     </div>
                 </div>
