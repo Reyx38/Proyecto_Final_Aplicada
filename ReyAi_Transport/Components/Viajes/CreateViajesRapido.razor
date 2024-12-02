@@ -57,7 +57,7 @@
                     <option selected disabled value="0">-- Seleccione un conductor --</option>
                     @foreach (var taxista in ListaTaxistas)
                     {
-                        <option value="@taxista.TaxistaId">@taxista.NickName</option>
+                        <option value="@taxista.TaxistaId">@taxista.NickName (@taxista.NombreCiudad)</option>
                     }
                 </InputSelect>
             </div>
@@ -150,7 +150,7 @@
             Mensaje = "Ya tienes un viaje";
             return;
         }
-        
+
         ViajeRapidoDto.Fecha = DateTime.Now;
         ViajeRapidoDto.EstadoVId = 1;
         if(ViajeRapidoDto.personas > 0 && ViajeRapidoDto.Precio > 0 && ViajeRapidoDto.DestinoCercaId != 0 && ViajeRapidoDto.TaxistaId != null)
@@ -162,6 +162,7 @@
                 {
                     Mensaje = "Se a creado tu viaje rapido";
                 }
+                ViajeRapidoDto = new();
             }
             else
             {
