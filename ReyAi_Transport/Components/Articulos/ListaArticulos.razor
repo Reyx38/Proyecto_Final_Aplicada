@@ -3,7 +3,7 @@
 @inject ArticulosServices articulosServices
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
-
+<link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
 <div class="container">
     <div class="overlay">
         <div class="detalles-container">
@@ -53,8 +53,8 @@
                         <a href="/Create/Articulos" class="btn btn-outline-primary"> Crear </a>
                     </div>
                     
-                    <div>
-                        <QuickGrid Items="@(Articulos.AsQueryable())" DefaultSort="@sortByFecha">
+                    <div >
+                        <QuickGrid Items="@(Articulos.AsQueryable())" DefaultSort="@sortByFecha" Class="quickgrid">
                             <div class="flex items-center">
                                 <PropertyColumn Title="ID" Property="@(r => r.ArticuloId)" />
                                 <PropertyColumn Title="Descripcion" Property="@(r => r.Descripcion)" />
@@ -80,6 +80,24 @@
                 <div class="card-footer">
                     <a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade @(MostrarModal ? "show d-block" : "d-none")" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmacion de eliminar</h5>
+                <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estas seguro de eliminar el viaje rapido <strong>@ArticuloSeleccionado.Descripcion</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
             </div>
         </div>
     </div>
