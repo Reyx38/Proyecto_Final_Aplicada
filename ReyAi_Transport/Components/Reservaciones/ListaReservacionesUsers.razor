@@ -78,7 +78,7 @@
                             <div class="flex items-center">
                                 <PropertyColumn Title="ID Reservación" Property="@(r => r.ReservacionId)" />
                                 <PropertyColumn Title="Fecha" Property="@(r => r.Fecha)" Format="dd/MM/yyyy" />
-                                <PropertyColumn Title="Monto" Property="@(r => r.Monto)" />
+                                <PropertyColumn Title="Monto" Property="@(r => r.Monto)" Format="C2" />
                                 <PropertyColumn Title="Pasajesros" Property="@(r => r.CantidadPasajeros)" />
                                 <PropertyColumn Title="Destino" Property="@(r => r.ViajeDto)" />
                                 <PropertyColumn Title="Estado" Property="@(r => r.EstadosReservacionesDto)" />
@@ -87,16 +87,17 @@
 
                             <TemplateColumn Title="Acciones">
                                 <div class="flex items-center">
-                                    <button class="btn btn-success btn-sm me-1"
+                                    <button class="btn btn-success btn-sm me-1 bi bi-credit-card-2-back"
                                             @onclick="@(() => IrAPago(context.ReservacionId))">
-                                        Pagar
+                                        
                                     </button>
-                                    <button class="btn btn-danger btn-sm"
+                                    <button class="btn btn-danger btn-sm bi bi-clipboard2-x"
                                             @onclick="@(() => CambiarEstado(context, 3))">
-                                        Cancelar
+                                        
                                     </button>
-                                    <button class="btn btn-danger btn-sm bi bi-trash"
-                                            @onclick="@(() => AbrirModal(context))">
+                                    <button class="btn btn-primary btn-sm bi bi-pencil-square"
+                                            @onclick="@(() => Modificar(context))">
+                                        
                                     </button>
                                 </div>
                             </TemplateColumn>
@@ -106,6 +107,7 @@
                                     <button class="btn btn-danger btn-sm bi bi-trash"
                                             @onclick="@(() => AbrirModal(context))">
                                     </button>
+                                    
                                 </div>
                             </TemplateColumn>
                         </QuickGrid>
@@ -173,6 +175,19 @@
     private async Task CargarReservaciones()
     {
         Reservaciones = await ReservacionesService.Listar(r => r.ClienteId == ReservacionDto.ClienteId); // Cargar todas las reservaciones
+    }
+
+    private void Modificar(ReservacionesDto reservacion)
+    {
+        if(reservacion.EstadoId == 1)
+        {
+            navigationManager.NavigateTo($"/Reservacion/Edit/{reservacion.ReservacionId}");
+        }
+        else
+        {
+            mensaje = "La reservacion ya no esta pendiente. No puede ser modificada";
+        }
+
     }
 
     private async Task CambiarEstado(ReservacionesDto reservacion, int nuevoEstado)
