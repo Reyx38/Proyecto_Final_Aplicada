@@ -11,7 +11,7 @@
     <div class="overlay">
         <div class="detalles-container">
             <div class="card-header">
-                <h5 class="card-title">Lista de reservaciones</h5>
+                <h1 class="card-title" style="color: #ffaf7a">Lista de reservaciones</h1>
             </div>
             <div class="card-body">
                 @*labels*@
@@ -19,12 +19,12 @@
 
                     @*Filtrar por*@
                     <div class="col-3">
-                        <label class="col-form-label"><strong>Filtrar por</strong></label>
+                        <label class="col-form-label" style="color: #00b7c5"><strong>Filtrar por</strong></label>
                     </div>
 
                     @*ValorFiltro*@
                     <div class="col-4">
-                        <label class="col-form-label"><strong>B&uacute;squeda</strong></label>
+                        <label class="col-form-label" style="color: #00b7c5"><strong>B&uacute;squeda</strong></label>
                     </div>
                 </div>
 
@@ -32,7 +32,7 @@
                 <div class="row align-items-center">
                     @*filtro*@
                     <div class="col-3">
-                        <InputSelect class="form-select" @bind-Value="Filtro">
+                        <InputSelect class="form-select" @bind-Value="Filtro" style="border: 2px solid #00b7c5">
                             <option value="" selected disabled>Elija una opci&oacute;n</option>
                             <option value="Destino">Destino</option>
                             <option value="ID Reservacion">ID Reservacion</option>
@@ -45,7 +45,7 @@
                     @*Busqueda*@
                     <div class="col-4">
                         <div class="input-group">
-                            <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+                            <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" style="border: 2px solid #00b7c5" />
                             <button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
                         </div>
                     </div>
