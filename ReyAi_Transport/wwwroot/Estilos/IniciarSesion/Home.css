@@ -1,12 +1,10 @@
 ﻿body {
     font-family: Poppins, sans-serif;
-    display: flex;
     justify-content: center;
-    align-items: center;
     height: 90vh;
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center center;
+    background-position: center;
     background-image: url("/Imagenes/MenuPrincipal/RdNocturno.jpg");
     margin: 0;
 }
