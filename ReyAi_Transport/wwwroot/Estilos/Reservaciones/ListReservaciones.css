@@ -9,6 +9,7 @@
     background-position: center center;
 }
 
+
 /* Stripe effect */
 ::deep tbody tr {
     background-color: rgba(236, 237, 255,0.04);
@@ -47,6 +48,7 @@ button {
     z-index: 2;
 }
 
+
 .detalles-container {
     max-width: 900px;
     margin: auto;
@@ -57,4 +59,11 @@ button {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 25px;
+}
+
+.titulo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ffaf7a;
+    text-transform: uppercase;
 }
