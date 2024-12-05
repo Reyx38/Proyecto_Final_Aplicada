@@ -87,15 +87,15 @@
 
                             <TemplateColumn Title="Acciones">
                                 <div class="flex items-center">
-                                    <button class="btn btn-success btn-sm me-1 bi bi-credit-card-2-back"
+                                    <button class="btn btn-success btn-sm me-1 bi bi-credit-card-2-back" title="Pagar"
                                             @onclick="@(() => IrAPago(context.ReservacionId))">
                                         
                                     </button>
-                                    <button class="btn btn-danger btn-sm bi bi-clipboard2-x"
+                                    <button class="btn btn-danger btn-sm bi bi-clipboard2-x" title="Cancelar"
                                             @onclick="@(() => CambiarEstado(context, 3))">
                                         
                                     </button>
-                                    <button class="btn btn-primary btn-sm bi bi-pencil-square"
+                                    <button class="btn btn-primary btn-sm bi bi-pencil-square" title="Editar"
                                             @onclick="@(() => Modificar(context))">
                                         
                                     </button>
@@ -104,7 +104,7 @@
                             <TemplateColumn Title="Eliminar">
                                 <div class="flex items-center">
                                     
-                                    <button class="btn btn-danger btn-sm bi bi-trash"
+                                    <button class="btn btn-danger btn-sm bi bi-trash" title="Eliminar"
                                             @onclick="@(() => AbrirModal(context))">
                                     </button>
                                     
