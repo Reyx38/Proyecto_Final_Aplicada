@@ -33,7 +33,7 @@
     protected override async Task OnInitializedAsync()
     {
         Ciudades = await CiudadService.Listar(c => true); // Cargar lista de ciudades
-        ListViajes = await ViajeService.Listar(v => true); // Cargar todos los viajes inicialmente
+        ListViajes = await ViajeService.Listar(v => v.EstadoId != 4); // Cargar todos los viajes inicialmente
     }
 
     public async Task SeleccionarFiltro(CiudadesDto ciudad)
@@ -43,12 +43,12 @@
         if(FiltroActivo != ciudad.Nombre)
         {
             FiltroActivo = ciudad.Nombre;
-            ListViajes = await ViajeService.Listar(v => v.Destino == ciudad.CiudadId);
+            ListViajes = await ViajeService.Listar(v => v.Destino == ciudad.CiudadId && v.EstadoId != 4);
         }
         else
         {
             FiltroActivo = null;
-            ListViajes = await ViajeService.Listar(v => true); 
+            ListViajes = await ViajeService.Listar(v => v.EstadoId != 4);
         }
         
     }

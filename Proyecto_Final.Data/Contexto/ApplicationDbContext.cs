@@ -43,7 +43,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         );
 
         builder.Entity<MetodosPagos>().HasData(
-        new MetodosPagos { MetodoPagoId = 1, Descripcion = "Tarjeta de credito"}
+           new MetodosPagos { MetodoPagoId = 1, Descripcion = "Tarjeta de credito"}
         );
 
         builder.Entity<Articulos>().HasData(
@@ -64,8 +64,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         builder.Entity<EstadosTaxistas>().HasData(
             new EstadosTaxistas { EstadoTId = 1, Descripcion = "Disponible" },
-            new EstadosTaxistas { EstadoTId = 2, Descripcion = "Ocupado" }
-        );
+            new EstadosTaxistas { EstadoTId = 2, Descripcion = "Ocupado" },
+			new EstadosTaxistas { EstadoTId = 3, Descripcion = "Despedido" }
+
+		);
 
         builder.Entity<DestinosCerca>().HasData(
             new DestinosCerca { DestinoCercaId = 1, CiudadId = 1, Descripcion = "Parque Duarte"},
