@@ -4,7 +4,8 @@
 @inject ArticulosServices articulosServices
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
-
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 
 <PageTitle>Articulos</PageTitle>
@@ -103,7 +104,8 @@
 	{
 		if (await Validar())
 		{
-			Mensaje = "Ya existe un articulo con esta descripcion";
+			Toast.Notify(new(ToastType.Info, $"Ya existe un articulo con esta descripcion"));
+			await Task.Delay(3000);
 			return;
 		}
 
@@ -111,12 +113,13 @@
 
 		if (crear)
 		{
-			Mensaje = "Se a creado con exito";
+			Toast.Notify(new(ToastType.Success, $"Se a agreado con exito!"));
+			await Task.Delay(3000);
 			navigationManager.NavigateTo("/Articulos");
 		}
         else
         {
-            Mensaje = "No se a creado con exito";
+			Toast.Notify(new(ToastType.Danger, $"No se a agreado con exito. Favor intentelo de nuevo."));
         }
     }
 }

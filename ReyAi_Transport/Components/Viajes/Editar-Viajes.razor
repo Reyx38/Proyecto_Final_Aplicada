@@ -5,6 +5,9 @@
 @inject TaxistaServices TaxistaService
 @inject CiudadServices CiudadService
 @inject NavigationManager NavigationManager
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
+
 <EditForm Model="@Viajes" OnValidSubmit="Guardar" FormName="EditarViaje">
 	<DataAnnotationsValidator />
 	<div class="overlay"></div>
@@ -136,14 +139,20 @@
 		if (Viajes.Imagenes.Count < 1)
 		{
 			Console.WriteLine("Necesita agregar por lo menos 1 imagen");
+			Toast.Notify(new(ToastType.Danger, $"Necesita agregar por lo menos 1 imagen"));
+			await Task.Delay(3000);
 			return;
 		}
 		else if (Viajes.Imagenes.Count > 5)
 		{
 			Console.WriteLine("El limite son 5 imagenes por viaje");
+			Toast.Notify(new(ToastType.Danger, $"El limite son 5 imagenes por viaje"));
+			await Task.Delay(3000);
 			return;
 		}
 		await ViajeService.Guardar(Viajes);
+		Toast.Notify(new(ToastType.Success, $"Viaje editado correctamente."));
+		await Task.Delay(3000);
 		NavigationManager.NavigateTo("/");
 
 	}

@@ -8,6 +8,9 @@
 @inject TaxistaServices TaxistaService
 @inject CiudadServices CiudadService
 @inject NavigationManager NavigationManager
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
+
 <EditForm Model="@Viajes" OnValidSubmit="Guardar">
 	<DataAnnotationsValidator />
 	<div class="overlay"></div>
@@ -142,26 +145,36 @@
 		if (Viajes.Imagenes.Count < 1)
 		{
 			Console.WriteLine("Necesita agregar por lo menos 1 imagen");
+			Toast.Notify(new(ToastType.Warning, $"Necesita agregar por lo menos 1 imagen"));
+			await Task.Delay(3000);
 			return;
 		}
 		else if (Viajes.Imagenes.Count > 5)
 		{
 			Console.WriteLine("El limite son 5 imagenes por viaje");
+			Toast.Notify(new(ToastType.Warning, $"El limite son 5 imagenes por viaje"));
+			await Task.Delay(3000);
 			return;
 		}
 		if (Viajes.FechaInicio < fechaActual)
 		{
 			Console.WriteLine("La fecha de inicio no puede ser en el pasado.");
+			Toast.Notify(new(ToastType.Warning, $"La fecha de inicio no puede ser en el pasado."));
+			await Task.Delay(3000);
 			return;
 		}
 
 		if (Viajes.FechaCierre <= Viajes.FechaInicio)
 		{
 			Console.WriteLine("La fecha de cierre debe ser posterior a la fecha de inicio.");
+			Toast.Notify(new(ToastType.Warning, $"La fecha de cierre debe ser posterior a la fecha de inicio."));
+			await Task.Delay(3000);
 			return;
 		}
 
 		await ViajeService.Guardar(Viajes);
+		Toast.Notify(new(ToastType.Success, $"Viaje agregado correctamente."));
+		await Task.Delay(3000);
 		NavigationManager.NavigateTo("/");
 
 	}
