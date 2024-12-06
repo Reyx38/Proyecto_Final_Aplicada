@@ -195,6 +195,10 @@
         Taxista.EstadoTId = 1;
         var guardarT = await taxistaServices.Guardar(Taxista);
         reservacion.EstadoId = nuevoEstado;
+        if(reservacion.EstadoId == 3)
+        {
+            await ReservacionesService.AfectarCantidad(reservacion.ReservacionDetalles.ToArray(), false);
+        }
         var guardado = await ReservacionesService.Guardar(reservacion);
         if (guardado)
         {
