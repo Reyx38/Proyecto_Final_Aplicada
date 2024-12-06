@@ -49,19 +49,20 @@
 			</div>
 			<div class="row">
 				<div class="col">
-					<button @onclick="() => Reservar(Viaje.ViajeId)" class="button">
+					<button type="button" @onclick="AbrirModalDespedir" class="button">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none" class="svg-icon"><g stroke-width="2" stroke-linecap="round" stroke="#fff"><rect y="5" x="4" width="16" rx="2" height="16"></rect><path d="m8 3v4"></path><path d="m16 3v4"></path><path d="m4 11h16"></path></g></svg>
 						<span class="lable">Eliminar</span>
 					</button>
 				</div>
 				<div class="col">
-					<button @onclick="() => Reservar(Viaje.ViajeId)" class="button">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none" class="svg-icon"><g stroke-width="2" stroke-linecap="round" stroke="#fff"><rect y="5" x="4" width="16" rx="2" height="16"></rect><path d="m8 3v4"></path><path d="m16 3v4"></path><path d="m4 11h16"></path></g></svg>
+					<button type="button" @onclick="() => Editar(Viaje.ViajeId)" class="text-white btn btn-info" style="color:#00b7c5;">
+						<i class="bi bi-pencil-square"></i>
 						<span class="lable">Editar</span>
 					</button>
 				</div>
+
 				<div class="col">
-					<button @onclick="() => Reservar(Viaje.ViajeId)" class="button">
+					<button type="button" @onclick="() => Reservar(Viaje.ViajeId)" class="button">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none" class="svg-icon"><g stroke-width="2" stroke-linecap="round" stroke="#fff"><rect y="5" x="4" width="16" rx="2" height="16"></rect><path d="m8 3v4"></path><path d="m16 3v4"></path><path d="m4 11h16"></path></g></svg>
 						<span class="lable">Reservar</span>
 					</button>
@@ -73,39 +74,24 @@
 		</div>
 	</div>
 </div>
-<style>
-	/* From Uiverse.io by andrew-demchenk0 */ 
-.button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 9px 12px;
-  gap: 8px;
-  height: 40px;
-  width: 201px;
-  border: none;
-  background: #FF342B;
-  border-radius: 20px;
-  cursor: pointer;
-}
 
-.lable {
-  line-height: 22px;
-  font-size: 17px;
-  color: #fff;
-  font-family: sans-serif;
-  letter-spacing: 1px;
-}
-
-.button:hover {
-  background: #e52e26;
-}
-
-.button:hover .svg-icon {
-  animation: slope 1s linear infinite;
-}
-
-</style>
+<div class="modal fade @(MostrarModal ? "show d-block" : "d-none")" tabindex="-1" style="background-color: rgba(0, 0, 0, 0.5);">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Confirmar Despido</h5>
+				<button type="button" class="btn-close" @onclick="CerrarModal"></button>
+			</div>
+			<div class="modal-body">
+				<p>¿Estás seguro de que deseas desactivar este viaje?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+				<button type="button" class="btn btn-danger" @onclick="Eliminar">Desactivar</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 
 @code {
@@ -114,6 +100,7 @@
 
 	public ViajesDto Viaje { get; set; } = new ViajesDto();
 	public CiudadesDto CiudadDto { get; set; } = new CiudadesDto();
+	public bool MostrarModal { get; set; } = false;
 	public EstadosViajesDto EstadosViajesDto { get; set; } = new EstadosViajesDto();
 	public TaxistaDto TaxistaDto { get; set; } = new TaxistaDto();
 
@@ -124,8 +111,32 @@
 		TaxistaDto = await taxistasService.Buscar(Viaje.TaxistaId);
 		EstadosViajesDto = await EstadoServices.Buscar(Viaje.EstadoId);
 	}
+	private void AbrirModalDespedir()
+	{
+		MostrarModal = true;
+	}
+	private void CerrarModal()
+	{
+		MostrarModal = false;
+	}
+
+	public void Editar(int id)
+	{
+		NavigationManager.NavigateTo($"/Viajes/ViajesEditar/{id}");
+	}
+
 	public void Reservar(int id)
 	{
 		NavigationManager.NavigateTo($"/Reservacion/{id}");
 	}
+
+	private async Task Eliminar()
+	{
+		if (Viaje != null)
+		{
+			await ViajeService.ActualizarEstado(Viaje, 4);
+		}
+		CerrarModal();
+	}
+
 }

@@ -1,14 +1,11 @@
-﻿@page "/Viajes/Create"
-@using Microsoft.AspNetCore.Authorization
-
-
+﻿@page "/Viajes/ViajesEditar/{ViajeId:int}"
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 @rendermode InteractiveServer
 @inject ViajeServices ViajeService
 @inject TaxistaServices TaxistaService
 @inject CiudadServices CiudadService
 @inject NavigationManager NavigationManager
-<EditForm Model="@Viajes" OnValidSubmit="Guardar">
+<EditForm Model="@Viajes" OnValidSubmit="Guardar" FormName="EditarViaje">
 	<DataAnnotationsValidator />
 	<div class="overlay"></div>
 	<div class="container">
@@ -121,24 +118,21 @@
 
 
 @code {
+	[Parameter]
+	public int ViajeId { get; set; }
 	public List<TaxistaDto> ListTaxista { get; set; } = new List<TaxistaDto>();
 	public ViajesDto Viajes { get; set; } = new ViajesDto();
 	public List<CiudadesDto> ListCiudades { get; set; } = new List<CiudadesDto>();
-
-
 	protected override async Task OnInitializedAsync()
 	{
+		Viajes = await ViajeService.Buscar(ViajeId);
 		ListTaxista = await TaxistaService.Listar(T => true);
 		Viajes.FechaCierre = DateTime.Now;
 		Viajes.FechaInicio = DateTime.Now;
 		ListCiudades = await CiudadService.Listar(T => true);
 	}
-
 	public async Task Guardar()
 	{
-		var fechaActual = DateTime.Now;
-
-
 		if (Viajes.Imagenes.Count < 1)
 		{
 			Console.WriteLine("Necesita agregar por lo menos 1 imagen");
@@ -149,18 +143,6 @@
 			Console.WriteLine("El limite son 5 imagenes por viaje");
 			return;
 		}
-		if (Viajes.FechaInicio < fechaActual)
-		{
-			Console.WriteLine("La fecha de inicio no puede ser en el pasado.");
-			return;
-		}
-
-		if (Viajes.FechaCierre <= Viajes.FechaInicio)
-		{
-			Console.WriteLine("La fecha de cierre debe ser posterior a la fecha de inicio.");
-			return;
-		}
-
 		await ViajeService.Guardar(Viajes);
 		NavigationManager.NavigateTo("/");
 
@@ -196,3 +178,4 @@
 		Viajes.Imagenes.Remove(im);
 	}
 }
+
