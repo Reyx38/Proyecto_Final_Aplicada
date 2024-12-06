@@ -93,8 +93,7 @@
         {
             //Mensaje = "La reservacion aun no ha sido aceptada";
             Toast.Notify(new(ToastType.Warning, $"La reservacion aun no ha sido aceptada"));
-            await Task.Delay(3000);
-            navigationManager.NavigateTo("/");
+            navigationManager.NavigateTo("/ListaReservaciones/Users");
         }
     }
 
