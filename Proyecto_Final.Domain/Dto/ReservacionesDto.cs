@@ -22,8 +22,6 @@ public class ReservacionesDto
 
     public bool Pago { get; set; }
     public string? Recibo { get; set; }
-
-    [Required(ErrorMessage = "Campo obligatorio")]
     public double Monto { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]

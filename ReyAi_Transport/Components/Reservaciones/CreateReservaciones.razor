@@ -54,7 +54,7 @@
 						</div>
 						@*Cantidad de personas*@
 						<div class="col-md-4">
-							<InputNumber class="form-control" @bind-Value="ReservacionDto.CantidadPasajeros" @onchange="CalcularMonto" placeholder="20"></InputNumber>
+							<InputNumber class="form-control" @bind-Value="ReservacionDto.CantidadPasajeros" placeholder="20"></InputNumber>
 							<ValidationMessage For="(()=> ReservacionDto.CantidadPasajeros)" />
 						</div>
 						@*Precio*@
@@ -172,7 +172,7 @@
 		return valido;
 	}
 
-	private async void CalcularMonto()
+	private async Task CalcularMonto()
 	{
 		ViajeDto = await viajeServices.Buscar(ReservacionDto.ViajeId);
 
@@ -203,7 +203,7 @@
 			Mensaje = "La cantidad de pasajaeros ha pasado el limite";
 			return;
 		}
-		CalcularMonto();
+		await CalcularMonto();
 		ReservacionDto.EstadoId = 1;
 		ReservacionDto.Pago = false;
 		GenerarRecibo();
