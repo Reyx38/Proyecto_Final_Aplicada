@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="/Estilos/CrearViaje/StyleCrearViajes.css" />
 <EditForm model="ViajeRapidoDto" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
+    <ValidationSummary />
     <div class="cont glass-effect">
         <h3 style="color: white;" class="mt-2">Viajes Rapidos</h3>
         <div class="row">
@@ -42,6 +43,7 @@
                         <option value="@destino.DestinoCercaId">@destino.Descripcion</option>
                     }
                 </InputSelect>
+                <ValidationMessage For="(()=> ViajeRapidoDto.DestinoCercaId)" />
             </div>
 
             @*Número de personas*@
@@ -60,6 +62,7 @@
                         <option value="@taxista.TaxistaId">@taxista.NickName (@taxista.NombreCiudad)</option>
                     }
                 </InputSelect>
+                <ValidationMessage For="(()=> ViajeRapidoDto.TaxistaId)" />
             </div>
             @if (ViajeRapidoDto.personas > 0)
             {
@@ -102,7 +105,7 @@
             Mensaje = "Usuario no autenticado";
         }
         ListaDestinos = await destinosCercaService.Listar(a => true);
-        ListaTaxistas = await taxistasServices.Listar(a => true);
+        ListaTaxistas = await taxistasServices.Listar(a => a.TaxistaId != "");
 
         ViajeRapidoDto.Fecha = DateTime.Now;
     }
