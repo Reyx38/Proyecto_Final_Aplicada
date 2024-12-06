@@ -10,6 +10,7 @@
 <PageTitle>Articulos</PageTitle>
 <EditForm Model="ArticuloDto" OnValidSubmit="Guardar">
 	<DataAnnotationsValidator />
+	<ValidationSummary />
 	<div class="overlay"></div>
 	<div class="container">
 		<div class="overlay card">
@@ -37,14 +38,17 @@
 					@*Descripcion*@
 					<div class="col-md-4">
 						<InputText class="form-control" @bind-Value="ArticuloDto.Descripcion"></InputText>
+						<ValidationMessage For="(()=> ArticuloDto.Descripcion)" />
 					</div>
 					@*Costo*@
 					<div class="col-md-4">
 						<InputNumber class="form-control" @bind-Value="ArticuloDto.Costo"  placeholder="DOP$"></InputNumber>
+						<ValidationMessage For="(()=> ArticuloDto.Costo)" />
 					</div>
 					@*Precio*@
 					<div class="col-md-4">
 						<InputNumber class="form-control" @bind-Value="ArticuloDto.Precio" placeholder="DOP$"></InputNumber>
+						<ValidationMessage For="(() => ArticuloDto.Precio)" />
 					</div>
 					
 				</div>
@@ -60,6 +64,7 @@
 					@*Existencia*@
 					<div class="col-md-4">
 						<InputNumber class="form-control" @bind-Value="ArticuloDto.Existencia"></InputNumber>
+						<ValidationMessage For="(()=> ArticuloDto.Existencia)" />
 					</div>
 				</div>
 					
