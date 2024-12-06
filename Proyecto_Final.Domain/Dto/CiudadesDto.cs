@@ -11,5 +11,9 @@ public class CiudadesDto
 {
     public int CiudadId { get; set; }
 
-    public string? Nombre { get; set; }
+	[Required(ErrorMessage = "El nombre de la ciudad es obligatorio.")]
+	[StringLength(30, ErrorMessage = "El nombre no puede exceder los 30 caracteres.")]
+	public string? Nombre { get; set; }
+	public int EstadoId { get; set; } = 1;
+	public string? EstadoNombre { get; set; }
 }

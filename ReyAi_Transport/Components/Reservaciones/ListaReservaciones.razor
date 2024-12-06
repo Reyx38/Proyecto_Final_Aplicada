@@ -131,7 +131,7 @@
 </div>
 
 @code {
-    private List<ReservacionesDto> Reservaciones = new();
+    private List<ReservacionesDto> Reservaciones { get; set; } = new();
     private TaxistaDto Taxista { get; set; } = new TaxistaDto();
     private string mensaje = string.Empty;
     public string Filtro { get; set; } = string.Empty;

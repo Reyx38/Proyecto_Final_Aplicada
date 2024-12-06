@@ -3,6 +3,7 @@ using Proyecto_Final.Domain.Dto;
 using ReyAI_Trasport.Abstracions.Interfaces;
 using ReyAI_Trasport.Data.Contexto;
 using ReyAI_Trasport.Data.Models;
+using ReyAI_Trasport.Domain.Dto;
 using System.Linq.Expressions;
 
 namespace ReyAI_Trasport.Services.Services;
@@ -17,7 +18,9 @@ public class CiudadServices(IDbContextFactory<ApplicationDbContext> DbFactory) :
        .Select(p => new CiudadesDto()
        {
            CiudadId = p.CiudadId,
-           Nombre = p.Nombre
+           Nombre = p.Nombre,
+           EstadoId = p.EstadoCId,
+           EstadoNombre = p.CiudadesEstados.Descripcion
        })
        .FirstOrDefaultAsync();
         return ciudad ?? new CiudadesDto();
@@ -45,7 +48,9 @@ public class CiudadServices(IDbContextFactory<ApplicationDbContext> DbFactory) :
         var ciudad = new Ciudades()
         {
             CiudadId = ciudadesDto.CiudadId,
-            Nombre = ciudadesDto.Nombre
+            Nombre = ciudadesDto.Nombre,
+            EstadoCId = ciudadesDto.EstadoId
+
         };
         contexto.Ciudades.Add(ciudad);
         var guardo = await contexto.SaveChangesAsync() > 0;
@@ -59,7 +64,7 @@ public class CiudadServices(IDbContextFactory<ApplicationDbContext> DbFactory) :
         var ciudad = new Ciudades()
         {
             CiudadId = ciudadesDto.CiudadId,
-            Nombre = ciudadesDto.Nombre
+            Nombre = ciudadesDto.Nombre,
         };
         contexto.Update(ciudad);
         var modificado = await contexto.SaveChangesAsync() > 0;
@@ -87,9 +92,22 @@ public class CiudadServices(IDbContextFactory<ApplicationDbContext> DbFactory) :
         return await contexto.Ciudades.Select(p => new CiudadesDto()
         {
             CiudadId = p.CiudadId,
-            Nombre = p.Nombre
+            Nombre = p.Nombre,
+            EstadoId = p.EstadoCId,
+            EstadoNombre = p.CiudadesEstados.Descripcion
         })
         .Where(criterio)
         .ToListAsync();
+    }
+    public async Task<bool> ActualizarEstado(CiudadesDto ciudades, int estado)
+    {
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        var Ciudades = await contexto.Ciudades.FindAsync(ciudades.CiudadId);
+        if (Ciudades == null)
+            return false;
+
+        Ciudades.EstadoCId = estado;
+        var modificado = await contexto.SaveChangesAsync() > 0;
+        return modificado;
     }
 }
