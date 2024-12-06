@@ -203,7 +203,7 @@
 		CalcularMonto();
 		ReservacionDto.EstadoId = 1;
 		ReservacionDto.Pago = false;
-		await GenerarRecibo();
+		GenerarRecibo();
 		var crear = await reservacionesServices.Guardar(ReservacionDto);
 
 		if (crear)
@@ -218,19 +218,17 @@
 
 	}
 
-	public async Task Eliminar(ReservacionDetallesDto detalle)
+	public void Eliminar(ReservacionDetallesDto detalle)
 	{
 		ReservacionDto.ReservacionDetalles.Remove(detalle);
 		DetallesDto.Cantidad = detalle.Cantidad;
 		DetallesDto.ArticuloId = detalle.ArticuloId;
 	}
 
-	public async Task GenerarRecibo()
+	public void GenerarRecibo()
 	{
-		ViajeDto = await viajeServices.Buscar(ViajeId);
-
-		var destino = await ciudadesServices.Buscar(ViajeDto.Destino);
-		ReservacionDto.Recibo = $"Usted a reservado un viaje a {destino.Nombre} para la fecha {ReservacionDto.Fecha} con un precio de {ViajeDto.Precio}, gracias por preferirnos";
+		var monto = ReservacionDto.Monto;
+		ReservacionDto.Recibo = $"Usted a reservado un viaje {ViajeDto.Descripcion} para la fecha {ReservacionDto.Fecha:dd/MM/yyyy}, gracias por preferirnos";
 	}
 
 }
