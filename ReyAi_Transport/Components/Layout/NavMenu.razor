@@ -59,6 +59,7 @@
 				<Authorized>
 					<div class="nav-item px-3">
 						<NavLink class="nav-link" href="Account/Manage">
+							<span class="bi bi-person-circle fs-2" aria-hidden="true" style="color:#00b7c5;"></span>
 						</NavLink>
 					</div>
 					<div class="nav-item px-3">
@@ -66,13 +67,13 @@
 							<AntiforgeryToken />
 							<input type="hidden" name="ReturnUrl" value="@currentUrl" />
 							<button type="submit" class="nav-link">
-								<span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+								<span class="bi bi-box-arrow-right fs-2" aria-hidden="true" style="color:#00b7c5;"></span>
 							</button>
 						</form>
 					</div>
 				</Authorized>
 				<NotAuthorized>
-					<div class="nav-item px-3">
+					<div class="nav-item px-3"> 
 						<NavLink class="nav-link" href="Account/Register">
 							<span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
 						</NavLink>
