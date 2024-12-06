@@ -1,5 +1,5 @@
-﻿@page "/Reservacion/{ViajeId:int}"
-@page "/Reservacion"
+﻿@page "/Reservacion/Edit/{ReservacionId:int}"
+
 @rendermode InteractiveServer
 @inject ViajeServices viajeServices
 @inject ReservacionDetallesServices detallesServices
@@ -92,9 +92,10 @@
 
 </EditForm>
 @Mensaje
+
 @code {
 	[Parameter]
-	public int ViajeId { get; set; }
+	public int ReservacionId { get; set; }
 
 	public List<ViajesDto> ListViajes { get; set; } = [];
 	public ViajesDto ViajeDto { get; set; } = new ViajesDto();
@@ -126,8 +127,9 @@
 			navigationManager.NavigateTo("/Account/Login");
 		}
 
+
+		ReservacionDto = await reservacionesServices.Buscar(ReservacionId);
 		ReservacionDto.Fecha = DateTime.Now;
-		ReservacionDto.ViajeId = ViajeId;
 		ListaArticulos = await detallesServices.Listar(a => a.ArticuloId > 0);
 		ListViajes = await viajeServices.Listar(v => true);
 
@@ -190,12 +192,12 @@
 		}
 		ViajeDto = await viajeServices.Buscar(ReservacionDto.ViajeId);
 
-		if(ReservacionDto.Fecha < ViajeDto.FechaInicio && ReservacionDto.Fecha >= ViajeDto.FechaCierre)
+		if (ReservacionDto.Fecha < ViajeDto.FechaInicio && ReservacionDto.Fecha >= ViajeDto.FechaCierre)
 		{
 			Mensaje = "El viaje no se encuentra disponible entre esos dias";
 			return;
 		}
-		if(ReservacionDto.CantidadPasajeros > ViajeDto.personas)
+		if (ReservacionDto.CantidadPasajeros > ViajeDto.personas)
 		{
 			Mensaje = "La cantidad de pasajaeros ha pasado el limite";
 			return;
@@ -203,13 +205,13 @@
 		CalcularMonto();
 		ReservacionDto.EstadoId = 1;
 		ReservacionDto.Pago = false;
-		GenerarRecibo();
+		await GenerarRecibo();
 		var crear = await reservacionesServices.Guardar(ReservacionDto);
 
 		if (crear)
 		{
 			Mensaje = "Se ha creado correctamente el trabajo";
-			navigationManager.NavigateTo("/");
+			navigationManager.NavigateTo("/ListaReservaciones/Users");
 		}
 		else
 		{
@@ -218,17 +220,18 @@
 
 	}
 
-	public void Eliminar(ReservacionDetallesDto detalle)
+	public async Task Eliminar(ReservacionDetallesDto detalle)
 	{
 		ReservacionDto.ReservacionDetalles.Remove(detalle);
 		DetallesDto.Cantidad = detalle.Cantidad;
 		DetallesDto.ArticuloId = detalle.ArticuloId;
 	}
 
-	public void GenerarRecibo()
+	public async Task GenerarRecibo()
 	{
-		var monto = ReservacionDto.Monto;
-		ReservacionDto.Recibo = $"Usted a reservado un viaje {ViajeDto.Descripcion} para la fecha {ReservacionDto.Fecha:dd/MM/yyyy}, gracias por preferirnos";
-	}
+		ViajeDto = await viajeServices.Buscar(ReservacionDto.ViajeId);
 
+		var destino = await ciudadesServices.Buscar(ViajeDto.Destino);
+		ReservacionDto.Recibo = $"Usted a reservado un viaje a {destino.Nombre} para la fecha {ReservacionDto.Fecha} con un precio de {ViajeDto.Precio}, gracias por preferirnos";
+	}
 }

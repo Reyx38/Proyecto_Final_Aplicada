@@ -96,7 +96,6 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
     private async Task<bool> Modificar(ReservacionesDto reservacionDto)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
-		await AfectarCantidad(reservacionDto.ReservacionDetalles.ToArray(), true);
 		var reserva = new Reservaciones()
         {
             ReservacionId = reservacionDto.ReservacionId,

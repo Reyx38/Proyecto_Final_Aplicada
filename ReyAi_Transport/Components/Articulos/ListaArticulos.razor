@@ -8,7 +8,7 @@
     <div class="overlay">
         <div class="detalles-container">
             <div class="card-header">
-                <h5 class="card-title">Lista de articulos</h5>
+                <h1 class="card-title" style="color: #ffaf7a">Lista de articulos</h1>
             </div>
             <div class="card-body">
                 @*labels*@
@@ -16,12 +16,12 @@
 
                     @*Filtrar por*@
                     <div class="col-3">
-                        <label class="col-form-label"><strong>Filtrar por</strong></label>
+                        <label class="col-form-label" style="color: #00b7c5"><strong>Filtrar por</strong></label>
                     </div>
 
                     @*ValorFiltro*@
                     <div class="col-4">
-                        <label class="col-form-label"><strong>B&uacute;squeda</strong></label>
+                        <label class="col-form-label" style="color: #00b7c5"><strong>B&uacute;squeda</strong></label>
                     </div>
                 </div>
 
@@ -29,7 +29,7 @@
                 <div class="row align-items-center">
                     @*filtro*@
                     <div class="col-3">
-                        <InputSelect class="form-select" @bind-Value="Filtro">
+                        <InputSelect class="form-select" @bind-Value="Filtro" style="border: 2px solid #00b7c5">
                             <option value="" selected disabled>Elija una opci&oacute;n</option>
                             <option value="Descripcion">Descripcion</option>
                             <option value="ID">ID</option>
@@ -39,7 +39,7 @@
                     @*Busqueda*@
                     <div class="col-4">
                         <div class="input-group">
-                            <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+                            <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" style="border: 2px solid #00b7c5" />
                             <button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
                         </div>
                     </div>
@@ -50,26 +50,26 @@
                     </div>
                     @*Crear*@
                     <div class="col-auto">
-                        <a href="/Create/Articulos" class="btn btn-outline-primary"> Crear </a>
+                        <a href="/Create/Articulos" class="btn btn-outline-primary" style="background-color: #ffaf7a; color: white; border: none"> Crear </a>
                     </div>
                     
                     <div >
-                        <QuickGrid Items="@(Articulos.AsQueryable())" DefaultSort="@sortByFecha" Class="quickgrid">
+                        <QuickGrid Items="@(Articulos.AsQueryable())" DefaultSort="@sortByFecha" class="table table-striped table-hover text-start">
                             <div class="flex items-center">
                                 <PropertyColumn Title="ID" Property="@(r => r.ArticuloId)" />
                                 <PropertyColumn Title="Descripcion" Property="@(r => r.Descripcion)" />
-                                <PropertyColumn Title="Costo" Property="@(r => r.Costo.ToString("N2"))" />
-                                <PropertyColumn Title="Precio" Property="@(r => r.Precio.ToString("N2"))" />
+                                <PropertyColumn Title="Costo" Property="@(r => r.Costo)" Format="C2" />
+                                <PropertyColumn Title="Precio" Property="@(r => r.Precio)" Format="C2" />
                                 <PropertyColumn Title="Existencia" Property="@(r => r.Existencia)" />
 
                             </div>
 
                             <TemplateColumn Title="Acciones">
                                 <div class="flex items-center">
-                                    <button class="btn btn-primary btn-sm bi bi-pencil-square"
+                                    <button class="btn btn-primary btn-sm bi bi-pencil-square" title="Editar"
                                             @onclick="@(() => Edit(context))">
                                     </button>
-                                    <button class="btn btn-danger btn-sm bi bi-trash"
+                                    <button class="btn btn-danger btn-sm bi bi-trash" title="Eliminar"
                                             @onclick="@(() => AbrirModal(context))">
                                     </button>
                                 </div>

@@ -1,0 +1,46 @@
+﻿@page "/Info/Pago/{PagoId:int}"
+
+@inject ReservacionesServices ReservacionesService
+@inject PagosServices pagosServices
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+<link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
+<div class="overlay"></div>
+<div class="container">
+	<div class="overlay card">
+		<div class="card-header">
+            <h1 style="color: #ffaf7a">Informacion de la recervacion</h1>
+		</div>
+		<div class="card-body">
+            <div>
+                <label class="form-label"><strong>Recibo de la recervacion</strong></label>
+                <p class="form-label">@RecervcionDto.Recibo</p>
+                <label class="form-label">Precio: DOP$ @RecervcionDto.Monto</label>
+            </div>
+
+            <div>
+                <label class="form-label"><strong>Informacion del pago</strong></label>
+                <p class="form-label">Fecha:  @PagoDto.Fecha</p>
+                <p class="form-label">Monto:  DOP$ @PagoDto.Monto</p>
+            </div>
+
+            <div class="card-footer">
+                <a href="/ListaPagos/Users" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
+            </div>
+		</div>
+	</div>
+</div>
+
+@code {
+    [Parameter]
+    public int PagoId { get; set; }
+
+    public PagosDto PagoDto { get; set; } = new PagosDto();
+    public ReservacionesDto RecervcionDto { get; set; } = new ReservacionesDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        PagoDto = await pagosServices.Buscar(PagoId);
+        RecervcionDto = await ReservacionesService.Buscar(PagoDto.ReservacionId);
+    }
+}

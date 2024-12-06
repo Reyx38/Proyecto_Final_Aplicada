@@ -11,7 +11,7 @@
     <div class="overlay">
         <div class="detalles-container">
             <div class="card-header">
-                <h5 class="card-title">Lista de reservaciones</h5>
+                <h1 class="card-title" style="color: #ffaf7a">Lista de reservaciones</h1>
             </div>
             <div class="card-body">
                 @*labels*@
@@ -19,12 +19,12 @@
 
                     @*Filtrar por*@
                     <div class="col-3">
-                        <label class="col-form-label"><strong>Filtrar por</strong></label>
+                        <label class="col-form-label" style="color: #00b7c5"><strong>Filtrar por</strong></label>
                     </div>
 
                     @*ValorFiltro*@
                     <div class="col-4">
-                        <label class="col-form-label"><strong>B&uacute;squeda</strong></label>
+                        <label class="col-form-label" style="color: #00b7c5"><strong>B&uacute;squeda</strong></label>
                     </div>
                 </div>
 
@@ -32,7 +32,7 @@
                 <div class="row align-items-center">
                     @*filtro*@
                     <div class="col-3">
-                        <InputSelect class="form-select" @bind-Value="Filtro">
+                        <InputSelect class="form-select" @bind-Value="Filtro" style="border: 2px solid #00b7c5">
                             <option value="" selected disabled>Elija una opci&oacute;n</option>
                             <option value="Destino">Destino</option>
                             <option value="ID Reservacion">ID Reservacion</option>
@@ -45,7 +45,7 @@
                     @*Busqueda*@
                     <div class="col-4">
                         <div class="input-group">
-                            <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+                            <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" style="border: 2px solid #00b7c5" />
                             <button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
                         </div>
                     </div>
@@ -60,25 +60,25 @@
                         {
                             @*Desde*@
                             <div class="col-3">
-                                <label class="col-form-label"><strong>Desde</strong></label>
-                                <InputDate class="form-control" @bind-Value="Desde"></InputDate>
+                                <label class="col-form-label" style="color: #00b7c5"><strong>Desde</strong></label>
+                                <InputDate class="form-control" @bind-Value="Desde" style="border: 2px solid #00b7c5"></InputDate>
                             </div>
 
                             @*Hasta*@
                             <div class="col-3">
-                                <label class="col-form-label"><strong>Hasta</strong></label>
+                                <label class="col-form-label" style="color: #00b7c5"><strong>Hasta</strong></label>
                                 <div class="input-group">
-                                    <InputDate class="form-control" @bind-Value="Hasta"></InputDate>
+                                    <InputDate class="form-control" @bind-Value="Hasta" style="border: 2px solid #00b7c5"></InputDate>
                                 </div>
                             </div>
                         }
                     </div>
                     <div>
-                        <QuickGrid Items="@(Reservaciones.AsQueryable())" DefaultSort="@sortByFecha">
+                        <QuickGrid Items="@(Reservaciones.AsQueryable())" DefaultSort="@sortByFecha" class="table table-striped table-hover text-center">
                             <div class="flex items-center">
-                                <PropertyColumn Title="ID Reservación" Property="@(r => r.ReservacionId)" />
+                                <PropertyColumn Title="ID Reservación" Property="@(r => r.ReservacionId)"/>
                                 <PropertyColumn Title="Fecha" Property="@(r => r.Fecha)" Format="dd/MM/yyyy" />
-                                <PropertyColumn Title="Monto" Property="@(r => r.Monto)" />
+                                <PropertyColumn Title="Monto" Property="@(r => r.Monto)" Format="C2" />
                                 <PropertyColumn Title="Pasajesros" Property="@(r => r.CantidadPasajeros)" />
                                 <PropertyColumn Title="Destino" Property="@(r => r.ViajeDto)" />
                                 <PropertyColumn Title="Estado" Property="@(r => r.EstadosReservacionesDto)" />
@@ -87,25 +87,27 @@
 
                             <TemplateColumn Title="Acciones">
                                 <div class="flex items-center">
-                                    <button class="btn btn-success btn-sm me-1"
+                                    <button class="btn btn-success btn-sm me-1 bi bi-credit-card-2-back" title="Pagar"
                                             @onclick="@(() => IrAPago(context.ReservacionId))">
-                                        Pagar
+                                        
                                     </button>
-                                    <button class="btn btn-danger btn-sm"
+                                    <button class="btn btn-danger btn-sm bi bi-clipboard2-x" title="Cancelar"
                                             @onclick="@(() => CambiarEstado(context, 3))">
-                                        Cancelar
+                                        
                                     </button>
-                                    <button class="btn btn-danger btn-sm bi bi-trash"
-                                            @onclick="@(() => AbrirModal(context))">
+                                    <button class="btn btn-primary btn-sm bi bi-pencil-square" title="Editar"
+                                            @onclick="@(() => Modificar(context))">
+                                        
                                     </button>
                                 </div>
                             </TemplateColumn>
                             <TemplateColumn Title="Eliminar">
                                 <div class="flex items-center">
                                     
-                                    <button class="btn btn-danger btn-sm bi bi-trash"
+                                    <button class="btn btn-danger btn-sm bi bi-trash" title="Eliminar"
                                             @onclick="@(() => AbrirModal(context))">
                                     </button>
+                                    
                                 </div>
                             </TemplateColumn>
                         </QuickGrid>
@@ -175,11 +177,28 @@
         Reservaciones = await ReservacionesService.Listar(r => r.ClienteId == ReservacionDto.ClienteId); // Cargar todas las reservaciones
     }
 
+    private void Modificar(ReservacionesDto reservacion)
+    {
+        if(reservacion.EstadoId == 1)
+        {
+            navigationManager.NavigateTo($"/Reservacion/Edit/{reservacion.ReservacionId}");
+        }
+        else
+        {
+            mensaje = "La reservacion ya no esta pendiente. No puede ser modificada";
+        }
+
+    }
+
     private async Task CambiarEstado(ReservacionesDto reservacion, int nuevoEstado)
     {
         Taxista.EstadoTId = 1;
         var guardarT = await taxistaServices.Guardar(Taxista);
         reservacion.EstadoId = nuevoEstado;
+        if(reservacion.EstadoId == 3)
+        {
+            await ReservacionesService.AfectarCantidad(reservacion.ReservacionDetalles.ToArray(), false);
+        }
         var guardado = await ReservacionesService.Guardar(reservacion);
         if (guardado)
         {
