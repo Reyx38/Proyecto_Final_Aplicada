@@ -7,6 +7,8 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 @*Crear las notificaciones y terminar de ajustar la redireccion*@
 
 <link rel="stylesheet" href="/Estilos/CrearViaje/StyleCrearViajes.css" />
@@ -102,7 +104,7 @@
         }
         else
         {
-            Mensaje = "Usuario no autenticado";
+            Toast.Notify(new(ToastType.Danger, $"Usuario no autenticado"));
         }
         ListaDestinos = await destinosCercaService.Listar(a => true);
         ListaTaxistas = await taxistasServices.Listar(a => a.TaxistaId != "");
@@ -144,13 +146,15 @@
         // Verificar si el usuario no está autenticado
         if (user.Identity == null || !user.Identity.IsAuthenticated)
         {
-            Mensaje = "Debe iniciar sesión para guardar un viaje rápido.";
+
+            Toast.Notify(new(ToastType.Warning, $"Debe iniciar sesión para guardar un viaje rápido."));
+            await Task.Delay(4000);
             navigationManager.NavigateTo("/Account/Login");
-            return;
         }
         if(await Validar())
         {
-            Mensaje = "Ya tienes un viaje";
+            Toast.Notify(new(ToastType.Info, $"Ya tienes un viaje"));
+            await Task.Delay(4000);
             return;
         }
 
@@ -163,19 +167,21 @@
                 var crear = await viajesRapidosServices.Guardar(ViajeRapidoDto);
                 if (crear)
                 {
-                    Mensaje = "Se a creado tu viaje rapido";
+                    Toast.Notify(new(ToastType.Success, $"Se a creado tu viaje rapido"));
+                    await Task.Delay(4000);
                 }
                 ViajeRapidoDto = new();
             }
             else
             {
-                Mensaje = "Taxista no esta en la zona";
+                Toast.Notify(new(ToastType.Danger, $"Taxista no esta en la zona"));
+                
             }
 
         }
         else
         {
-            Mensaje = "Ingrese todos los datos";
+            Toast.Notify(new(ToastType.Danger, $"Ingrese todos los datos"));
         }
 
     }

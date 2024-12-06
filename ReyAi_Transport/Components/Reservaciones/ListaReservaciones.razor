@@ -4,6 +4,8 @@
 @inject ReservacionesServices ReservacionesService
 @inject TaxistaServices taxistaServices
 @rendermode InteractiveServer
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 <link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
 
 <div class="container">
@@ -110,8 +112,6 @@
     </div>
 </div>
 
-<p><strong>@mensaje</strong></p>
-
 <div class="modal fade @(MostrarModal ? "show d-block" : "d-none")" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -133,7 +133,6 @@
 @code {
     private List<ReservacionesDto> Reservaciones { get; set; } = new();
     private TaxistaDto Taxista { get; set; } = new TaxistaDto();
-    private string mensaje = string.Empty;
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
     public DateTime? Desde { get; set; }
@@ -173,12 +172,13 @@
         var guardado = await ReservacionesService.Guardar(reservacion);
         if (guardado)
         {
-            mensaje = $"Reservación {reservacion.ReservacionId} marcada como {nuevoEstado}.";
+            Toast.Notify(new(ToastType.Success, $"Cambio de estado a la Reservación {reservacion.ReservacionId} exitoso."));
+            await Task.Delay(3000);
             await CargarReservaciones(); // Refresca la lista
         }
         else
         {
-            mensaje = "Error al actualizar el estado.";
+            Toast.Notify(new(ToastType.Danger, $"Error al actualizar el estado."));
         }
     }
 
@@ -235,15 +235,21 @@
             var eliminado = await ReservacionesService.Eliminar(ReservacionSeleccionado.ReservacionId);
             if (eliminado)
             {
-                mensaje = $"Reservación {ReservacionSeleccionado.ReservacionId} eliminada con éxito.";
+                Toast.Notify(new(ToastType.Success, $"Reservación {ReservacionSeleccionado.ReservacionId} eliminada con éxito."));
+                await Task.Delay(3000);
                 await CargarReservaciones();
             }
             else
             {
-                mensaje = "Error al eliminar la reservación.";
+                Toast.Notify(new(ToastType.Danger, $"Error al eliminar la reservación."));
+                await Task.Delay(3000);
                 CerrarModal();
             }
             CerrarModal();
+        }
+        else
+        {
+            Toast.Notify(new(ToastType.Warning, $"La recervacion no ha sido cancelada, no puede ser eliminada."));
         }
     }
 }

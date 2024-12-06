@@ -8,6 +8,8 @@
 @inject ReservacionesServices reservacionesServices
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager navigationManager
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 
 <PageTitle>Reservacion de viaje</PageTitle>
@@ -123,7 +125,8 @@
 		}
 		else
 		{
-			Mensaje = "Usuario no autenticado";
+			Toast.Notify(new(ToastType.Danger, $"Usuario no autenticado."));
+			await Task.Delay(2000);
 			navigationManager.NavigateTo("/Account/Login");
 		}
 
@@ -182,24 +185,28 @@
 	{
 		if (await Validar())
 		{
-			Mensaje = "Ya existe una reservacion con estos datos";
+			Toast.Notify(new(ToastType.Info, $"Ya existe una reservacion con estos datos."));
+			await Task.Delay(3000);
 			return;
 		}
 		if (ReservacionDto.ViajeId <= 0)
 		{
-			Mensaje = "Debe seleccionar un viaje";
+			Toast.Notify(new(ToastType.Warning, $"Debe seleccionar un viaje."));
+			await Task.Delay(3000);
 			return;
 		}
 		ViajeDto = await viajeServices.Buscar(ReservacionDto.ViajeId);
 
 		if (ReservacionDto.Fecha < ViajeDto.FechaInicio && ReservacionDto.Fecha >= ViajeDto.FechaCierre)
 		{
-			Mensaje = "El viaje no se encuentra disponible entre esos dias";
+			Toast.Notify(new(ToastType.Danger, $"El viaje no se encuentra disponible entre esos dias."));
+			await Task.Delay(3000);
 			return;
 		}
 		if (ReservacionDto.CantidadPasajeros > ViajeDto.personas)
 		{
-			Mensaje = "La cantidad de pasajaeros ha pasado el limite";
+			Toast.Notify(new(ToastType.Danger, $"La cantidad de pasajaeros ha pasado el limite."));
+			await Task.Delay(3000);
 			return;
 		}
 		CalcularMonto();
@@ -210,12 +217,13 @@
 
 		if (crear)
 		{
-			Mensaje = "Se ha creado correctamente el trabajo";
+			Toast.Notify(new(ToastType.Success, $"La reservacion a sido modificada correctamente. Gracias por preferirnos!"));
+			await Task.Delay(3000);
 			navigationManager.NavigateTo("/ListaReservaciones/Users");
 		}
 		else
 		{
-			Mensaje = "No se ha creado correctamente el trabajo";
+			Toast.Notify(new(ToastType.Danger, $"La reservacion no ha sido agregada. Favor intentarlo de nuevo."));
 		}
 
 	}

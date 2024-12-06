@@ -3,6 +3,8 @@
 @inject ArticulosServices articulosServices
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 <link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
 <div class="container">
     <div class="overlay">
@@ -106,7 +108,6 @@
 @code {
     private List<ArticulosDto> Articulos = new();
 
-    private string mensaje = string.Empty;
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
     public DateTime? Desde { get; set; }
@@ -174,12 +175,14 @@
         var eliminado = await articulosServices.Eliminar(ArticuloSeleccionado.ArticuloId);
         if (eliminado)
         {
-            mensaje = $"Articulo {ArticuloSeleccionado.ArticuloId} eliminado con éxito.";
+            Toast.Notify(new(ToastType.Success, $"Articulo {ArticuloSeleccionado.ArticuloId} eliminado con éxito."));
+            await Task.Delay(3000);
             await CargarReservaciones();
         }
         else
         {
-            mensaje = "Error al eliminar el articulo.";
+            Toast.Notify(new(ToastType.Danger, $"Error al eliminar el articulo."));
+            await Task.Delay(3000);
             CerrarModal();
         }
         CerrarModal();

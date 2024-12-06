@@ -3,6 +3,9 @@
 @inject CiudadServices CiudadService
 @inject TaxistaServices TaxistaService
 @inject NavigationManager NavigationManager
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
+
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 
 <PageTitle>Agregar Conductor</PageTitle>
@@ -135,7 +138,17 @@
 	}
 	public async Task Guardar()
 	{
-		await TaxistaService.Guardar(TaxistaDto);
-		NavigationManager.NavigateTo("/");
+		var guardado = await TaxistaService.Guardar(TaxistaDto);
+		if (guardado)
+		{
+			Toast.Notify(new(ToastType.Success, $"Nuevo taxista agregado correctamente."));
+			await Task.Delay(3000);
+			NavigationManager.NavigateTo("/");
+		}
+		else
+		{
+			Toast.Notify(new(ToastType.Danger, $"Nuevo taxista no fue agregado correctamente."));
+		}
+
 	}
 }
