@@ -80,8 +80,17 @@
                                 <PropertyColumn Title="Monto" Property="@(r => r.Monto)" Format="C2" />
 
                             </div>
+                            <TemplateColumn Title="Info">
+                                <div class="flex items-center">
 
+                                    <button class="btn btn-info btn-sm bi bi-info-circle" title="Informacion"
+                                    @onclick="@(() => Info(context))">
+                                    </button>
+
+                                </div>
+                            </TemplateColumn>
                         </QuickGrid>
+                        
                     </div>
                 </div>
                 <div class="card-footer">
@@ -127,6 +136,11 @@
     private async Task CargarReservaciones()
     {
         Pagos = await pagosServices.Listar(r => r.ClienteId == PagoDto.ClienteId);
+    }
+
+    private void Info(PagosDto pago)
+    {
+        navigationManager.NavigateTo($"/Info/Pago/{pago.PagoId}");
     }
 
     private async Task Buscar()
