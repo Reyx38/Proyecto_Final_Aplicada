@@ -25,6 +25,8 @@ builder.Services.AddScoped<ReservacionesServices>();
 builder.Services.AddScoped<ReservacionDetallesServices>();
 builder.Services.AddScoped<PagosServices>();
 builder.Services.AddScoped<ArticulosServices>();
+//Notificaciones
+builder.Services.AddBlazorBootstrap();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
