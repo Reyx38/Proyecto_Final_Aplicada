@@ -145,8 +145,8 @@
         if (user.Identity == null || !user.Identity.IsAuthenticated)
         {
             Mensaje = "Debe iniciar sesión para guardar un viaje rápido.";
-            return;
             navigationManager.NavigateTo("/Account/Login");
+            return;
         }
         if(await Validar())
         {
