@@ -146,9 +146,9 @@
         // Verificar si el usuario no está autenticado
         if (user.Identity == null || !user.Identity.IsAuthenticated)
         {
+
             Toast.Notify(new(ToastType.Warning, $"Debe iniciar sesión para guardar un viaje rápido."));
             await Task.Delay(4000);
-            return;
             navigationManager.NavigateTo("/Account/Login");
         }
         if(await Validar())

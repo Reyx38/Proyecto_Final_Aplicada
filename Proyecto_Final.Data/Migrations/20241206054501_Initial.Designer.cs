@@ -12,7 +12,7 @@ using ReyAI_Trasport.Data.Contexto;
 namespace Proyecto_Final.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241130135910_Initial")]
+    [Migration("20241206054501_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -54,19 +54,19 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "055e64c4-9669-4585-bb12-39a0365242c7",
+                            Id = "fc3c7ad3-e33c-4609-a8ef-5d4b2834b569",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "64ea8740-8d22-48e0-b74e-7f5af33cf4db",
+                            Id = "abe174c9-fa23-4f02-87b4-872223d79719",
                             Name = "Taxista",
                             NormalizedName = "TAXISTA"
                         },
                         new
                         {
-                            Id = "cb9b62c4-5626-47bf-919e-6af761410f46",
+                            Id = "2d8128c9-ff19-42ec-8d55-2eaed2a995e1",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
                         });
@@ -176,6 +176,35 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Proyecto_Final.Data.Models.CiudadesEstados", b =>
+                {
+                    b.Property<int>("EstadosCId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EstadosCId"));
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EstadosCId");
+
+                    b.ToTable("CiudadesEstados");
+
+                    b.HasData(
+                        new
+                        {
+                            EstadosCId = 1,
+                            Descripcion = "Disponible"
+                        },
+                        new
+                        {
+                            EstadosCId = 2,
+                            Descripcion = "Deshabilitado"
+                        });
                 });
 
             modelBuilder.Entity("ReyAI_Trasport.Data.ApplicationUser", b =>
@@ -333,11 +362,16 @@ namespace Proyecto_Final.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CiudadId"));
 
+                    b.Property<int>("EstadoCId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CiudadId");
+
+                    b.HasIndex("EstadoCId");
 
                     b.ToTable("Ciudades");
 
@@ -345,26 +379,31 @@ namespace Proyecto_Final.Data.Migrations
                         new
                         {
                             CiudadId = 1,
+                            EstadoCId = 1,
                             Nombre = "San Francisco de Macoris"
                         },
                         new
                         {
                             CiudadId = 2,
+                            EstadoCId = 1,
                             Nombre = "Santo Domingo"
                         },
                         new
                         {
                             CiudadId = 3,
+                            EstadoCId = 1,
                             Nombre = "Santigo"
                         },
                         new
                         {
                             CiudadId = 4,
+                            EstadoCId = 1,
                             Nombre = "Samana"
                         },
                         new
                         {
                             CiudadId = 5,
+                            EstadoCId = 1,
                             Nombre = "Puerto Plata"
                         });
                 });
@@ -476,6 +515,11 @@ namespace Proyecto_Final.Data.Migrations
                         {
                             EstadoTId = 2,
                             Descripcion = "Ocupado"
+                        },
+                        new
+                        {
+                            EstadoTId = 3,
+                            Descripcion = "Despedido"
                         });
                 });
 
@@ -499,7 +543,7 @@ namespace Proyecto_Final.Data.Migrations
                         new
                         {
                             EstadosVId = 1,
-                            Descripcion = "Pendiente"
+                            Descripcion = "Disponible"
                         },
                         new
                         {
@@ -793,16 +837,16 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "aff4f3b8-049f-4401-bb59-92d229d23885",
+                            Id = "3f68a960-c144-4d7c-a701-cf8350a61ac3",
                             AccessFailedCount = 0,
                             CiudadId = 1,
-                            ConcurrencyStamp = "fb2fd32a-7558-4360-96bf-fa8e396df10f",
+                            ConcurrencyStamp = "a2ff9165-1d3b-4004-9aec-b74de9a4f247",
                             Email = "juanperez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword123",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "29836903-9b1c-4928-b470-2295467276fd",
+                            SecurityStamp = "d17121be-30ff-41bb-8173-61b7c953c397",
                             TwoFactorEnabled = false,
                             UserName = "juanperez",
                             EstadoTId = 1,
@@ -811,16 +855,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "002187bc-0fcd-4abb-9e39-934c837ce515",
+                            Id = "80f12025-8790-449a-bb77-d62b451b691c",
                             AccessFailedCount = 0,
                             CiudadId = 3,
-                            ConcurrencyStamp = "ef30a534-40a5-41b2-a73e-71a6471e967d",
+                            ConcurrencyStamp = "39bd8f4d-a078-4cc7-aedb-383c3fd18ed7",
                             Email = "mariagonzalez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword456",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7959bfdc-dba6-42c3-8aea-64425522dfee",
+                            SecurityStamp = "801b2074-97d5-47a0-8fc9-943ebb3390de",
                             TwoFactorEnabled = false,
                             UserName = "mariagonzalez",
                             EstadoTId = 1,
@@ -829,16 +873,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "11955c51-7325-4ba8-9a24-349c7aab4209",
+                            Id = "4715baf7-17ed-48a0-9487-66b2a85911ba",
                             AccessFailedCount = 0,
                             CiudadId = 2,
-                            ConcurrencyStamp = "6ab0d52b-299b-4ce0-9634-d3b915e3606c",
+                            ConcurrencyStamp = "bd9b473f-586d-4c03-906e-326f7bd1a81e",
                             Email = "carlosmendoza@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ee863f8b-5315-4118-b2e5-dc9c558fc7fc",
+                            SecurityStamp = "f49c0bde-86cb-412e-b8d2-0e6d651e208d",
                             TwoFactorEnabled = false,
                             UserName = "carlosmendoza",
                             EstadoTId = 1,
@@ -847,16 +891,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "8511126e-528f-40b9-ab06-0e4865294102",
+                            Id = "c14902ca-996d-4226-ab9b-f201d8f3c60d",
                             AccessFailedCount = 0,
                             CiudadId = 2,
-                            ConcurrencyStamp = "488e0620-fde2-4529-8464-19b2c37a12cf",
+                            ConcurrencyStamp = "c9d76042-b868-4cb6-b6ab-1f9624c96356",
                             Email = "luismartinez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword101",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1c73e93f-7dbc-42da-9d89-ffc362cf6893",
+                            SecurityStamp = "f5ae1d77-1466-4668-b813-7116e12f530e",
                             TwoFactorEnabled = false,
                             UserName = "luismartinez",
                             EstadoTId = 1,
@@ -865,16 +909,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "70a99e2d-2d98-43f7-859f-fca80e047c7c",
+                            Id = "81ec052d-de93-4945-bb71-a81dcd2d2242",
                             AccessFailedCount = 0,
                             CiudadId = 1,
-                            ConcurrencyStamp = "ecca4432-e227-4dcf-91fc-ffcf65bf3945",
+                            ConcurrencyStamp = "30ffd1ac-988f-402d-a8b7-20f2460d2db1",
                             Email = "anafernandez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword102",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d02e00bc-80c5-4e12-b3cf-a15eb6049fef",
+                            SecurityStamp = "079e5e89-0663-4612-89af-c9499652aeb9",
                             TwoFactorEnabled = false,
                             UserName = "anafernandez",
                             EstadoTId = 1,
@@ -941,6 +985,17 @@ namespace Proyecto_Final.Data.Migrations
                         .HasForeignKey("CiudadId");
 
                     b.Navigation("Ciudad");
+                });
+
+            modelBuilder.Entity("ReyAI_Trasport.Data.Models.Ciudades", b =>
+                {
+                    b.HasOne("Proyecto_Final.Data.Models.CiudadesEstados", "CiudadesEstados")
+                        .WithMany()
+                        .HasForeignKey("EstadoCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CiudadesEstados");
                 });
 
             modelBuilder.Entity("ReyAI_Trasport.Data.Models.DestinosCerca", b =>

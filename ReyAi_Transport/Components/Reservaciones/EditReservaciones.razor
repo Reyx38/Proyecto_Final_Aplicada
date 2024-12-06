@@ -109,7 +109,7 @@
 	public List<ArticulosDto> ListaArticulos { get; set; } = new List<ArticulosDto>();
 	public List<ViajesDto> ListaViajes { get; set; } = new List<ViajesDto>();
 	public List<CiudadesDto> ListaCiudades { get; set; } = new List<CiudadesDto>();
-	public string Mensaje { get; set; }
+	public string Mensaje { get; set; } = "";
 
 	public TaxistaDto taxista { get; set; } = new TaxistaDto();
 	public CiudadesDto destino { get; set; } = new CiudadesDto();
@@ -228,7 +228,7 @@
 
 	}
 
-	public async Task Eliminar(ReservacionDetallesDto detalle)
+	public void Eliminar(ReservacionDetallesDto detalle)
 	{
 		ReservacionDto.ReservacionDetalles.Remove(detalle);
 		DetallesDto.Cantidad = detalle.Cantidad;
