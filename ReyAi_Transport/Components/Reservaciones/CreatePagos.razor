@@ -91,7 +91,6 @@
         ReservacionDto = await reservacionesServices.Buscar(ReservacionId);
         if(ReservacionDto.EstadoId == 1 || ReservacionDto.EstadoId == 3)
         {
-            //Mensaje = "La reservacion aun no ha sido aceptada";
             Toast.Notify(new(ToastType.Warning, $"La reservacion aun no ha sido aceptada"));
             navigationManager.NavigateTo("/ListaReservaciones/Users");
         }
@@ -149,14 +148,12 @@
         {
             if(PagoDto.Monto > ReservacionDto.Monto || PagoDto.Monto < ReservacionDto.Monto)
             {
-                //Mensaje = "El monto no es el correcto, por favor verifique el precio de la recervacion.";
                 Toast.Notify(new(ToastType.Danger, $"El monto no es el correcto, por favor verifique el precio de la recervacion."));
             }
             else
             {
                 if (await ValidarExistencia())
                 {
-                    //Mensaje = "Ya existe un pago para esta reservacion";
                     Toast.Notify(new(ToastType.Info, $"Ya existe un pago para esta reservacion"));
                     await Task.Delay(3000);
                     return;
@@ -169,14 +166,12 @@
 
                 if (realizado == true && actualizar == true)
                 {
-                    //Mensaje = "Pago realizado.";
                     Toast.Notify(new(ToastType.Success, $"Pago realizado."));
                     await Task.Delay(4000);
                     navigationManager.NavigateTo("/");
                 }
                 else
                 {
-                    //Mensaje = "No se pudo realizar el pago. Intentelo de nuevo.";
                     Toast.Notify(new(ToastType.Danger, $"No se pudo realizar el pago. Intentelo de nuevo."));
                 }
             }
