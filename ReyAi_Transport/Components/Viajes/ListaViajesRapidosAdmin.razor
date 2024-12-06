@@ -2,6 +2,8 @@
 
 @inject ViajesRapidosServices viajesRapidoService
 @rendermode InteractiveServer
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 <link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
 
 <div class="container">
@@ -117,7 +119,6 @@
     </div>
 </div>
 
-<p><strong>@mensaje</strong></p>
 <div class="modal fade @(MostrarModal ? "show d-block" : "d-none")" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -138,7 +139,6 @@
 
 @code {
     public List<ViajesRapidosDto> ViajeRapidosDto = new();
-    private string mensaje = string.Empty;
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
     public DateTime? Desde { get; set; }
@@ -165,12 +165,13 @@
         var guardado = await viajesRapidoService.Guardar(viaje);
         if (guardado)
         {
-            mensaje = $"Viaje Rapido {viaje.ViajeRapidoId} marcado como {viaje.Estado}.";
+            Toast.Notify(new(ToastType.Success, $"Estdo del Viaje Rapido {viaje.ViajeRapidoId} cambiado con exito."));
+            await Task.Delay(2000);
             await CargarLista(); // Refresca la lista
         }
         else
         {
-            mensaje = "Error al actualizar el estado.";
+            Toast.Notify(new(ToastType.Danger, $"Error al actualizar el estado."));
         }
     }
 
@@ -226,15 +227,21 @@
             var eliminado = await viajesRapidoService.Eliminar(ViajeDto.ViajeRapidoId);
             if (eliminado)
             {
-                mensaje = $"Reservación {ViajeDto.ViajeRapidoId} eliminada con éxito.";
+                Toast.Notify(new(ToastType.Success, $"Viaje rapido {ViajeDto.ViajeRapidoId} eliminado con éxito."));
+                await Task.Delay(2000);
                 await CargarLista();
             }
             else
             {
-                mensaje = "Error al eliminar la reservación.";
+                Toast.Notify(new(ToastType.Danger, $"Error al eliminar el viaje rapido."));
+                await Task.Delay(2000);
                 CerrarModal();
             }
             CerrarModal();
+        }
+        else
+        {
+            Toast.Notify(new(ToastType.Warning, $"El viaje no ha sido cancelado, no puede ser eliminado."));
         }
     }
 }
