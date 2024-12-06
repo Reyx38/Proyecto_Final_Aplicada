@@ -95,7 +95,7 @@
 											{
 												<div class="col-4 mb-3 text-center">
 													<img src="@im.Base64" alt="@im.Alt" title="@im.Titulo" class="img-fluid" />
-													<button @onclick="() => RemoverDetalle(im)" class="btn-custom">Remover</button>
+													<button type="button" @onclick="() => RemoverDetalle(im)" class="bi bi-trash btn-danger">Remover</button>
 												</div>
 											}
 										}
@@ -136,6 +136,9 @@
 
 	public async Task Guardar()
 	{
+		var fechaActual = DateTime.Now;
+
+
 		if (Viajes.Imagenes.Count < 1)
 		{
 			Console.WriteLine("Necesita agregar por lo menos 1 imagen");
@@ -146,6 +149,18 @@
 			Console.WriteLine("El limite son 5 imagenes por viaje");
 			return;
 		}
+		if (Viajes.FechaInicio < fechaActual)
+		{
+			Console.WriteLine("La fecha de inicio no puede ser en el pasado.");
+			return;
+		}
+
+		if (Viajes.FechaCierre <= Viajes.FechaInicio)
+		{
+			Console.WriteLine("La fecha de cierre debe ser posterior a la fecha de inicio.");
+			return;
+		}
+
 		await ViajeService.Guardar(Viajes);
 		NavigationManager.NavigateTo("/");
 
