@@ -134,7 +134,7 @@
 		ListTaxista = await TaxistaService.Listar(T => true);
 		Viajes.FechaCierre = DateTime.Now;
 		Viajes.FechaInicio = DateTime.Now;
-		ListCiudades = await CiudadService.Listar(T => true);
+		ListCiudades = await CiudadService.Listar(c => c.EstadoId != 2);
 	}
 
 	public async Task Guardar()
