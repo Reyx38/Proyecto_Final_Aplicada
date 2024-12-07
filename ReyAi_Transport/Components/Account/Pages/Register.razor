@@ -66,6 +66,8 @@
 			identityErrors = result.Errors;
 			return;
 		}
+		//aqui va el metodo para hacer la asignacion de roles
+		await UserManager.AddToRoleAsync(user, "Cliente");
 
 		Logger.LogInformation("User created a new account with password.");
 

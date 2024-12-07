@@ -1,6 +1,6 @@
 @page "/ListaReservaciones"
-@using Microsoft.AspNetCore.Components.QuickGrid
 
+@attribute [Authorize(Roles = "Admin")]
 @inject ReservacionesServices ReservacionesService
 @inject TaxistaServices taxistaServices
 @rendermode InteractiveServer

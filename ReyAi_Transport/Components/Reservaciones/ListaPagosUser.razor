@@ -1,5 +1,5 @@
 ﻿@page "/ListaPagos/Users"
-
+@attribute [Authorize(Roles = "Cliente")]
 @inject ReservacionesServices ReservacionesService
 @inject PagosServices pagosServices
 @inject AuthenticationStateProvider AuthenticationStateProvider

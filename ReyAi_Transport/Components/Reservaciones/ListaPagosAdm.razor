@@ -1,5 +1,5 @@
 ﻿@page "/ListaPagos"
-
+@attribute [Authorize(Roles = "Admin")]
 @inject ReservacionesServices ReservacionesService
 @inject PagosServices pagosServices
 @rendermode InteractiveServer

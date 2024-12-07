@@ -1,5 +1,5 @@
 ﻿@page "/Articulos"
-
+@attribute [Authorize(Roles = "Admin")]
 @inject ArticulosServices articulosServices
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer

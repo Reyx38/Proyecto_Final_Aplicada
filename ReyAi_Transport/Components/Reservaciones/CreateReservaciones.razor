@@ -1,5 +1,6 @@
 ﻿@page "/Reservacion/{ViajeId:int}"
 @page "/Reservacion"
+@attribute [Authorize(Roles = "Admin, Cliente")]
 @rendermode InteractiveServer
 @inject ViajeServices viajeServices
 @inject ReservacionDetallesServices detallesServices

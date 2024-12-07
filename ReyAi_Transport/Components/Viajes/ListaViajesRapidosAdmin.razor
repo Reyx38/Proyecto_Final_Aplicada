@@ -1,5 +1,7 @@
 ﻿@page "/ListaViajesRapidos"
 
+@attribute [Authorize(Roles = "Admin")]
+
 @inject ViajesRapidosServices viajesRapidoService
 @rendermode InteractiveServer
 @inject ToastService Toast
