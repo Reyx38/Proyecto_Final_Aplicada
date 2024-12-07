@@ -1,4 +1,4 @@
-﻿@page "/DestinoCercano/Create"
+﻿@page "/DestinoCercano/Edit/{DestinoCercanoId:int}"
 @rendermode InteractiveServer
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 
@@ -39,7 +39,7 @@
 				</div>
 			</div>
 			<div class=" card-footer">
-				<a href="/DestinoCercano" class="btn btn-light bi bi-arrow-left-square">Volver</a>
+				<a href="/" class="btn btn-light bi bi-arrow-left-square">Volver</a>
 				<button type="submit" class="btn btn-Guardar ">Guardar</button>
 			</div>
 		</div>
@@ -47,12 +47,15 @@
 </EditForm>
 
 @code {
+	[Parameter]
+	public int DestinoCercanoId { get; set; }
 	public DestinoCercaDto destinoCercaDto { get; set; } = new();
 	public List<CiudadesDto> ListCiudades { get; set; } = new List<CiudadesDto>();
 
 
 	protected override async Task OnInitializedAsync()
 	{
+		destinoCercaDto = await DestinosCercasService.Buscar(DestinoCercanoId);
 		ListCiudades = await CiudadService.Listar(c => c.EstadoId != 2);
 	}
 

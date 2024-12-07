@@ -1,7 +1,8 @@
 ﻿@page "/Taxistas/Listado"
+@using BlazorBootstrap
+@using Blazored.Toast.Services
 @rendermode InteractiveServer
 @inject TaxistaServices TaxistaService
-@inject ToastService Toast
 <Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 <link rel="stylesheet" href="/Estilos/Taxista/Table-Taxista.css" />
 
@@ -140,11 +141,11 @@
         {
             // Lógica para despedir al taxista
             await TaxistaService.Eliminar(TaxistaSeleccionado.TaxistaId);
-            Toast.Notify(new(ToastType.Success, $"Taxista despedido."));
             ListTaxistas = await TaxistaService.Listar(t => true); // Actualizar la lista
         }
         CerrarModal();
     }
+}
 
     
-}
+
