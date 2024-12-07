@@ -14,15 +14,15 @@
     top: 0px;
     left: 0px;
     width: 100%;
-    height: 120vh;
-    background-color: rgba(0, 0, 0, 0.4);
+    height: 75vh;
+    background-color: rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
 .container {
     position: relative;
     z-index: 2;
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.5);
     border: 2px solid;
     backdrop-filter: blur(10px);
     color: #fff;
@@ -32,7 +32,7 @@
 
 .card {
     border: none;
-    background: transparent;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .card-header {
@@ -50,6 +50,7 @@
 .card-body {
     padding: 18px;
     border-radius: 10px;
+    background-color: transparent;
 }
 
 .card-footer {
