@@ -1,0 +1,65 @@
+﻿@page "/DestinoCercano/Create"
+@rendermode InteractiveServer
+<link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
+
+@inject DestinosCercasServices DestinosCercasService
+@inject CiudadServices CiudadService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Crear Ciudades</PageTitle>
+
+<EditForm Model="destinoCercaDto" OnValidSubmit="Guardar" FormName="CreatCiudades">
+	<DataAnnotationsValidator />
+	<div class="overlay"></div>
+
+	<div class="container">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">
+					<h2> Registrar Destinos Cercanos</h2>
+				</div>
+			</div>
+			<div class="row">
+				<label class="form-label">Destino</label>
+				<InputSelect class="form-select" @bind-Value="@destinoCercaDto.CiudadId">
+					<option selected disabled value="0">-- Seleccione un Destino --</option>
+					@foreach (var ciudad in ListCiudades)
+					{
+						<option value="@ciudad.CiudadId">@ciudad.Nombre</option>
+					}
+				</InputSelect>
+				<ValidationMessage For="@(() => destinoCercaDto.CiudadId)" />
+			</div>
+
+			<div class="card-body">
+				<div class="form-group">
+					<label class="form-label">Nombre del destino cercano</label>
+					<InputText class="form-control" @bind-Value="destinoCercaDto.Descripcion" />
+					<ValidationMessage For="@(() => destinoCercaDto.Descripcion)" />
+				</div>
+			</div>
+			<div class=" card-footer">
+				<a href="/" class="btn btn-light bi bi-arrow-left-square">Volver</a>
+				<button type="submit" class="btn btn-Guardar ">Guardar</button>
+			</div>
+		</div>
+	</div>
+</EditForm>
+
+@code {
+	public DestinoCercaDto destinoCercaDto { get; set; } = new();
+	public List<CiudadesDto> ListCiudades { get; set; } = new List<CiudadesDto>();
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		ListCiudades = await CiudadService.Listar(c => c.EstadoId != 2);
+	}
+
+	public async Task Guardar()
+	{
+		await DestinosCercasService.Guardar(destinoCercaDto);
+		NavigationManager.NavigateTo("/");
+	}
+
+}
