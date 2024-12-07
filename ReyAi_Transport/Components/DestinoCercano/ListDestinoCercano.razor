@@ -1,0 +1,186 @@
+﻿@page "/DestinoCercano"
+
+@inject DestinosCercasServices DestinosCercasService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+<link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
+
+<div class="container">
+    <div class="overlay">
+        <div class="detalles-container">
+            <div class="card-header">
+                <h1 class="card-title" style="color: #ffaf7a">Consulta de destinosCercanos</h1>
+            </div>
+            <div class="card-body">
+                @*labels*@
+                <div class="row">
+
+                    @*Filtrar por*@
+                    <div class="col-3">
+                        <label class="col-form-label" style="color: #00b7c5"><strong>Filtrar por</strong></label>
+                    </div>
+
+                    @*ValorFiltro*@
+                    <div class="col-4">
+                        <label class="col-form-label" style="color: #00b7c5"><strong>B&uacute;squeda</strong></label>
+                    </div>
+                </div>
+
+                @*Inputs y botones*@
+                <div class="row align-items-center">
+                    @*filtro*@
+                    <div class="col-3">
+                        <InputSelect class="form-select" @bind-Value="Filtro" style="border: 2px solid #00b7c5">
+                            <option value="" selected disabled>Elija una opci&oacute;n</option>
+                            <option value="Descripcion">DestinoCercanos</option>
+                            <option value="id">Id</option>
+                        </InputSelect>
+                    </div>
+
+                    @*Busqueda*@
+                    <div class="col-4">
+                        <div class="input-group">
+                            <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" style="border: 2px solid #00b7c5" />
+                            <button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
+                        </div>
+                    </div>
+
+                    @*Restablecer*@
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-outline-secondary bi bi-arrow-clockwise" @onclick="Restablecer"></button>
+                    </div>
+                    @*Crear*@
+                    <div class="col-auto">
+                        <a href="/DestinoCercano/Create" class="btn btn-outline-primary" style="background-color: #ffaf7a; color: white; border: none"> Crear </a>
+                    </div>
+
+                    <div>
+                        <QuickGrid Items="@(DestinosCercanos.AsQueryable())" DefaultSort="@sortByFecha" class="table table-striped table-hover text-start">
+                            <div class="flex items-center">
+                                <PropertyColumn Title="ID" Property="@(r => r.DestinoCercaId)" />
+                                <PropertyColumn Title="Nombres" Property="@(r => r.Descripcion)" />
+                                <PropertyColumn Title="Ciudad" Property="@(r => r.Nombre)" />
+                            </div>
+
+                            <TemplateColumn Title="Acciones">
+                                <div class="flex items-center">
+                                    <button class="btn btn-primary btn-sm bi bi-pencil-square" title="Editar"
+                                            @onclick="@(() => Edit(context))">
+                                    </button>
+                                    <button class="btn btn-danger btn-sm bi bi-trash" title="Desactivar"
+                                            @onclick="@(() => AbrirModal(context))">
+                                    </button>
+                                </div>
+                            </TemplateColumn>
+                        </QuickGrid>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade @(MostrarModal ? "show d-block" : "d-none")" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmacion de eliminar</h5>
+                <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estas seguro de eliminar el articulo de <strong>@DestinoCercaSeleccionado.Descripcion</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Desactivar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<DestinoCercaDto> DestinosCercanos { get; set; } = new();
+
+    private string mensaje = string.Empty;
+    public string Filtro { get; set; } = string.Empty;
+    public string ValorFiltro { get; set; } = string.Empty;
+    public DateTime? Desde { get; set; }
+    public DateTime? Hasta { get; set; }
+    public bool MostrarModal { get; set; } = false;
+    public DestinoCercaDto DestinoCercaSeleccionado { get; set; } = new();
+    // Configuración de ordenamiento por defecto (por fecha de la reservación)
+    GridSort<ArticulosDto> sortByFecha = GridSort<ArticulosDto>
+        .ByAscending(r => r.Existencia);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarReservaciones();
+    }
+
+    private async Task CargarReservaciones()
+    {
+        DestinosCercanos = await DestinosCercasService.Listar(r => true);
+    }
+
+    private async Task Buscar()
+    {
+        if (ValorFiltro.Trim() != "")
+        {
+            if (Filtro == "Descripcion")
+            {
+                DestinosCercanos = await DestinosCercasService.Listar(e => e.Nombre.ToLower().Contains(ValorFiltro.ToLower()));
+            }
+            else if (Filtro == "id" && int.TryParse(ValorFiltro, out int id))
+            {
+                DestinosCercanos = await DestinosCercasService.Listar(e => e.CiudadId == id);
+            }
+        }
+        else
+        {
+            DestinosCercanos = await DestinosCercasService.Listar(e => e.CiudadId > 0);
+        }
+
+    }
+
+    private void Edit(DestinoCercaDto destinoCercaDto)
+    {
+        navigationManager.NavigateTo($"/DestinoCercano/Edit/{destinoCercaDto.CiudadId}");
+    }
+
+    private async Task Restablecer()
+    {
+        DestinosCercanos = await DestinosCercasService.Listar(e => e.CiudadId > 0);
+        Filtro = string.Empty;
+        ValorFiltro = string.Empty;
+    }
+   
+    private void AbrirModal(DestinoCercaDto destinoCercaDto)
+    {
+        DestinoCercaSeleccionado = destinoCercaDto;
+        MostrarModal = true;
+    }
+    private void CerrarModal()
+    {
+        MostrarModal = false;
+        DestinoCercaSeleccionado = new();
+    }
+
+    private async Task Eliminar()
+    {
+        var eliminado = await DestinosCercasService.Eliminar(DestinoCercaSeleccionado.DestinoCercaId);
+        if (eliminado)
+        {
+            mensaje = $"La ciudad {DestinoCercaSeleccionado.Nombre} se ha desactivado con éxito.";
+            await CargarReservaciones();
+        }
+        else
+        {
+            mensaje = "Error al eliminar el articulo.";
+            CerrarModal();
+        }
+        CerrarModal();
+    }
+}
