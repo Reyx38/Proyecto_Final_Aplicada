@@ -1,5 +1,7 @@
 ﻿@page "/CrearViajeRapido"
 
+@attribute [Authorize(Roles = "Admin, Cliente")]
+
 @inject ViajesRapidosServices viajesRapidosServices
 @inject TaxistaServices taxistasServices
 @inject ReservacionesServices reservacionService

@@ -1,4 +1,5 @@
 ﻿@page "/Taxista/Editar/{TaxistaId?}"
+@attribute [Authorize(Roles = "Admin")]
 @rendermode InteractiveServer
 @inject CiudadServices CiudadService
 @inject TaxistaServices TaxistaService

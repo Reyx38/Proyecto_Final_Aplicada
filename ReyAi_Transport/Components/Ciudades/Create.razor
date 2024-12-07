@@ -1,4 +1,6 @@
 ﻿@page "/Ciudades/Create"
+
+@attribute [Authorize(Roles = "Admin")]
 @rendermode InteractiveServer
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 

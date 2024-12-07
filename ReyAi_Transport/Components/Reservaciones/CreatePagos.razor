@@ -1,4 +1,5 @@
 ﻿@page "/pago/{ReservacionId:int}"
+@attribute [Authorize(Roles = "Cliente")]
 @inject ReservacionesServices reservacionesServices
 @inject PagosServices pagosServices
 @inject NavigationManager navigationManager
