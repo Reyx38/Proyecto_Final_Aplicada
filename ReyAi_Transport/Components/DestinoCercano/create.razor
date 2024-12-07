@@ -1,4 +1,7 @@
 ﻿@page "/DestinoCercano/Create"
+
+@attribute [Authorize(Roles = "Admin")]
+
 @rendermode InteractiveServer
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 
@@ -58,7 +61,7 @@
 
 	public async Task Guardar()
 	{
-		await DestinosCercasService.Guardar(destinoCercaDto);
+		//await DestinosCercasService.Guardar(destinoCercaDto);
 		NavigationManager.NavigateTo("/");
 	}
 

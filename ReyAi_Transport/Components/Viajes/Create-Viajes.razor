@@ -1,6 +1,6 @@
 ﻿@page "/Viajes/Create"
-@using Microsoft.AspNetCore.Authorization
 
+@attribute [Authorize(Roles = "Admin")]
 
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 @rendermode InteractiveServer

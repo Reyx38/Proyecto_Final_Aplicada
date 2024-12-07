@@ -1,6 +1,9 @@
 ﻿@page "/Create/Articulos"
 @page "/Create/Articulos/{ArticuloId:int}"
 
+
+@attribute [Authorize(Roles = "Admin")]
+
 @inject ArticulosServices articulosServices
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer

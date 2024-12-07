@@ -1,4 +1,5 @@
 ﻿@page "/Taxistas/Listado"
+@attribute [Authorize(Roles = "Admin")]
 @rendermode InteractiveServer
 @inject TaxistaServices TaxistaService
 @inject ToastService Toast

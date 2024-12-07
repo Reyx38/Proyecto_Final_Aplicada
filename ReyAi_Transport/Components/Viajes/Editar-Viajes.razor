@@ -1,4 +1,7 @@
 ﻿@page "/Viajes/ViajesEditar/{ViajeId:int}"
+
+@attribute [Authorize(Roles = "Admin")]
+
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 @rendermode InteractiveServer
 @inject ViajeServices ViajeService

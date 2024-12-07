@@ -1,4 +1,5 @@
 ﻿@page "/Ciudades"
+@attribute [Authorize(Roles = "Admin")]
 
 @inject CiudadServices CiudadService
 @inject NavigationManager navigationManager
