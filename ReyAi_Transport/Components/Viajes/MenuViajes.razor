@@ -32,8 +32,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Ciudades = await CiudadService.Listar(c => c.EstadoId != 2); // Cargar lista de ciudades
-        ListViajes = await ViajeService.Listar(v => v.EstadoId != 4); // Cargar todos los viajes inicialmente
+        Ciudades = await CiudadService.Listar(c => c.EstadoId != 2); 
+        ListViajes = await ViajeService.Listar(v => v.EstadoId != 4); 
     }
 
     public async Task SeleccionarFiltro(CiudadesDto ciudad)
