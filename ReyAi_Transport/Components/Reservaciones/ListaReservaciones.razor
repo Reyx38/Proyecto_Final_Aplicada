@@ -10,7 +10,7 @@
 
 <div class="container">
     <div class="overlay">
-        <div class="detalles-container">
+        <div class="detalles-container" style="width: 1300px">
             <div class="card-header">
                 <h1 style="color: #ffaf7a">Lista de reservaciones</h1>
             </div>
@@ -83,6 +83,7 @@
                                 <PropertyColumn Title="Pasajesros" Property="@(r => r.CantidadPasajeros)" />
                                 <PropertyColumn Title="Destino" Property="@(r => r.ViajeDto)" />
                                 <PropertyColumn Title="Estado" Property="@(r => r.EstadosReservacionesDto)" />
+                                <PropertyColumn Title="Pago" Property="@(r => r.Pago ? "Pagado" : "No Pagado")" />
 
                             </div>
 

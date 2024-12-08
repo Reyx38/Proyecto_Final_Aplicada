@@ -61,18 +61,6 @@
         </div>
     </div>
 </EditForm>
-@if (esValido.HasValue)
-{
-    @if (esValido.Value)
-    {
-
-        Toast.Notify(new(ToastType.Success, $"El número de tarjeta es válido."));
-    }
-    else
-    {
-        Toast.Notify(new(ToastType.Danger, $"El número de tarjeta no es válido."));
-    }
-}
 
 
 
@@ -100,6 +88,19 @@
     private void Validar()
     {
         esValido = ValidarNumeroTarjeta(numeroTarjeta);
+        if (esValido.HasValue)
+        {
+            if (esValido.Value)
+            {
+
+                Toast.Notify(new(ToastType.Success, $"El número de tarjeta es válido."));
+            }
+            else
+            {
+                Toast.Notify(new(ToastType.Danger, $"El número de tarjeta no es válido."));
+                return;
+            }
+        }
     }
 
     public bool ValidarNumeroTarjeta(string numeroTarjeta)
@@ -145,39 +146,41 @@
     private async Task Guardar()
     {
         Validar();
-        if (esValido.HasValue)
+        if (esValido != true) // Si no es válido o no tiene valor
         {
-            if(PagoDto.Monto > ReservacionDto.Monto || PagoDto.Monto < ReservacionDto.Monto)
+            Toast.Notify(new(ToastType.Danger, "El número de tarjeta no es válido."));
+            return;
+        }
+
+        if (PagoDto.Monto > ReservacionDto.Monto || PagoDto.Monto < ReservacionDto.Monto)
+        {
+            Toast.Notify(new(ToastType.Danger, $"El monto no es el correcto, por favor verifique el precio de la recervacion."));
+        }
+        else
+        {
+            if (await ValidarExistencia())
             {
-                Toast.Notify(new(ToastType.Danger, $"El monto no es el correcto, por favor verifique el precio de la recervacion."));
+                Toast.Notify(new(ToastType.Info, $"Ya existe un pago para esta reservacion"));
+                await Task.Delay(3000);
+                return;
+            }
+            PagoDto.ReservacionId = ReservacionDto.ReservacionId;
+            PagoDto.Fecha = DateTime.Now;
+            var realizado = await pagosServices.Guardar(PagoDto);
+            ReservacionDto.Pago = true;
+            var actualizar = await reservacionesServices.Guardar(ReservacionDto);
+
+            if (realizado == true && actualizar == true)
+            {
+                Toast.Notify(new(ToastType.Success, $"Pago realizado."));
+                await Task.Delay(4000);
+                navigationManager.NavigateTo("/");
             }
             else
             {
-                if (await ValidarExistencia())
-                {
-                    Toast.Notify(new(ToastType.Info, $"Ya existe un pago para esta reservacion"));
-                    await Task.Delay(3000);
-                    return;
-                }
-                PagoDto.ReservacionId = ReservacionDto.ReservacionId;
-                PagoDto.Fecha = DateTime.Now;
-                var realizado = await pagosServices.Guardar(PagoDto);
-                ReservacionDto.Pago = true;
-                var actualizar = await reservacionesServices.Guardar(ReservacionDto);
-
-                if (realizado == true && actualizar == true)
-                {
-                    Toast.Notify(new(ToastType.Success, $"Pago realizado."));
-                    await Task.Delay(4000);
-                    navigationManager.NavigateTo("/");
-                }
-                else
-                {
-                    Toast.Notify(new(ToastType.Danger, $"No se pudo realizar el pago. Intentelo de nuevo."));
-                }
+                Toast.Notify(new(ToastType.Danger, $"No se pudo realizar el pago. Intentelo de nuevo."));
             }
         }
-        
-
-    }
+    
+}
 }

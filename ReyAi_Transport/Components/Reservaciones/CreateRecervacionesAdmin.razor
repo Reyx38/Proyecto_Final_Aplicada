@@ -1,6 +1,6 @@
-﻿@page "/Reservacion/{ViajeId:int}"
-@page "/Reservacion"
-@attribute [Authorize(Roles = "Cliente")]
+﻿
+@page "/ReservacionAdmin"
+@attribute [Authorize(Roles = "Admin")]
 @rendermode InteractiveServer
 @inject ViajeServices viajeServices
 @inject ReservacionDetallesServices detallesServices
@@ -34,6 +34,18 @@
 						}
 					</InputSelect>
 				</div>
+
+				@*ClienteId para las reservas del admin*@
+					<div class="row mb-3">
+						<label class="form-label">Cliente</label>
+						<InputSelect class="form-select" @bind-Value="@ReservacionDto.ClienteId">
+							<option selected disabled value="0">-- Seleccione un cliente --</option>
+							@foreach (var cliente in ListaClientes)
+							{
+								<option value="@cliente.Id">@cliente.UserName</option>
+							}
+						</InputSelect>
+					</div>
 
 				<div class="row">
 					<div class="row mb-3">
@@ -115,6 +127,7 @@
 	public List<ArticulosDto> ListaArticulos { get; set; } = new List<ArticulosDto>();
 	public List<ViajesDto> ListaViajes { get; set; } = new List<ViajesDto>();
 	public List<CiudadesDto> ListaCiudades { get; set; } = new List<CiudadesDto>();
+	public List<ApplicationUser> ListaClientes { get; set; } = new List<ApplicationUser>();
 
 	public TaxistaDto taxista { get; set; } = new TaxistaDto();
 	public CiudadesDto destino { get; set; } = new CiudadesDto();
@@ -124,11 +137,7 @@
 		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User;
 
-		if (user.Identity != null && user.Identity.IsAuthenticated)
-		{
-			ReservacionDto.ClienteId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-		}
-		else
+		if (!(user.Identity != null && user.Identity.IsAuthenticated))
 		{
 			Toast.Notify(new(ToastType.Danger, $"Usuario no autenticado."));
 			await Task.Delay(2000);
@@ -139,6 +148,7 @@
 		ReservacionDto.ViajeId = ViajeId;
 		ListaArticulos = await detallesServices.Listar(a => a.ArticuloId > 0);
 		ListViajes = await viajeServices.Listar(v => true);
+		ListaClientes = (await UserManager.GetUsersInRoleAsync("Cliente")).ToList();
 
 	}
 
@@ -194,6 +204,7 @@
 		}
 		if (ReservacionDto.ViajeId <= 0)
 		{
+			//Mensaje = "Debe seleccionar un viaje";
 			Toast.Notify(new(ToastType.Warning, $"Debe seleccionar un viaje."));
 			await Task.Delay(3000);
 			return;
