@@ -3,6 +3,7 @@
 @attribute [Authorize(Roles = "Admin")]
 @inject ReservacionesServices ReservacionesService
 @inject TaxistaServices taxistaServices
+@inject ViajeServices viajeService
 @rendermode InteractiveServer
 @inject ToastService Toast
 <Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
@@ -10,7 +11,7 @@
 
 <div class="container">
     <div class="overlay">
-        <div class="detalles-container">
+        <div class="detalles-container" style="width: 1300px">
             <div class="card-header">
                 <h1 style="color: #ffaf7a">Lista de reservaciones</h1>
             </div>
@@ -83,6 +84,7 @@
                                 <PropertyColumn Title="Pasajesros" Property="@(r => r.CantidadPasajeros)" />
                                 <PropertyColumn Title="Destino" Property="@(r => r.ViajeDto)" />
                                 <PropertyColumn Title="Estado" Property="@(r => r.EstadosReservacionesDto)" />
+                                <PropertyColumn Title="Pago" Property="@(r => r.Pago ? "Pagado" : "No Pagado")" />
 
                             </div>
 
@@ -153,17 +155,30 @@
         Reservaciones = await ReservacionesService.Listar(r => true); // Cargar todas las reservaciones
     }
 
+    private async Task<TaxistaDto> BuscarTaxista(ReservacionesDto reservacion)
+    {
+        var viaje = await viajeService.Buscar(reservacion.ViajeId);
+        var taxista = await taxistaServices.Buscar(viaje.TaxistaId);
+        return taxista;
+    }
+
     private async Task CambiarEstado(ReservacionesDto reservacion, int nuevoEstado)
     {
         reservacion.EstadoId = nuevoEstado;
         if(nuevoEstado == 2)
         {
+            Taxista = await BuscarTaxista(reservacion);
             Taxista.EstadoTId = 2;
             var guardarT = await taxistaServices.Guardar(Taxista);
         }else if(nuevoEstado == 3)
         {
-            Taxista.EstadoTId = 1;
-            var guardarT = await taxistaServices.Guardar(Taxista);
+            var existeReservacion = await ReservacionesService.Listar(a => a.ViajeId == reservacion.ViajeId && a.EstadoId != 2);
+            if (existeReservacion.Any())
+            {
+                Taxista = await BuscarTaxista(reservacion);
+                Taxista.EstadoTId = 1;
+                var guardarT = await taxistaServices.Guardar(Taxista);
+            }
         }
         if (reservacion.EstadoId == 3)
         {

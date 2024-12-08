@@ -3,6 +3,7 @@
 
 @inject ReservacionesServices ReservacionesService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ViajeServices viajeService
 @inject TaxistaServices taxistaServices
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
@@ -85,13 +86,12 @@
                                 <PropertyColumn Title="Pasajesros" Property="@(r => r.CantidadPasajeros)" />
                                 <PropertyColumn Title="Destino" Property="@(r => r.ViajeDto)" />
                                 <PropertyColumn Title="Estado" Property="@(r => r.EstadosReservacionesDto)" />
-
                             </div>
 
                             <TemplateColumn Title="Acciones">
                                 <div class="flex items-center">
                                     <button class="btn btn-success btn-sm me-1 bi bi-credit-card-2-back" title="Pagar"
-                                            @onclick="@(() => IrAPago(context.ReservacionId))">
+                                            @onclick="@(() => IrAPago(context))">
                                         
                                     </button>
                                     <button class="btn btn-danger btn-sm bi bi-clipboard2-x" title="Cancelar"
@@ -191,11 +191,26 @@
 
     }
 
+    private async Task<TaxistaDto> BuscarTaxista(ReservacionesDto reservacion)
+    {
+        var viaje = await viajeService.Buscar(reservacion.ViajeId);
+        var taxista = await taxistaServices.Buscar(viaje.TaxistaId);
+        return taxista;
+    }
+
     private async Task CambiarEstado(ReservacionesDto reservacion, int nuevoEstado)
     {
-        Taxista.EstadoTId = 1;
-        var guardarT = await taxistaServices.Guardar(Taxista);
         reservacion.EstadoId = nuevoEstado;
+        if (nuevoEstado == 3)
+        {
+            var existeReservacion = await ReservacionesService.Listar(a => a.ViajeId == reservacion.ViajeId && a.EstadoId != 2);
+            if (existeReservacion.Any())
+            {
+                Taxista = await BuscarTaxista(reservacion);
+                Taxista.EstadoTId = 1;
+                var guardarT = await taxistaServices.Guardar(Taxista);
+            }
+        }
         if(reservacion.EstadoId == 3)
         {
             await ReservacionesService.AfectarCantidad(reservacion.ReservacionDetalles.ToArray(), false);
@@ -249,9 +264,23 @@
         ValorFiltro = string.Empty;
     }
 
-    private void IrAPago(int reservacionId)
+    private void IrAPago(ReservacionesDto reservacion)
     {
-        navigationManager.NavigateTo($"/pago/{reservacionId}");
+        if(reservacion.EstadoId != 2)
+        {
+            Toast.Notify(new(ToastType.Danger, $"La reservacion no ha sido aceptada, todavia no puedes pagar."));
+            return;
+        }
+
+        if (!reservacion.Pago)
+        {
+            navigationManager.NavigateTo($"/pago/{reservacion.ReservacionId}");
+        }else
+        {
+            Toast.Notify(new(ToastType.Danger, $"La reservacion ya fue pagada."));
+            return;
+        }
+
     }
     private void AbrirModal(ReservacionesDto reservacion)
     {

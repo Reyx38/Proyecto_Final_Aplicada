@@ -3,6 +3,7 @@
 @attribute [Authorize(Roles = "Cliente")]
 
 @inject ViajesRapidosServices viajesRapidoService
+@inject TaxistaServices taxistaService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
@@ -131,6 +132,7 @@
 
 @code {
     public List<ViajesRapidosDto> ViajeRapidosDto = new();
+    private TaxistaDto Taxista { get; set; } = new TaxistaDto();
     public ViajesRapidosDto ViajeDto { get; set; } = new ViajesRapidosDto();
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
@@ -164,20 +166,40 @@
         ViajeRapidosDto = await viajesRapidoService.Listar(r => r.ClienteId == ViajeDto.ClienteId); // Cargar todas las reservaciones
     }
 
+    private async Task<TaxistaDto> BuscarTaxista(ViajesRapidosDto viaje)
+    {
+        var taxista = await taxistaService.Buscar(viaje.TaxistaId);
+        return taxista;
+    }
+
     private async Task CambiarEstado(ViajesRapidosDto viaje, int nuevoEstado)
     {
-        viaje.EstadoVId = nuevoEstado;
-        var guardado = await viajesRapidoService.Guardar(viaje);
-        if (guardado)
+        if(viaje.EstadoVId == 1)
         {
-            Toast.Notify(new(ToastType.Success, $"Estdo del Viaje Rapido {viaje.ViajeRapidoId} cambiado con exito."));
-            await Task.Delay(2000);
-            await CargarLista(); // Refresca la lista
+            viaje.EstadoVId = nuevoEstado;
+            if (nuevoEstado == 4)
+            {
+                Taxista = await BuscarTaxista(viaje);
+                Taxista.EstadoTId = 1;
+                var guardarT = await taxistaService.Guardar(Taxista);
+            }
+            var guardado = await viajesRapidoService.Guardar(viaje);
+            if (guardado)
+            {
+                Toast.Notify(new(ToastType.Success, $"Estdo del Viaje Rapido {viaje.ViajeRapidoId} cambiado con exito."));
+                await Task.Delay(2000);
+                await CargarLista(); // Refresca la lista
+            }
+            else
+            {
+                Toast.Notify(new(ToastType.Danger, $"Error al actualizar el estado."));
+            }
         }
         else
         {
-            Toast.Notify(new(ToastType.Danger, $"Error al actualizar el estado."));
+            Toast.Notify(new(ToastType.Danger, $"Su viaje ya no esta en espera, no puede cancelarlo."));
         }
+
     }
 
     private async Task Buscar()

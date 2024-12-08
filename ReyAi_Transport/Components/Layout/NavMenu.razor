@@ -16,8 +16,14 @@
 						Reservacion
 					</a>
 					<ul class="dropdown-menu">
-						<li><a class="dropdown-item" href="/Reservacion"> Hacer reservacion de viaje</a></li>
-						<li><a class="dropdown-item" href="/ListaReservaciones/Users">Tu lista de Reservaciones</a></li>
+						<AuthorizeView Roles="Cliente">
+							<li><a class="dropdown-item" href="/Reservacion"> Hacer reservacion de viaje</a></li>
+							<li><a class="dropdown-item" href="/ListaReservaciones/Users">Tu lista de Reservaciones</a></li>
+						</AuthorizeView>
+
+						<AuthorizeView Roles="Admin">
+							<li><a class="dropdown-item" href="/ReservacionAdmin"> Hacer reservacion de viaje</a></li>
+						</AuthorizeView>
 					</ul>
 				</li>
 				<AuthorizeView Roles="Admin">

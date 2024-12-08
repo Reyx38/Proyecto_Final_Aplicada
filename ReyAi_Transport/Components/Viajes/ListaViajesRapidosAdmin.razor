@@ -3,6 +3,7 @@
 @attribute [Authorize(Roles = "Admin")]
 
 @inject ViajesRapidosServices viajesRapidoService
+@inject TaxistaServices taxistaService
 @rendermode InteractiveServer
 @inject ToastService Toast
 <Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
@@ -143,6 +144,7 @@
     public List<ViajesRapidosDto> ViajeRapidosDto = new();
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
+    private TaxistaDto Taxista { get; set; } = new TaxistaDto();
     public DateTime? Desde { get; set; }
     public DateTime? Hasta { get; set; }
     public bool MostrarModal { get; set; } = false;
@@ -161,8 +163,34 @@
         ViajeRapidosDto = await viajesRapidoService.Listar(r => true); // Cargar todas las reservaciones
     }
 
+    private async Task<TaxistaDto> BuscarTaxista(ViajesRapidosDto viaje)
+    {
+        var taxista = await taxistaService.Buscar(viaje.TaxistaId);
+        return taxista;
+    }
+
+
     private async Task CambiarEstado(ViajesRapidosDto viaje, int nuevoEstado)
     {
+        if (nuevoEstado == 2)
+        {
+            Taxista = await BuscarTaxista(viaje);
+            Taxista.EstadoTId = 2;
+            var guardarT = await taxistaService.Guardar(Taxista);
+        }
+        else if (nuevoEstado == 3)
+        {
+            Taxista = await BuscarTaxista(viaje);
+            Taxista.EstadoTId = 1;
+            var guardarT = await taxistaService.Guardar(Taxista);
+        }
+        else if (nuevoEstado == 4)
+        {
+            Taxista = await BuscarTaxista(viaje);
+            Taxista.EstadoTId = 1;
+            var guardarT = await taxistaService.Guardar(Taxista);
+        }
+
         viaje.EstadoVId = nuevoEstado;
         var guardado = await viajesRapidoService.Guardar(viaje);
         if (guardado)
