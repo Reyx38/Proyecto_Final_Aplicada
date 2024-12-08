@@ -1,5 +1,7 @@
 ﻿@page "/DestinoCercano/Edit/{DestinoCercanoId:int}"
 @rendermode InteractiveServer
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 
 @inject DestinosCercasServices DestinosCercasService
@@ -61,8 +63,17 @@
 
 	public async Task Guardar()
 	{
-		await DestinosCercasService.Guardar(destinoCercaDto);
-		NavigationManager.NavigateTo("/");
+		var guardado = await DestinosCercasService.Guardar(destinoCercaDto);
+		if (guardado)
+		{
+			Toast.Notify(new(ToastType.Success, $"Destino cerca agregado con éxito."));
+			await Task.Delay(2000);
+			NavigationManager.NavigateTo("/DestinoCercano");
+		}
+		else
+		{
+			Toast.Notify(new(ToastType.Danger, $"Error al agregar el destino cerca, intentelo de nuevo."));
+		}
 	}
 
 }

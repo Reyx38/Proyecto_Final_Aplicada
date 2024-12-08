@@ -5,6 +5,8 @@
 @inject ViajeServices ViajeService
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 <link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
 <div class="container">
     <div class="overlay">
@@ -181,6 +183,8 @@
     private async Task Activar(ViajesDto viajesDto)
     {
         await ViajeService.ActualizarEstado(viajesDto, 1);
+        Toast.Notify(new(ToastType.Success, $"Viaje {viajesDto.Descripcion} activado con éxito."));
+        await Task.Delay(2000);
         await CargarReservaciones();
 
     }
@@ -189,12 +193,15 @@
         var eliminado = await ViajeService.ActualizarEstado(viajesDtoSeleccionado, 4);
         if (eliminado)
         {
-            mensaje = $"El viaje {viajesDtoSeleccionado.Descripcion} se ha desactivado con éxito.";
+            //mensaje = $"El viaje {viajesDtoSeleccionado.Descripcion} se ha desactivado con éxito.";
+            Toast.Notify(new(ToastType.Success, $"El viaje {viajesDtoSeleccionado.Descripcion} se ha desactivado con éxito."));
+            await Task.Delay(2000);
             await CargarReservaciones();
         }
         else
         {
-            mensaje = "Error al eliminar el articulo.";
+            Toast.Notify(new(ToastType.Danger, $"Error al desactivar el viaje."));
+            await Task.Delay(2000);
             CerrarModal();
         }
         CerrarModal();
