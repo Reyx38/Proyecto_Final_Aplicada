@@ -9,8 +9,9 @@ public class ViajesDto
 	[Required(ErrorMessage = "Campo obligatorio")]
 	[Range(0.01, int.MaxValue, ErrorMessage = "Debe selecionar un Destino")] 
 	public int Destino { get; set; }
+    public string NombreDestino { get; set; }
 
-	[Required(ErrorMessage = "Campo obligatorio")]
+    [Required(ErrorMessage = "Campo obligatorio")]
 	public DateTime FechaInicio { get; set; }
 
 	[Required(ErrorMessage = "Campo obligatorio")]
@@ -25,6 +26,7 @@ public class ViajesDto
 	public int personas { get; set; }
 
 	public int EstadoId { get; set; } = 1;
+	public string NombreEstado { get; set; }
 
 	public string? Descripcion { get; set; }
 
