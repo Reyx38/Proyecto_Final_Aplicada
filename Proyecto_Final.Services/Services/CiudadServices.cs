@@ -65,6 +65,7 @@ public class CiudadServices(IDbContextFactory<ApplicationDbContext> DbFactory) :
         {
             CiudadId = ciudadesDto.CiudadId,
             Nombre = ciudadesDto.Nombre,
+            EstadoCId = ciudadesDto.EstadoId
         };
         contexto.Update(ciudad);
         var modificado = await contexto.SaveChangesAsync() > 0;
