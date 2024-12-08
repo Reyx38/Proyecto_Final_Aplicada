@@ -69,18 +69,23 @@ namespace ReyAI_Trasport.Services.Services
         private async Task<bool> Modificar(TaxistaDto taxistaDto)
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
-            var taxista = new Taxistas()
+
+            var taxistaExistente = await contexto.Taxistas.FindAsync(taxistaDto.TaxistaId);
+
+            if (taxistaExistente == null)
             {
-				Id = taxistaDto.TaxistaId,
-                UserName = taxistaDto.NickName,
-				PasswordHash = taxistaDto.Password,
-				ExisteVehiculo = taxistaDto.ExisteVehiculo,
-                ExisteLicencia = taxistaDto.ExisteLicencia,
-                EstadoTId = taxistaDto.EstadoTId,
-                CiudadId = taxistaDto.CiudadId
-            };
-            contexto.Update(taxista);
+                return false; 
+            }
+
+            taxistaExistente.UserName = taxistaDto.NickName;
+            taxistaExistente.PasswordHash = taxistaDto.Password;
+            taxistaExistente.ExisteVehiculo = taxistaDto.ExisteVehiculo;
+            taxistaExistente.ExisteLicencia = taxistaDto.ExisteLicencia;
+            taxistaExistente.EstadoTId = taxistaDto.EstadoTId;
+            taxistaExistente.CiudadId = taxistaDto.CiudadId;
+
             var modificado = await contexto.SaveChangesAsync() > 0;
+
             return modificado;
         }
 
