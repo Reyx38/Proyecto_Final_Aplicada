@@ -89,6 +89,7 @@
 @Mensaje
 @code {
     public List<TaxistaDto> ListaTaxistas { get; set; } = new List<TaxistaDto>();
+    private TaxistaDto Taxista { get; set; } = new TaxistaDto();
     public List<DestinoCercaDto> ListaDestinos { get; set; } = new List<DestinoCercaDto>();
     public List<ReservacionesDto> Reservaciones { get; set; } = new List<ReservacionesDto>();
     public ViajesRapidosDto ViajeRapidoDto { get; set; } = new ViajesRapidosDto();
@@ -160,6 +161,14 @@
             await Task.Delay(4000);
             return;
         }
+
+        Taxista = await taxistasServices.Buscar(ViajeRapidoDto.TaxistaId);
+        if(Taxista.EstadoTId != 1)
+        {
+            Toast.Notify(new(ToastType.Danger, $"El taxista no esta disponible, favor seleccionar otro."));
+            return;
+        }
+
 
         ViajeRapidoDto.Fecha = DateTime.Now;
         ViajeRapidoDto.EstadoVId = 1;
