@@ -174,24 +174,32 @@
 
     private async Task CambiarEstado(ViajesRapidosDto viaje, int nuevoEstado)
     {
-        viaje.EstadoVId = nuevoEstado;
-        if (nuevoEstado == 4)
+        if(viaje.EstadoVId == 1)
         {
-            Taxista = await BuscarTaxista(viaje);
-            Taxista.EstadoTId = 1;
-            var guardarT = await taxistaService.Guardar(Taxista);
-        }
-        var guardado = await viajesRapidoService.Guardar(viaje);
-        if (guardado)
-        {
-            Toast.Notify(new(ToastType.Success, $"Estdo del Viaje Rapido {viaje.ViajeRapidoId} cambiado con exito."));
-            await Task.Delay(2000);
-            await CargarLista(); // Refresca la lista
+            viaje.EstadoVId = nuevoEstado;
+            if (nuevoEstado == 4)
+            {
+                Taxista = await BuscarTaxista(viaje);
+                Taxista.EstadoTId = 1;
+                var guardarT = await taxistaService.Guardar(Taxista);
+            }
+            var guardado = await viajesRapidoService.Guardar(viaje);
+            if (guardado)
+            {
+                Toast.Notify(new(ToastType.Success, $"Estdo del Viaje Rapido {viaje.ViajeRapidoId} cambiado con exito."));
+                await Task.Delay(2000);
+                await CargarLista(); // Refresca la lista
+            }
+            else
+            {
+                Toast.Notify(new(ToastType.Danger, $"Error al actualizar el estado."));
+            }
         }
         else
         {
-            Toast.Notify(new(ToastType.Danger, $"Error al actualizar el estado."));
+            Toast.Notify(new(ToastType.Danger, $"Su viaje ya no esta en espera, no puede cancelarlo."));
         }
+
     }
 
     private async Task Buscar()
