@@ -3,30 +3,63 @@
 
 @inject SignInManager<ApplicationUser> SignInManager
 
-<ul class="nav nav-pills flex-column">
-    <li class="nav-item">
-        <NavLink class="nav-link" href="Account/Manage" Match="NavLinkMatch.All">Profile</NavLink>
-    </li>
-    <li class="nav-item">
-        <NavLink class="nav-link" href="Account/Manage/Email">Email</NavLink>
-    </li>
-    <li class="nav-item">
-        <NavLink class="nav-link" href="Account/Manage/ChangePassword">Password</NavLink>
-    </li>
-    @if (hasExternalLogins)
-    {
-        <li class="nav-item">
-            <NavLink class="nav-link" href="Account/Manage/ExternalLogins">External logins</NavLink>
+<div class="nav-menu bg-white shadow-sm rounded p-3 border">
+    <h5 class="text-danger fw-bold">Account Settings</h5>
+    <hr class="my-3">
+    <ul class="nav nav-pills flex-column">
+        <li class="nav-item mb-2">
+            <NavLink class="nav-link" href="Account/Manage" Match="NavLinkMatch.All">
+                <i class="bi bi-person-circle me-2" style="color:#ff6d3a;"></i> Profile
+            </NavLink>
         </li>
+        <li class="nav-item mb-2">
+            <NavLink class="nav-link" href="Account/Manage/Email">
+                <i class="bi bi-envelope-fill me-2" style="color:#ff6d3a;"></i> Email
+            </NavLink>
+        </li>
+        <li class="nav-item mb-2">
+            <NavLink class="nav-link" href="Account/Manage/ChangePassword">
+                <i class="bi bi-lock-fill me-2" style="color:#ff6d3a;"></i> Password
+            </NavLink>
+        </li>
+        @if (hasExternalLogins)
+        {
+            <li class="nav-item mb-2">
+                <NavLink class="nav-link" href="Account/Manage/ExternalLogins">
+                    <i class="bi bi-box-arrow-in-right me-2" style="color:#ff6d3a;"></i> External logins
+                </NavLink>
+            </li>
+        }
+        <li class="nav-item">
+            <NavLink class="nav-link" href="Account/Manage/PersonalData">
+                <i class="bi bi-person-badge-fill me-2" style="color:#ff6d3a;"></i> Personal data
+            </NavLink>
+        </li>
+    </ul>
+</div>
+<style>
+    /* Contenedor del menú */
+    .nav-menu {
+        max-width: 250px;
+        border: 1px solid #eaeaea; /* Borde ligero */
     }
-    <li class="nav-item">
-        <NavLink class="nav-link" href="Account/Manage/TwoFactorAuthentication">Two-factor authentication</NavLink>
-    </li>
-    <li class="nav-item">
-        <NavLink class="nav-link" href="Account/Manage/PersonalData">Personal data</NavLink>
-    </li>
-</ul>
 
+    /* Estilo de los enlaces */
+    .nav-link {
+        color: #00b7c5; /* Azul claro */
+        font-weight: 500;
+    }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            color: #017bff; /* Azul claro */
+        }
+
+    /* Título */
+    .text-danger {
+        color: #ff6d3a !important; /* Naranja intenso */
+    }
+</style>
 @code {
     private bool hasExternalLogins;
 
