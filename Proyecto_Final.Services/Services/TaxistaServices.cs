@@ -22,6 +22,7 @@ namespace ReyAI_Trasport.Services.Services
                ExisteVehiculo = p.ExisteVehiculo,
                ExisteLicencia = p.ExisteLicencia,
                EstadoTId = p.EstadoTId,
+               EstadoNombre = p.EstadoTaxista.Descripcion,
                CiudadId = p.CiudadId,
                NombreCiudad = p.Ciudad.Nombre
            })
@@ -109,6 +110,7 @@ namespace ReyAI_Trasport.Services.Services
 				ExisteVehiculo = f.ExisteVehiculo,
                 ExisteLicencia = f.ExisteLicencia,
                 EstadoTId = f.EstadoTId,
+                EstadoNombre = f.EstadoTaxista.Descripcion,
                 CiudadId = f.CiudadId,
                 NombreCiudad = f.Ciudad.Nombre
 

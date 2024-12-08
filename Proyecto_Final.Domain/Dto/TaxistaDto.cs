@@ -18,6 +18,7 @@ public class TaxistaDto
 	public bool ExisteLicencia { get; set; }
 
 	public int EstadoTId { get; set; }
+	public string EstadoNombre { get; set; }
 
 	[Required(ErrorMessage = "Campo obligatorio")]
 	public int? CiudadId { get; set; }

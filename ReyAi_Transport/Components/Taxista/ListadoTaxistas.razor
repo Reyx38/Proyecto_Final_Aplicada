@@ -2,152 +2,189 @@
 @using BlazorBootstrap
 @using Blazored.Toast.Services
 @using Microsoft.AspNetCore.Authorization
+<link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
+
 @attribute [Authorize(Roles = "Admin")]
+@* @inject ToastService Toast*@
 @rendermode InteractiveServer
+@inject NavigationManager navigationManager
 @inject TaxistaServices TaxistaService
 <Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
-<link rel="stylesheet" href="/Estilos/Taxista/Table-Taxista.css" />
-
-<div class="overlay">
-    <div class="container my-5 listado-taxistas">
-        <div class="card p-4 shadow-lg">
-            <!-- Título -->
-            <div class="text-center mb-4">
-                <h1 class="titulo">Listado de Conductores</h1>
+<div class="container">
+    <div class="overlay">
+        <div class="detalles-container">
+            <div class="card-header">
+                <h1 class="card-title" style="color: #ffaf7a">Consulta de Taxistas</h1>
             </div>
+            <div class="card-body">
+                @*labels*@
+                <div class="row">
+                    @*Filtrar por*@
+                    <div class="col-3">
+                        <label class="col-form-label" style="color: #00b7c5"><strong>Filtrar por</strong></label>
+                    </div>
 
-            <!-- Filtros y búsqueda -->
-            <div class="row mb-4 filtros">
-                <div class="col-md-8 d-flex align-items-center">
-                    <div class="input-group">
-                        <InputText class="form-control input-busqueda" @bind-Value="Filtro" placeholder="Buscar por nombre..." />
-                        <button class="btn btn-buscar" type="button" @onclick="AplicarFiltro">Buscar</button>
+                    @*ValorFiltro*@
+                    <div class="col-4">
+                        <label class="col-form-label" style="color: #00b7c5"><strong>B&uacute;squeda</strong></label>
                     </div>
                 </div>
-                <div class="col-md-1 text-center d-flex align-items-center justify-content-center">
-                    <a href="/Taxista/Crear" class="btn btn-sm btn-accion btn-contratar me-2">Crear</a>
-                </div>
-                <div class="col-md-3 text-md-end">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-disponible" @onclick="MostrarDisponibles">Disponible</button>
-                        <button type="button" class="btn btn-ocupado" @onclick="MostrarOcupados">Ocupado</button>
+
+                @*Inputs y botones*@
+                <div class="row align-items-center">
+                    @*filtro*@
+                    <div class="col-3">
+                        <InputSelect class="form-select" @bind-Value="Filtro" style="border: 2px solid #00b7c5">
+                            <option value="" selected disabled>Elija una opci&oacute;n</option>
+                            <option value="Nombre">Nombre</option>
+                            <option value="ID">ID</option>
+                        </InputSelect>
+                    </div>
+
+                    @*Busqueda*@
+                    <div class="col-4">
+                        <div class="input-group">
+                            <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" style="border: 2px solid #00b7c5" />
+                            <button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
+                        </div>
+                    </div>
+
+                    @*Restablecer*@
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-outline-secondary bi bi-arrow-clockwise" @onclick="Restablecer"></button>
+                    </div>
+                    @*Crear*@
+                    <div class="col-auto">
+                        <a href="/Create/Articulos" class="btn btn-outline-primary" style="background-color: #ffaf7a; color: white; border: none"> Crear </a>
+                    </div>
+
+                    <div>
+                        <QuickGrid Items="@(TaxistaDto.AsQueryable())" DefaultSort="@sortByFecha" class="table table-striped table-hover text-start">
+                            <div class="flex items-center">
+                                <PropertyColumn Title="Id" Property="@(r => r.TaxistaId.ToString().Length > 10 ? r.TaxistaId.ToString().Substring(0, 10) : r.TaxistaId.ToString())" />
+                                <PropertyColumn Title="Nombre" Property="@(r => r.NickName)" />
+                                <PropertyColumn Title="Ciudad" Property="@(r => r.NombreCiudad)"/>
+                                <PropertyColumn Title="Estado" Property="@(r => r.EstadoNombre)" />
+
+                            </div>
+
+                            <TemplateColumn Title="Acciones">
+                                <div class="flex items-center">
+                                    <button class="btn btn-primary btn-sm bi bi-pencil-square" title="Editar"
+                                            @onclick="@(() => Edit(context))">
+                                    </button>
+                                    <button class="btn btn-danger btn-sm bi bi-trash" title="Eliminar"
+                                            @onclick="@(() => AbrirModal(context))">
+                                    </button>
+                                </div>
+                            </TemplateColumn>
+                        </QuickGrid>
                     </div>
                 </div>
-            </div>
-
-            <!-- Tabla de taxistas -->
-            <div class="table-responsive">
-                <table class="table table-striped table-hover tabla-taxistas">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Ciudad</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var taxista in ListTaxistas)
-                        {
-                            <tr>
-                                <td>@(taxista.TaxistaId.Length > 10 ? taxista.TaxistaId.Substring(0, 10) : taxista.TaxistaId)</td>
-                                <td>@taxista.NickName</td>
-                                <td>@taxista.NombreCiudad</td>
-                                <td>
-                                    <span class="estado @(taxista.EstadoTId == 1 ? "disponible" : "ocupado")">
-                                        @(taxista.EstadoTId == 1 ? "Disponible" : "Ocupado")
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="/Taxista/Editar/@taxista.TaxistaId" class="btn btn-sm btn-accion btn-contratar me-2">Editar</a>
-                                    <button class="btn btn-sm btn-accion btn-despedir" @onclick="@(() => AbrirModalDespedir(taxista))">Despedir</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                <div class="card-footer">
+                    <a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal para despedir -->
-<div class="modal fade @(MostrarModal ? "show d-block" : "d-none")" tabindex="-1" style="background-color: rgba(0, 0, 0, 0.5);">
+<div class="modal fade @(MostrarModal ? "show d-block" : "d-none")" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Confirmar Despido</h5>
+                <h5 class="modal-title">Confirmacion de eliminar</h5>
                 <button type="button" class="btn-close" @onclick="CerrarModal"></button>
             </div>
             <div class="modal-body">
-                <p>¿Estás seguro de que deseas despedir a <strong>@TaxistaSeleccionado?.NickName</strong>?</p>
+                <p>¿Estas seguro de despedir al taxista <strong>@TaxistaDtoSeleccionado.NickName</strong>?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
-                <button type="button" class="btn btn-danger" @onclick="DespedirConfirmado">Despedir</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
             </div>
         </div>
     </div>
 </div>
 
 @code {
-    public List<TaxistaDto> ListTaxistas { get; set; } = new();
-    public string Filtro { get; set; } = "";
-    public TaxistaDto? TaxistaSeleccionado { get; set; }
+    private List<TaxistaDto> TaxistaDto { get; set; } = new();
+
+    public string Filtro { get; set; } = string.Empty;
+    public string ValorFiltro { get; set; } = string.Empty;
+    public DateTime? Desde { get; set; }
+    public DateTime? Hasta { get; set; }
     public bool MostrarModal { get; set; } = false;
+    public TaxistaDto TaxistaDtoSeleccionado { get; set; } = new();
+    // Configuración de ordenamiento por defecto (por fecha de la reservación)
+    GridSort<ArticulosDto> sortByFecha = GridSort<ArticulosDto>
+        .ByAscending(r => r.Existencia);
 
     protected override async Task OnInitializedAsync()
     {
-        ListTaxistas = await TaxistaService.Listar(t => true);
+        await CargarReservaciones();
     }
 
-    private async Task AplicarFiltro()
+    private async Task CargarReservaciones()
     {
-        if (!string.IsNullOrWhiteSpace(Filtro))
+        TaxistaDto = await TaxistaService.Listar(r => true); // Cargar todas las reservaciones
+    }
+
+    private async Task Buscar()
+    {
+        if (ValorFiltro.Trim() != "")
         {
-            ListTaxistas = await TaxistaService.Listar(p => p.NickName.ToLower()
-            .Contains(Filtro.ToLower()));
+            if (Filtro == "Nombre")
+            {
+                TaxistaDto = await TaxistaService.Listar(e => e.NickName.ToLower().Contains(ValorFiltro.ToLower()));
+            }
+            else if (Filtro == "ID")
+            {
+                TaxistaDto = await TaxistaService.Listar(e => e.TaxistaId.Contains(ValorFiltro.ToLower()));
+            }
         }
         else
         {
-            ListTaxistas = await TaxistaService.Listar(t => true);
+            TaxistaDto = await TaxistaService.Listar(e => e.TaxistaId != null);
         }
+
     }
 
-    private async Task MostrarDisponibles()
+    private void Edit(TaxistaDto taxistaDto)
     {
-        ListTaxistas = await TaxistaService.Listar(t => t.EstadoTId == 1);
+        navigationManager.NavigateTo($"/Create/Articulos/{taxistaDto.TaxistaId}");
     }
 
-    private async Task MostrarOcupados()
+    private async Task Restablecer()
     {
-        ListTaxistas = await TaxistaService.Listar(t => t.EstadoTId != 1);
+        TaxistaDto = await TaxistaService.Listar(e => e.TaxistaId != null );
+        Filtro = string.Empty;
+        ValorFiltro = string.Empty;
     }
 
-    private void AbrirModalDespedir(TaxistaDto taxista)
+    private void AbrirModal(TaxistaDto taxistaDto)
     {
-        TaxistaSeleccionado = taxista;
+        TaxistaDtoSeleccionado = taxistaDto;
         MostrarModal = true;
     }
-
     private void CerrarModal()
     {
         MostrarModal = false;
-        TaxistaSeleccionado = null;
+        TaxistaDtoSeleccionado = new();
     }
-
-    private async Task DespedirConfirmado()
+    private async Task Eliminar()
     {
-        if (TaxistaSeleccionado != null)
+        if (TaxistaDtoSeleccionado != null)
         {
+            if (await TaxistaService.ViajePendiente(TaxistaDtoSeleccionado.TaxistaId))
+            {
+                //Agregar notificacion de que si tiene un viaje pendiente no se puede eliminar
+                return;
+            }
             // Lógica para despedir al taxista
-            await TaxistaService.Eliminar(TaxistaSeleccionado.TaxistaId);
-            ListTaxistas = await TaxistaService.Listar(t => true); // Actualizar la lista
+            await TaxistaService.Eliminar(TaxistaDtoSeleccionado.TaxistaId);
+            TaxistaDto = await TaxistaService.Listar(t => true); // Actualizar la lista
         }
         CerrarModal();
     }
 }
-
-    
-
