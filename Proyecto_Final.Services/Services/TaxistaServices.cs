@@ -68,20 +68,49 @@ namespace ReyAI_Trasport.Services.Services
         private async Task<bool> Modificar(TaxistaDto taxistaDto)
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
-            var taxista = new Taxistas()
+
+            // Buscar el taxista en la base de datos utilizando el ID
+            var taxistaExistente = await contexto.Taxistas.FindAsync(taxistaDto.TaxistaId);
+
+            // Verificar si existe
+            if (taxistaExistente == null)
             {
-				Id = taxistaDto.TaxistaId,
-                UserName = taxistaDto.NickName,
-				PasswordHash = taxistaDto.Password,
-				ExisteVehiculo = taxistaDto.ExisteVehiculo,
-                ExisteLicencia = taxistaDto.ExisteLicencia,
-                EstadoTId = taxistaDto.EstadoTId,
-                CiudadId = taxistaDto.CiudadId
-            };
-            contexto.Update(taxista);
+                return false; // No se encontró el taxista en la base de datos
+            }
+
+            // Actualizar las propiedades del taxista existente con los valores del DTO
+            taxistaExistente.UserName = taxistaDto.NickName;
+            taxistaExistente.PasswordHash = taxistaDto.Password;
+            taxistaExistente.ExisteVehiculo = taxistaDto.ExisteVehiculo;
+            taxistaExistente.ExisteLicencia = taxistaDto.ExisteLicencia;
+            taxistaExistente.EstadoTId = taxistaDto.EstadoTId;
+            taxistaExistente.CiudadId = taxistaDto.CiudadId;
+
+            // Guardar los cambios en la base de datos
             var modificado = await contexto.SaveChangesAsync() > 0;
+
             return modificado;
         }
+
+
+        //    private async Task<bool> Modificar(TaxistaDto taxistaDto)
+        //    {
+        //        await using var contexto = await DbFactory.CreateDbContextAsync();
+        //        var taxista = new Taxistas()
+        //        {
+        //Id = taxistaDto.TaxistaId,
+        //            UserName = taxistaDto.NickName,
+        //PasswordHash = taxistaDto.Password,
+        //ExisteVehiculo = taxistaDto.ExisteVehiculo,
+        //            ExisteLicencia = taxistaDto.ExisteLicencia,
+        //            EstadoTId = taxistaDto.EstadoTId,
+        //            CiudadId = taxistaDto.CiudadId
+        //        };
+        //        contexto.Update(taxista);
+        //        var modificado = await contexto.SaveChangesAsync() > 0;
+        //        return modificado;
+        //    }
+
 
         private async Task<bool> Existe(string id)
         {
