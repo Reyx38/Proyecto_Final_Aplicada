@@ -43,6 +43,12 @@
 
 	public async Task Guardar()
 	{
+		if (await CiudadService.ExisteNombre(CiudadesDto.Nombre))
+		{
+			Toast.Notify(new(ToastType.Danger, $"Esta ciudad ya existe, intentelo de nuevo."));
+			return;
+
+		}
 		var guardado = await CiudadService.Guardar(CiudadesDto);
 		
 		if (guardado)
