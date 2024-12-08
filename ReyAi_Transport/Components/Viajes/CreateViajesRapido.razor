@@ -92,6 +92,7 @@
     public List<DestinoCercaDto> ListaDestinos { get; set; } = new List<DestinoCercaDto>();
     public List<ReservacionesDto> Reservaciones { get; set; } = new List<ReservacionesDto>();
     public ViajesRapidosDto ViajeRapidoDto { get; set; } = new ViajesRapidosDto();
+    //public TaxistaDto Taxista { get; set; } = new TaxistaDto();
     public string Mensaje { get; set; } = string.Empty;
 
 
@@ -162,16 +163,22 @@
 
         ViajeRapidoDto.Fecha = DateTime.Now;
         ViajeRapidoDto.EstadoVId = 1;
+
+        
+
         if(ViajeRapidoDto.personas > 0 && ViajeRapidoDto.Precio > 0 && ViajeRapidoDto.DestinoCercaId != 0 && ViajeRapidoDto.TaxistaId != null)
         {
             if (await Restriccion())
             {
+               
                 var crear = await viajesRapidosServices.Guardar(ViajeRapidoDto);
+
                 if (crear)
                 {
                     Toast.Notify(new(ToastType.Success, $"Se a creado tu viaje rapido"));
                     await Task.Delay(4000);
                 }
+                
                 ViajeRapidoDto = new();
             }
             else
