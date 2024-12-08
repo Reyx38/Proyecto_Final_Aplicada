@@ -2,6 +2,8 @@
 
 @attribute [Authorize(Roles = "Admin")]
 @rendermode InteractiveServer
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 <link rel="stylesheet" href="/Estilos/Viajes/Crear.css" />
 
 @inject CiudadServices CiudadService
@@ -41,8 +43,18 @@
 
 	public async Task Guardar()
 	{
-		await CiudadService.Guardar(CiudadesDto);
-		NavigationManager.NavigateTo("/Ciudades");
+		var guardado = await CiudadService.Guardar(CiudadesDto);
+		
+		if (guardado)
+		{
+			Toast.Notify(new(ToastType.Success, $"Ciudad agregado con éxito."));
+			await Task.Delay(2000);
+			NavigationManager.NavigateTo("/Ciudades");
+		}
+		else
+		{
+			Toast.Notify(new(ToastType.Danger, $"Error al agregar la ciudad, intentelo de nuevo."));
+		}
 	}
 
 }

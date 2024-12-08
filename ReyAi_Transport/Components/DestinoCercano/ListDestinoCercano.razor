@@ -3,6 +3,8 @@
 @inject DestinosCercasServices DestinosCercasService
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 <link rel="stylesheet" href="/Estilos/Reservaciones/ListReservaciones.css" />
 
 <div class="container">
@@ -147,7 +149,7 @@
 
     private void Edit(DestinoCercaDto destinoCercaDto)
     {
-        navigationManager.NavigateTo($"/DestinoCercano/Edit/{destinoCercaDto.CiudadId}");
+        navigationManager.NavigateTo($"/DestinoCercano/Edit/{destinoCercaDto.DestinoCercaId}");
     }
 
     private async Task Restablecer()
@@ -173,12 +175,14 @@
         var eliminado = await DestinosCercasService.Eliminar(DestinoCercaSeleccionado.DestinoCercaId);
         if (eliminado)
         {
-            mensaje = $"La ciudad {DestinoCercaSeleccionado.Nombre} se ha desactivado con éxito.";
+            Toast.Notify(new(ToastType.Success, $"El destino cerca {DestinoCercaSeleccionado.Nombre} se ha desactivado con éxito."));
+            await Task.Delay(2000);
             await CargarReservaciones();
         }
         else
         {
-            mensaje = "Error al eliminar el articulo.";
+            Toast.Notify(new(ToastType.Danger, $"Error al desactivar el destino rapido."));
+            await Task.Delay(2000);
             CerrarModal();
         }
         CerrarModal();
