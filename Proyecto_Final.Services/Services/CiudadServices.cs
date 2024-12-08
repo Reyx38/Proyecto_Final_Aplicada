@@ -65,6 +65,7 @@ public class CiudadServices(IDbContextFactory<ApplicationDbContext> DbFactory) :
         {
             CiudadId = ciudadesDto.CiudadId,
             Nombre = ciudadesDto.Nombre,
+            EstadoCId = ciudadesDto.EstadoId
         };
         contexto.Update(ciudad);
         var modificado = await contexto.SaveChangesAsync() > 0;
@@ -77,6 +78,13 @@ public class CiudadServices(IDbContextFactory<ApplicationDbContext> DbFactory) :
         return await contexto.Ciudades
             .AnyAsync(e => e.CiudadId == id);
     }
+    public async Task<bool> ExisteNombre(string nombre)
+	{
+		await using var contexto = await DbFactory.CreateDbContextAsync();
+		return await contexto.Ciudades
+			.Include(c => c.CiudadesEstados)
+			.AnyAsync(c => c.CiudadesEstados.Descripcion == nombre);
+	}
 
     public async Task<bool> Guardar(CiudadesDto ciudadDto)
     {
