@@ -31,7 +31,7 @@
 					<div class="form-group">
 						<label class="form-label">Ciudad</label>
 						<InputSelect class="form-select" @bind-Value="@TaxistaDto.CiudadId">
-							<option selected disabled value="0">-- Seleccione un Destino --</option>
+							<option selected disabled value="0">-- Seleccione su ciudad --</option>
 							@foreach (var ciudad in ListCiudades)
 							{
 								<option value="@ciudad.CiudadId">@ciudad.Nombre</option>

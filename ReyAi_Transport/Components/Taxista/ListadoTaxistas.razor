@@ -55,7 +55,7 @@
                     </div>
                     @*Crear*@
                     <div class="col-auto">
-                        <a href="/Create/Articulos" class="btn btn-outline-primary" style="background-color: #ffaf7a; color: white; border: none"> Crear </a>
+                        <a href="/Taxista/Crear" class="btn btn-outline-primary" style="background-color: #ffaf7a; color: white; border: none"> Crear </a>
                     </div>
 
                     <div>
@@ -152,7 +152,7 @@
 
     private void Edit(TaxistaDto taxistaDto)
     {
-        navigationManager.NavigateTo($"/Create/Articulos/{taxistaDto.TaxistaId}");
+        navigationManager.NavigateTo($"/Taxista/Editar/{taxistaDto.TaxistaId}");
     }
 
     private async Task Restablecer()
