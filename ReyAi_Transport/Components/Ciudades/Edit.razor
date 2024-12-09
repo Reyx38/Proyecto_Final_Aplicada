@@ -30,7 +30,7 @@
 			</div>
 			<div class=" card-footer">
 				<a href="/Ciudades" class="btn btn-light bi bi-arrow-left-square">Volver</a>
-				<button type="submit" class="btn btn-Guardar ">Guardar</button>
+				<button type="submit" class="btn btn-Guardar bi bi-floppy"> Guardar</button>
 			</div>
 		</div>
 	</div>
@@ -47,6 +47,7 @@
 
 	public async Task Guardar()
 	{
+		CiudadesDto.EstadoId = 1;
 		var guardado = await CiudadService.Guardar(CiudadesDto);
 
 		if (guardado)

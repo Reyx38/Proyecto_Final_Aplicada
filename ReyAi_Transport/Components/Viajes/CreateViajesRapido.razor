@@ -111,7 +111,7 @@
             Toast.Notify(new(ToastType.Danger, $"Usuario no autenticado"));
         }
         ListaDestinos = await destinosCercaService.Listar(a => true);
-        ListaTaxistas = await taxistasServices.Listar(a => a.TaxistaId != "");
+        ListaTaxistas = await taxistasServices.Listar(T => T.NickName != null);
 
         ViajeRapidoDto.Fecha = DateTime.Now;
     }

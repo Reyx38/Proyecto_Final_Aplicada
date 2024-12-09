@@ -116,8 +116,8 @@
 		</div>
 
 		<div class="card-footer text-center">
-			<button type="submit" class="btn btn-Guardar">Guardar</button>
 			<a href="/" class="btn btn-light">Volver</a>
+			<button type="submit" class="btn btn-Guardar bi bi-floppy"> Guardar</button>
 		</div>
 	</div>
 </EditForm>
@@ -131,7 +131,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		ListTaxista = await TaxistaService.Listar(T => true);
+		ListTaxista = await TaxistaService.Listar(T => T.NickName != null);
 		Viajes.FechaCierre = DateTime.Now;
 		Viajes.FechaInicio = DateTime.Now;
 		ListCiudades = await CiudadService.Listar(c => c.EstadoId != 2);

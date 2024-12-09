@@ -91,9 +91,8 @@
 
                             <TemplateColumn Title="Acciones">
                                 <div class="flex items-center">
-                                    <button class="btn btn-warning btn-sm" title="Cancelar"
+                                    <button class="btn btn-warning btn-sm bi bi-x-circle" title="Cancelar"
                                             @onclick="@(() => CambiarEstado(context, 4))">
-                                        Cancelar
                                     </button>
                                     <button class="btn btn-danger btn-sm bi bi-trash" title="Eliminar"
                                             @onclick="@(() => AbrirModal(context))">

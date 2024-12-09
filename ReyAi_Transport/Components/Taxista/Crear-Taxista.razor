@@ -60,7 +60,7 @@
 
 			<div class=" card-footer">
 				<a href="/" class="btn btn-light">Volver</a>
-				<button type="submit" class="btn btn-Guardar">Guardar</button>
+				<button type="submit" class="btn btn-Guardar bi bi-floppy"> Guardar</button>
 			</div>
 
 		</div>
@@ -85,7 +85,7 @@
 		{
 			Toast.Notify(new(ToastType.Success, $"Nuevo taxista agregado correctamente."));
 			await Task.Delay(3000);
-			NavigationManager.NavigateTo("/");
+			NavigationManager.NavigateTo("/Taxistas/Listado");
 		}
 		else
 		{

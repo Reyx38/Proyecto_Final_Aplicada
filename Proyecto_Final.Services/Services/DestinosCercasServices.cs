@@ -52,6 +52,7 @@ public class DestinosCercasServices(IDbContextFactory<ApplicationDbContext> DbFa
 		return guardo;
 	}
 
+
 	private async Task<bool> Modificar(DestinoCercaDto destinoCercaDto)
 	{
 		await using var contexto = await DbFactory.CreateDbContextAsync();
@@ -69,8 +70,8 @@ public class DestinosCercasServices(IDbContextFactory<ApplicationDbContext> DbFa
 	private async Task<bool> Existe(int id)
 	{
 		await using var contexto = await DbFactory.CreateDbContextAsync();
-		return await contexto.Viajes
-			.AnyAsync(e => e.ViajeId == id);
+		return await contexto.DestinosCerca
+			.AnyAsync(e => e.DestinoCercaId == id);
 	}
 	public async Task<bool> Guardar(DestinoCercaDto destinoCercaDto)
 	{

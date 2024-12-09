@@ -61,7 +61,7 @@
 							<InputNumber class="form-control" @bind-Value="ReservacionDto.CantidadPasajeros" placeholder="20"></InputNumber>
 							<ValidationMessage For="(()=> ReservacionDto.CantidadPasajeros)" />
 						</div>
-						@*Precio*@
+							@*Precio*@
 						<div class="col-md-4">
 							<label class="form-label fs-6"><strong>DOP$ @ReservacionDto.Monto.ToString("N2")</strong></label>
 						</div>
@@ -91,7 +91,7 @@
 				</ul>
 				<div class="card-footer">
 					<a href="/" class="btn btn-light bi bi-arrow-left-square "> Volver</a>
-					<button type="submit" class="btn btn-danger mt-2">Guardar</button>
+					<button type="submit" class="btn btn-danger mt-2 bi bi-floppy"> Guardar</button>
 				</div>
 			</div>
 		</div>
