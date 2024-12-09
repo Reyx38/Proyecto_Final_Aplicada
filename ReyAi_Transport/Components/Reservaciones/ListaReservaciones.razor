@@ -80,7 +80,7 @@
                             <div class="flex items-center">
                                 <PropertyColumn Title="ID Reservación" Property="@(r => r.ReservacionId)" />
                                 <PropertyColumn Title="Fecha" Property="@(r => r.Fecha)" Format="dd/MM/yyyy" />
-                                <PropertyColumn Title="Monto" Property="@(r => r.Monto)" />
+                                <PropertyColumn Title="Monto" Property="@(r => r.Monto)" Format="C2"/>
                                 <PropertyColumn Title="Pasajesros" Property="@(r => r.CantidadPasajeros)" />
                                 <PropertyColumn Title="Destino" Property="@(r => r.ViajeDto)" />
                                 <PropertyColumn Title="Estado" Property="@(r => r.EstadosReservacionesDto)" />
