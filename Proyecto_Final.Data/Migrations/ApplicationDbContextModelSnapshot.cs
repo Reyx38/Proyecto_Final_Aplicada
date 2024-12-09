@@ -51,19 +51,19 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fc3c7ad3-e33c-4609-a8ef-5d4b2834b569",
+                            Id = "d36bae8f-bc47-4eac-8ea1-6543be276334",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "abe174c9-fa23-4f02-87b4-872223d79719",
+                            Id = "d8826798-e6ad-45cf-85e0-7f8ae77c0fec",
                             Name = "Taxista",
                             NormalizedName = "TAXISTA"
                         },
                         new
                         {
-                            Id = "2d8128c9-ff19-42ec-8d55-2eaed2a995e1",
+                            Id = "5b4ebbf2-395e-4a14-86ca-cc41c913cc35",
                             Name = "Cliente",
                             NormalizedName = "CLIENTE"
                         });
@@ -283,13 +283,13 @@ namespace Proyecto_Final.Data.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("ReyAI_Trasport.Data.Models.Articulos", b =>
+            modelBuilder.Entity("ReyAI_Trasport.Data.Models.ArticulosT", b =>
                 {
-                    b.Property<int>("ArticuloId")
+                    b.Property<int>("ArticuloTId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArticuloId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArticuloTId"));
 
                     b.Property<double>("Costo")
                         .HasColumnType("float");
@@ -304,14 +304,14 @@ namespace Proyecto_Final.Data.Migrations
                     b.Property<double>("Precio")
                         .HasColumnType("float");
 
-                    b.HasKey("ArticuloId");
+                    b.HasKey("ArticuloTId");
 
-                    b.ToTable("Articulos");
+                    b.ToTable("ArticulosT");
 
                     b.HasData(
                         new
                         {
-                            ArticuloId = 1,
+                            ArticuloTId = 1,
                             Costo = 18.0,
                             Descripcion = "Botella de agua",
                             Existencia = 150,
@@ -319,7 +319,7 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            ArticuloId = 2,
+                            ArticuloTId = 2,
                             Costo = 20.0,
                             Descripcion = "Jugo de naranja",
                             Existencia = 150,
@@ -327,7 +327,7 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            ArticuloId = 3,
+                            ArticuloTId = 3,
                             Costo = 10.0,
                             Descripcion = "Mani",
                             Existencia = 150,
@@ -335,7 +335,7 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            ArticuloId = 4,
+                            ArticuloTId = 4,
                             Costo = 15.0,
                             Descripcion = "FritoLay",
                             Existencia = 150,
@@ -343,7 +343,7 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            ArticuloId = 5,
+                            ArticuloTId = 5,
                             Costo = 2.0,
                             Descripcion = "Mentas",
                             Existencia = 250,
@@ -615,7 +615,7 @@ namespace Proyecto_Final.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetalleId"));
 
-                    b.Property<int>("ArticuloId")
+                    b.Property<int>("ArticuloTId")
                         .HasColumnType("int");
 
                     b.Property<int>("Cantidad")
@@ -632,7 +632,7 @@ namespace Proyecto_Final.Data.Migrations
 
                     b.HasKey("DetalleId");
 
-                    b.HasIndex("ArticuloId");
+                    b.HasIndex("ArticuloTId");
 
                     b.HasIndex("ReservacionId");
 
@@ -834,16 +834,16 @@ namespace Proyecto_Final.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3f68a960-c144-4d7c-a701-cf8350a61ac3",
+                            Id = "62e95e9f-5b4e-449a-aada-9c92246abf98",
                             AccessFailedCount = 0,
                             CiudadId = 1,
-                            ConcurrencyStamp = "a2ff9165-1d3b-4004-9aec-b74de9a4f247",
+                            ConcurrencyStamp = "f3e8a0ea-5435-4a0d-9910-9e6ea3059703",
                             Email = "juanperez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword123",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d17121be-30ff-41bb-8173-61b7c953c397",
+                            SecurityStamp = "5c2c1d79-b7c4-4238-b5a0-8506fd5f7653",
                             TwoFactorEnabled = false,
                             UserName = "juanperez",
                             EstadoTId = 1,
@@ -852,16 +852,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "80f12025-8790-449a-bb77-d62b451b691c",
+                            Id = "2346c4f6-4b83-42a3-8bd9-916cc8c5973a",
                             AccessFailedCount = 0,
                             CiudadId = 3,
-                            ConcurrencyStamp = "39bd8f4d-a078-4cc7-aedb-383c3fd18ed7",
+                            ConcurrencyStamp = "695cb2f4-6f24-43ff-beef-f6fbffad964c",
                             Email = "mariagonzalez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword456",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "801b2074-97d5-47a0-8fc9-943ebb3390de",
+                            SecurityStamp = "86f1ff5d-d7bf-4cac-8e46-2b5f8eff958a",
                             TwoFactorEnabled = false,
                             UserName = "mariagonzalez",
                             EstadoTId = 1,
@@ -870,16 +870,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "4715baf7-17ed-48a0-9487-66b2a85911ba",
+                            Id = "e5873329-ce32-44fc-9d73-9413a655a37d",
                             AccessFailedCount = 0,
                             CiudadId = 2,
-                            ConcurrencyStamp = "bd9b473f-586d-4c03-906e-326f7bd1a81e",
+                            ConcurrencyStamp = "0c96f8fa-083f-41a6-87e1-fc782f1ade61",
                             Email = "carlosmendoza@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f49c0bde-86cb-412e-b8d2-0e6d651e208d",
+                            SecurityStamp = "42cb650b-0e11-4792-aaf9-43d3e309fb6c",
                             TwoFactorEnabled = false,
                             UserName = "carlosmendoza",
                             EstadoTId = 1,
@@ -888,16 +888,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "c14902ca-996d-4226-ab9b-f201d8f3c60d",
+                            Id = "1a79ab34-cea6-4755-a92a-e9d1237a0f87",
                             AccessFailedCount = 0,
                             CiudadId = 2,
-                            ConcurrencyStamp = "c9d76042-b868-4cb6-b6ab-1f9624c96356",
+                            ConcurrencyStamp = "8feb089f-a873-4c1c-8247-fc2ac160494b",
                             Email = "luismartinez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword101",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f5ae1d77-1466-4668-b813-7116e12f530e",
+                            SecurityStamp = "15e338aa-f027-4717-b1ce-36ddf12115d1",
                             TwoFactorEnabled = false,
                             UserName = "luismartinez",
                             EstadoTId = 1,
@@ -906,16 +906,16 @@ namespace Proyecto_Final.Data.Migrations
                         },
                         new
                         {
-                            Id = "81ec052d-de93-4945-bb71-a81dcd2d2242",
+                            Id = "121967b0-89bd-4721-9863-9b05f8e87ffd",
                             AccessFailedCount = 0,
                             CiudadId = 1,
-                            ConcurrencyStamp = "30ffd1ac-988f-402d-a8b7-20f2460d2db1",
+                            ConcurrencyStamp = "0b8d5833-2f1a-40a0-a238-0105734ae154",
                             Email = "anafernandez@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "hashedpassword102",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "079e5e89-0663-4612-89af-c9499652aeb9",
+                            SecurityStamp = "1cd5f7a4-cb04-46c8-b6e6-a4e1fcdb1e41",
                             TwoFactorEnabled = false,
                             UserName = "anafernandez",
                             EstadoTId = 1,
@@ -1019,9 +1019,9 @@ namespace Proyecto_Final.Data.Migrations
 
             modelBuilder.Entity("ReyAI_Trasport.Data.Models.ReservacionDetalles", b =>
                 {
-                    b.HasOne("ReyAI_Trasport.Data.Models.Articulos", "Articulo")
+                    b.HasOne("ReyAI_Trasport.Data.Models.ArticulosT", "Articulo")
                         .WithMany()
-                        .HasForeignKey("ArticuloId")
+                        .HasForeignKey("ArticuloTId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

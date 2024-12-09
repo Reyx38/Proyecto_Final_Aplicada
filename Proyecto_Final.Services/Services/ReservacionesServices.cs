@@ -38,7 +38,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
            ReservacionDetalles = p.ReservacionDetalles.Select(i => new ReservacionDetallesDto()
            {
 			   DetalleId = i.DetalleId,
-			   ArticuloId = i.ArticuloId,
+			   ArticuloId = i.ArticuloTId,
 			   Cantidad = i.Cantidad,
 			   Precio = i.Precio,
 			   ReservacionId = p.ReservacionId
@@ -81,7 +81,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
 			ReservacionDetalles = reservacionDto.ReservacionDetalles.Select(detalle => new ReservacionDetalles
             {
                 DetalleId = detalle.DetalleId,
-                ArticuloId = detalle.ArticuloId,
+                ArticuloTId = detalle.ArticuloId,
                 Cantidad = detalle.Cantidad,
                 Precio = detalle.Precio,
                 ReservacionId = detalle.ReservacionId
@@ -110,7 +110,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
 			ReservacionDetalles = reservacionDto.ReservacionDetalles.Select(detalle => new ReservacionDetalles
             {
                 DetalleId = detalle.DetalleId,
-                ArticuloId = detalle.ArticuloId,
+                ArticuloTId = detalle.ArticuloId,
                 Cantidad = detalle.Cantidad,
                 Precio = detalle.Precio,
                 ReservacionId = detalle.ReservacionId
@@ -157,7 +157,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
 			ReservacionDetalles = p.ReservacionDetalles.Select(i => new ReservacionDetallesDto()
 			{
 				DetalleId = i.DetalleId,
-				ArticuloId = i.ArticuloId,
+				ArticuloId = i.ArticuloTId,
 				Cantidad = i.Cantidad,
 				Precio = i.Precio,
 				ReservacionId = p.ReservacionId
@@ -179,7 +179,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
             ReservacionDetalles = reservacion.ReservacionDetalles.Select(detalle => new ReservacionDetallesDto
             {
                 DetalleId = detalle.DetalleId,
-                ArticuloId = detalle.ArticuloId,
+                ArticuloId = detalle.ArticuloTId,
                 Cantidad = detalle.Cantidad,
                 Precio = detalle.Precio,
                 ReservacionId = detalle.ReservacionId
@@ -198,7 +198,7 @@ public class ReservacionesServices(IDbContextFactory<ApplicationDbContext> DbFac
 		await using var contexto = await DbFactory.CreateDbContextAsync();
 		foreach (var item in detalles)
 		{
-			var detalle = await contexto.Articulos.SingleOrDefaultAsync(d => d.ArticuloId == item.ArticuloId);
+			var detalle = await contexto.ArticulosT.SingleOrDefaultAsync(d => d.ArticuloTId == item.ArticuloId);
 			if (resta)
 				detalle.Existencia -= item.Cantidad;
 			else
