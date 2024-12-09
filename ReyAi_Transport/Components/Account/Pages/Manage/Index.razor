@@ -9,29 +9,89 @@
 @inject IdentityUserAccessor UserAccessor
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Profile</PageTitle>
+<section class="profile-section">
+    <h3 class="text-center">Perfil</h3>
 
-<h3>Profile</h3>
-<StatusMessage />
+    <StatusMessage />
 
-<div class="row">
-    <div class="col-md-6">
-        <EditForm Model="Input" FormName="profile" OnValidSubmit="OnValidSubmitAsync" method="post">
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" role="alert" />
-            <div class="form-floating mb-3">
-                <input type="text" value="@username" class="form-control" placeholder="Please choose your username." disabled />
-                <label for="username" class="form-label">Username</label>
-            </div>
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
-                <label for="phone-number" class="form-label">Phone number</label>
-                <ValidationMessage For="() => Input.PhoneNumber" class="text-danger" />
-            </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </EditForm>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <EditForm Model="Input" FormName="profile" OnValidSubmit="OnValidSubmitAsync" method="post">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" role="alert" />
+
+                <!-- Username field -->
+                <div class="form-floating mb-3">
+                    <input type="text" value="@username" class="form-control" placeholder="Please choose your username." disabled />
+                    <label for="username" class="form-label">Nombre de usuario</label>
+                </div>
+
+                <!-- Phone number field -->
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
+                    <label for="phone-number" class="form-label">Numero de telefono</label>
+                    <ValidationMessage For="() => Input.PhoneNumber" class="text-danger" />
+                </div>
+
+                <!-- Save button -->
+                <button type="submit" class="btn btn-primary w-100">Guardar</button>
+            </EditForm>
+        </div>
     </div>
-</div>
+</section>
+
+<style>
+    .profile-section {
+        background-color: #f8f9fa;
+        padding: 2rem 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-section h3 {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+        color: #343a40;
+    }
+
+    .form-floating {
+        position: relative;
+    }
+
+    .form-floating .form-label {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    .form-floating .form-control {
+        background-color: #ffffff;
+        border: 1px solid #ced4da;
+        font-weight: 500;
+    }
+
+    .form-floating .form-control:disabled {
+        background-color: #e9ecef;
+        opacity: 1;
+    }
+
+    /* Primary button styles */
+    .btn-primary {
+        background-color: #00b7c5;
+        border: none;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #009aa6;
+    }
+
+    /* Validation messages */
+    .text-danger {
+        color: #dc3545;
+    }
+</style>
+
 
 @code {
     private ApplicationUser user = default!;

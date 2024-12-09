@@ -23,6 +23,7 @@
 
 						<AuthorizeView Roles="Admin">
 							<li><a class="dropdown-item" href="/ReservacionAdmin"> Hacer reservacion de viaje</a></li>
+							<li><a class="dropdown-item" href="/ListaReservaciones">Reservaciones Pendientes</a></li>
 						</AuthorizeView>
 					</ul>
 				</li>
@@ -32,13 +33,12 @@
 							Gestion
 						</a>
 						<ul class="dropdown-menu">
+
 							<li><a class="dropdown-item" href="/Viajes/Create">Crear Viajes</a></li>
-							<li><a class="dropdown-item" href="/Viajes">Lista de Viajes</a></li>
-							<li><a class="dropdown-item" href="/Taxistas/Listado">Listado de Conductores</a></li>
 							<li><a class="dropdown-item" href="/Taxista/Crear">Agregar un conductor</a></li>
 							<li><a class="dropdown-item" href="/ListaReservaciones">Lista de Reservaciones</a></li>
+							<li><a class="dropdown-item" href="/Taxistas/Listado">Conductores</a></li>
 							<li><a class="dropdown-item" href="/ListaPagos">Lista de Pagos</a></li>
-							<li><a class="dropdown-item" href="/ListaViajesRapidos">Lista de ViajesRapidos</a></li>
 							<li><a class="dropdown-item" href="/Articulos">Articulos</a></li>
 							<li><a class="dropdown-item" href="/Ciudades">Ciudades</a></li>
 							<li><a class="dropdown-item" href="/DestinoCercano">Destinos Cercanos</a></li>
@@ -46,8 +46,8 @@
 						</ul>
 					</li>
 				</AuthorizeView>
-				
-				
+
+
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						Viajes
@@ -57,6 +57,10 @@
 						<AuthorizeView Roles="Cliente">
 							<li><a class="dropdown-item" href="/ListaPagos/Users">Pagos realizados</a></li>
 							<li><a class="dropdown-item" href="/ListaViajesRapidos/User">Mis Viajes Rapidos</a></li>
+						</AuthorizeView>
+						<AuthorizeView Roles="Admin">
+							<li><a class="dropdown-item" href="/ListaViajesRapidos">ViajesRapidos</a></li>
+							<li><a class="dropdown-item" href="/Viajes">Viajes</a></li>
 						</AuthorizeView>
 					</ul>
 				</li>
@@ -82,7 +86,7 @@
 					</div>
 				</Authorized>
 				<NotAuthorized>
-					<div class="nav-item px-3"> 
+					<div class="nav-item px-3">
 						<NavLink class="nav-link" href="Account/Register">
 							<span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
 						</NavLink>
@@ -94,10 +98,6 @@
 					</div>
 				</NotAuthorized>
 			</AuthorizeView>
-			<form class="d-flex" role="search">
-				<input class="form-control custom-input me-2" type="search" placeholder="Search" aria-label="Search" />
-				<button class="btn custom-button" type="submit">Search</button>
-			</form>
 		</div>
 	</div>
 

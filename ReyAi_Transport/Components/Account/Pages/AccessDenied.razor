@@ -1,8 +1,18 @@
 ﻿@page "/Account/AccessDenied"
 
-<PageTitle>Access denied</PageTitle>
+<PageTitle>Access Denied</PageTitle>
 
-<header>
-    <h1 class="text-danger">Access denied</h1>
-    <p class="text-danger">You do not have access to this resource.</p>
+<header style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 70vh; text-align: center; background-color: #f8d7da; color: #721c24;">
+    <!-- Icono de Bootstrap -->
+    <i class="bi bi-shield-lock-fill" style="font-size: 6rem; margin-bottom: 20px; color: #721c24;"></i>
+
+    <!-- Título y descripción -->
+    <h1 style="font-size: 3rem; font-weight: bold; margin-bottom: 10px;">Acceso Denegado</h1>
+    <p style="font-size: 1.2rem;">No tienes permisos para acceder a este recurso.</p>
+
+    <!-- Botón para regresar -->
+    <button style="margin-top: 30px; padding: 10px 20px; background-color: #721c24; color: white; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="history.back()">
+        Volver
+    </button>
 </header>
