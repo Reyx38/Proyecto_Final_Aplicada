@@ -127,7 +127,7 @@
 
     private async Task CargarReservaciones()
     {
-        TaxistaDto = await TaxistaService.Listar(r => true); // Cargar todas las reservaciones
+        TaxistaDto = await TaxistaService.Listar(T => T.NickName != null);
     }
 
     private async Task Buscar()
