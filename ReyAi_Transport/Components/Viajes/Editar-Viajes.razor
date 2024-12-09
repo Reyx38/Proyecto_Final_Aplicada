@@ -133,8 +133,6 @@
 	{
 		Viajes = await ViajeService.Buscar(ViajeId);
 		ListTaxista = await TaxistaService.Listar(T => T.NickName != null);
-		Viajes.FechaCierre = DateTime.Now;
-		Viajes.FechaInicio = DateTime.Now;
 		ListCiudades = await CiudadService.Listar(T => true);
 	}
 	public async Task Guardar()
@@ -153,6 +151,14 @@
 			await Task.Delay(3000);
 			return;
 		}
+
+		if(Viajes.personas == 0)
+		{
+			Toast.Notify(new(ToastType.Danger, $"La cantidad de personas limintes esta vacio."));
+			await Task.Delay(3000);
+			return;
+		}
+
 		await ViajeService.Guardar(Viajes);
 		Toast.Notify(new(ToastType.Success, $"Viaje editado correctamente."));
 		await Task.Delay(3000);

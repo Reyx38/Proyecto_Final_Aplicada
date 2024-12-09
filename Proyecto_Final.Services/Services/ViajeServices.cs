@@ -89,6 +89,7 @@ public class ViajeServices(IDbContextFactory<ApplicationDbContext> DbFactory) : 
 			TaxistaId = viajeDto.TaxistaId,
 			Precio = viajeDto.Precio,
 			Descripcion = viajeDto.Descripcion,
+			personas = viajeDto.personas
 		};
 		contexto.Update(viaje);
 		var modificado = await contexto.SaveChangesAsync() > 0;
