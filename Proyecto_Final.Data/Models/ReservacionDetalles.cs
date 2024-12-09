@@ -18,8 +18,8 @@ public class ReservacionDetalles
     public Reservaciones? Reservacion { get; set; }
 
     [ForeignKey("Articulo")]
-    public int ArticuloId { get; set; }
-    public Articulos? Articulo { get; set; }
+    public int ArticuloTId { get; set; }
+    public ArticulosT? Articulo { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
     public int Cantidad { get; set; }

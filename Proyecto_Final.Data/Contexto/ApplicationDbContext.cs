@@ -22,7 +22,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<EstadosTaxistas> EstadosTaxistas { get; set; }
     public DbSet<DestinosCerca> DestinosCerca { get; set; }
     public DbSet<ViajesRapidos> ViajesRapidos { get; set; }
-    public DbSet<Articulos> Articulos { get; set; }
+    public DbSet<ArticulosT> ArticulosT { get; set; }
     public DbSet<ReservacionDetalles> ReservacionDetalles { get; set; }
     public DbSet<Pagos> Pagos { get; set; }
     public DbSet<EstadosResrvaciones> EstadosResrvaciones { get; set; }
@@ -56,12 +56,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
            new MetodosPagos { MetodoPagoId = 1, Descripcion = "Tarjeta de credito" }
         );
 
-        builder.Entity<Articulos>().HasData(
-            new Articulos { ArticuloId = 1, Descripcion = "Botella de agua", Costo = 18, Precio = 25, Existencia = 150 },
-            new Articulos { ArticuloId = 2, Descripcion = "Jugo de naranja", Costo = 20, Precio = 35, Existencia = 150 },
-            new Articulos { ArticuloId = 3, Descripcion = "Mani", Costo = 10, Precio = 30, Existencia = 150 },
-            new Articulos { ArticuloId = 4, Descripcion = "FritoLay", Costo = 15, Precio = 35, Existencia = 150 },
-            new Articulos { ArticuloId = 5, Descripcion = "Mentas", Costo = 2, Precio = 5, Existencia = 250 }
+        builder.Entity<ArticulosT>().HasData(
+            new ArticulosT { ArticuloTId = 1, Descripcion = "Botella de agua", Costo = 18, Precio = 25, Existencia = 150 },
+            new ArticulosT { ArticuloTId = 2, Descripcion = "Jugo de naranja", Costo = 20, Precio = 35, Existencia = 150 },
+            new ArticulosT { ArticuloTId = 3, Descripcion = "Mani", Costo = 10, Precio = 30, Existencia = 150 },
+            new ArticulosT { ArticuloTId = 4, Descripcion = "FritoLay", Costo = 15, Precio = 35, Existencia = 150 },
+            new ArticulosT { ArticuloTId = 5, Descripcion = "Mentas", Costo = 2, Precio = 5, Existencia = 250 }
         );
 
         builder.Entity<Ciudades>().HasData(

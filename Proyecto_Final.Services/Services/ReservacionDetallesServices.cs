@@ -16,9 +16,9 @@ public class ReservacionDetallesServices(IDbContextFactory<ApplicationDbContext>
     public async Task<List<ArticulosDto>> Listar(Expression<Func<ArticulosDto, bool>> criterio)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
-        return await contexto.Articulos.Select(p => new ArticulosDto()
+        return await contexto.ArticulosT.Select(p => new ArticulosDto()
         {
-            ArticuloId = p.ArticuloId,
+            ArticuloId = p.ArticuloTId,
             Descripcion = p.Descripcion,
             Costo = p.Costo,
             Precio = p.Precio,
@@ -42,7 +42,7 @@ public class ReservacionDetallesServices(IDbContextFactory<ApplicationDbContext>
 			{
 			new ReservacionDetallesDto
 			{
-				ArticuloId = detalle.ArticuloId,
+				ArticuloId = detalle.ArticuloTId,
 				Cantidad = detalle.Cantidad
 			}
 			};
@@ -64,7 +64,7 @@ public class ReservacionDetallesServices(IDbContextFactory<ApplicationDbContext>
 		await using var contexto = await DbFactory.CreateDbContextAsync();
 		foreach (var item in detalles)
 		{
-			var detalle = await contexto.Articulos.SingleOrDefaultAsync(d => d.ArticuloId == item.ArticuloId);
+			var detalle = await contexto.ArticulosT.SingleOrDefaultAsync(d => d.ArticuloTId == item.ArticuloId);
 			if (resta)
 				detalle.Existencia -= item.Cantidad;
 			else

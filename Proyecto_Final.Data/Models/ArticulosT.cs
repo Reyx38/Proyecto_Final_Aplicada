@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ReyAI_Trasport.Data.Models;
 
-public class Articulos
+public class ArticulosT
 {
     [Key]
-    public int ArticuloId { get; set; }
+    public int ArticuloTId { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
     [RegularExpression(@"^\d+(\.\d+)?$", ErrorMessage = "Solo se permiten numeros enteros o decimales")]

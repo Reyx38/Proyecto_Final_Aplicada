@@ -14,10 +14,10 @@ namespace Proyecto_Final.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Articulos",
+                name: "ArticulosT",
                 columns: table => new
                 {
-                    ArticuloId = table.Column<int>(type: "int", nullable: false)
+                    ArticuloTId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Costo = table.Column<double>(type: "float", nullable: false),
@@ -26,7 +26,7 @@ namespace Proyecto_Final.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Articulos", x => x.ArticuloId);
+                    table.PrimaryKey("PK_ArticulosT", x => x.ArticuloTId);
                 });
 
             migrationBuilder.CreateTable(
@@ -467,7 +467,7 @@ namespace Proyecto_Final.Data.Migrations
                     DetalleId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ReservacionId = table.Column<int>(type: "int", nullable: false),
-                    ArticuloId = table.Column<int>(type: "int", nullable: false),
+                    ArticuloTId = table.Column<int>(type: "int", nullable: false),
                     Cantidad = table.Column<int>(type: "int", nullable: false),
                     Precio = table.Column<double>(type: "float", nullable: false),
                     Costo = table.Column<double>(type: "float", nullable: false)
@@ -476,10 +476,10 @@ namespace Proyecto_Final.Data.Migrations
                 {
                     table.PrimaryKey("PK_ReservacionDetalles", x => x.DetalleId);
                     table.ForeignKey(
-                        name: "FK_ReservacionDetalles_Articulos_ArticuloId",
-                        column: x => x.ArticuloId,
-                        principalTable: "Articulos",
-                        principalColumn: "ArticuloId",
+                        name: "FK_ReservacionDetalles_ArticulosT_ArticuloTId",
+                        column: x => x.ArticuloTId,
+                        principalTable: "ArticulosT",
+                        principalColumn: "ArticuloTId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ReservacionDetalles_Reservaciones_ReservacionId",
@@ -490,8 +490,8 @@ namespace Proyecto_Final.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Articulos",
-                columns: new[] { "ArticuloId", "Costo", "Descripcion", "Existencia", "Precio" },
+                table: "ArticulosT",
+                columns: new[] { "ArticuloTId", "Costo", "Descripcion", "Existencia", "Precio" },
                 values: new object[,]
                 {
                     { 1, 18.0, "Botella de agua", 150, 25.0 },
@@ -506,9 +506,9 @@ namespace Proyecto_Final.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2d8128c9-ff19-42ec-8d55-2eaed2a995e1", null, "Cliente", "CLIENTE" },
-                    { "abe174c9-fa23-4f02-87b4-872223d79719", null, "Taxista", "TAXISTA" },
-                    { "fc3c7ad3-e33c-4609-a8ef-5d4b2834b569", null, "Admin", "ADMIN" }
+                    { "5b4ebbf2-395e-4a14-86ca-cc41c913cc35", null, "Cliente", "CLIENTE" },
+                    { "d36bae8f-bc47-4eac-8ea1-6543be276334", null, "Admin", "ADMIN" },
+                    { "d8826798-e6ad-45cf-85e0-7f8ae77c0fec", null, "Taxista", "TAXISTA" }
                 });
 
             migrationBuilder.InsertData(
@@ -573,11 +573,11 @@ namespace Proyecto_Final.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "CiudadId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "EstadoTId", "ExisteLicencia", "ExisteVehiculo", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "3f68a960-c144-4d7c-a701-cf8350a61ac3", 0, 1, "a2ff9165-1d3b-4004-9aec-b74de9a4f247", "Taxistas", "juanperez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword123", null, false, "d17121be-30ff-41bb-8173-61b7c953c397", false, "juanperez" },
-                    { "4715baf7-17ed-48a0-9487-66b2a85911ba", 0, 2, "bd9b473f-586d-4c03-906e-326f7bd1a81e", "Taxistas", "carlosmendoza@example.com", false, 1, true, true, false, null, null, null, "hashedpassword789", null, false, "f49c0bde-86cb-412e-b8d2-0e6d651e208d", false, "carlosmendoza" },
-                    { "80f12025-8790-449a-bb77-d62b451b691c", 0, 3, "39bd8f4d-a078-4cc7-aedb-383c3fd18ed7", "Taxistas", "mariagonzalez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword456", null, false, "801b2074-97d5-47a0-8fc9-943ebb3390de", false, "mariagonzalez" },
-                    { "81ec052d-de93-4945-bb71-a81dcd2d2242", 0, 1, "30ffd1ac-988f-402d-a8b7-20f2460d2db1", "Taxistas", "anafernandez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword102", null, false, "079e5e89-0663-4612-89af-c9499652aeb9", false, "anafernandez" },
-                    { "c14902ca-996d-4226-ab9b-f201d8f3c60d", 0, 2, "c9d76042-b868-4cb6-b6ab-1f9624c96356", "Taxistas", "luismartinez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword101", null, false, "f5ae1d77-1466-4668-b813-7116e12f530e", false, "luismartinez" }
+                    { "121967b0-89bd-4721-9863-9b05f8e87ffd", 0, 1, "0b8d5833-2f1a-40a0-a238-0105734ae154", "Taxistas", "anafernandez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword102", null, false, "1cd5f7a4-cb04-46c8-b6e6-a4e1fcdb1e41", false, "anafernandez" },
+                    { "1a79ab34-cea6-4755-a92a-e9d1237a0f87", 0, 2, "8feb089f-a873-4c1c-8247-fc2ac160494b", "Taxistas", "luismartinez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword101", null, false, "15e338aa-f027-4717-b1ce-36ddf12115d1", false, "luismartinez" },
+                    { "2346c4f6-4b83-42a3-8bd9-916cc8c5973a", 0, 3, "695cb2f4-6f24-43ff-beef-f6fbffad964c", "Taxistas", "mariagonzalez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword456", null, false, "86f1ff5d-d7bf-4cac-8e46-2b5f8eff958a", false, "mariagonzalez" },
+                    { "62e95e9f-5b4e-449a-aada-9c92246abf98", 0, 1, "f3e8a0ea-5435-4a0d-9910-9e6ea3059703", "Taxistas", "juanperez@example.com", false, 1, true, true, false, null, null, null, "hashedpassword123", null, false, "5c2c1d79-b7c4-4238-b5a0-8506fd5f7653", false, "juanperez" },
+                    { "e5873329-ce32-44fc-9d73-9413a655a37d", 0, 2, "0c96f8fa-083f-41a6-87e1-fc782f1ade61", "Taxistas", "carlosmendoza@example.com", false, 1, true, true, false, null, null, null, "hashedpassword789", null, false, "42cb650b-0e11-4792-aaf9-43d3e309fb6c", false, "carlosmendoza" }
                 });
 
             migrationBuilder.InsertData(
@@ -661,9 +661,9 @@ namespace Proyecto_Final.Data.Migrations
                 column: "ReservacionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReservacionDetalles_ArticuloId",
+                name: "IX_ReservacionDetalles_ArticuloTId",
                 table: "ReservacionDetalles",
-                column: "ArticuloId");
+                column: "ArticuloTId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReservacionDetalles_ReservacionId",
@@ -763,7 +763,7 @@ namespace Proyecto_Final.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Articulos");
+                name: "ArticulosT");
 
             migrationBuilder.DropTable(
                 name: "Reservaciones");

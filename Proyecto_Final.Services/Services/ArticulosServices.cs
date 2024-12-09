@@ -18,11 +18,11 @@ public class ArticulosServices(IDbContextFactory<ApplicationDbContext> DbFactory
     public async Task<ArticulosDto> Buscar(int id)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
-        var articulo = await contexto.Articulos
-       .Where(e => e.ArticuloId == id)
+        var articulo = await contexto.ArticulosT
+       .Where(e => e.ArticuloTId == id)
        .Select(p => new ArticulosDto()
        {
-           ArticuloId = p.ArticuloId,
+           ArticuloId = p.ArticuloTId,
            Descripcion = p.Descripcion,
            Costo = p.Costo,
            Precio = p.Precio,
@@ -35,42 +35,42 @@ public class ArticulosServices(IDbContextFactory<ApplicationDbContext> DbFactory
     public async Task<bool> Eliminar(int id)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
-        return await contexto.Articulos
-            .Where(e => e.ArticuloId == id)
+        return await contexto.ArticulosT
+            .Where(e => e.ArticuloTId == id)
             .ExecuteDeleteAsync() > 0;
     }
 
     public async Task<bool> ExisteArticulo(string nombre, int id)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
-        return await contexto.Articulos
-            .AnyAsync(e => e.ArticuloId != id
+        return await contexto.ArticulosT
+            .AnyAsync(e => e.ArticuloTId != id
             && e.Descripcion.ToLower().Equals(nombre.ToLower()));
     }
 
     private async Task<bool> Insertar(ArticulosDto articuloDto)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
-        var articulo = new Articulos()
+        var articulo = new ArticulosT()
         {
-            ArticuloId = articuloDto.ArticuloId,
+            ArticuloTId = articuloDto.ArticuloId,
             Descripcion = articuloDto.Descripcion,
             Costo = articuloDto.Costo,
             Precio = articuloDto.Precio,
             Existencia = articuloDto.Existencia
         };
-        contexto.Articulos.Add(articulo);
+        contexto.ArticulosT.Add(articulo);
         var guardo = await contexto.SaveChangesAsync() > 0;
-        articuloDto.ArticuloId = articulo.ArticuloId;
+        articuloDto.ArticuloId = articulo.ArticuloTId;
         return guardo;
     }
 
     private async Task<bool> Modificar(ArticulosDto articuloDto)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
-        var articulo = new Articulos()
+        var articulo = new ArticulosT()
         {
-            ArticuloId = articuloDto.ArticuloId,
+            ArticuloTId = articuloDto.ArticuloId,
             Descripcion = articuloDto.Descripcion,
             Costo = articuloDto.Costo,
             Precio = articuloDto.Precio,
@@ -84,8 +84,8 @@ public class ArticulosServices(IDbContextFactory<ApplicationDbContext> DbFactory
     private async Task<bool> Existe(int id)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
-        return await contexto.Articulos
-            .AnyAsync(e => e.ArticuloId == id);
+        return await contexto.ArticulosT
+            .AnyAsync(e => e.ArticuloTId == id);
     }
 
     public async Task<bool> Guardar(ArticulosDto articuloDto)
@@ -99,9 +99,9 @@ public class ArticulosServices(IDbContextFactory<ApplicationDbContext> DbFactory
     public async Task<List<ArticulosDto>> Listar(Expression<Func<ArticulosDto, bool>> criterio)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
-        return await contexto.Articulos.Select(f => new ArticulosDto()
+        return await contexto.ArticulosT.Select(f => new ArticulosDto()
         {
-            ArticuloId = f.ArticuloId,
+            ArticuloId = f.ArticuloTId,
             Descripcion = f.Descripcion,
             Costo = f.Costo,
             Precio = f.Precio,
