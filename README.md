@@ -2,7 +2,7 @@
 
 ## 🏖️🌞 ¡Bienvenidos a ReyAi Transport 🏖️🌞
 
-**ReyAi Transport** es un software de gestión de viajes dentro de Republica Dominicana donde te permite solicitar un  viaje rapido que son lugares mas cercanos, y planear un viaje largo para ir de descanso, conoce tu pais con ReyAi transport de manerta efectiva y ordenada.
+**ReyAi Transport** es un software de gestión de viajes dentro de Republica Dominicana donde te permite solicitar un  viaje rapido que son lugares mas cercanos especificamente en la ciudad de San Francisco de Macoris, y planear un viaje largo para ir de descanso, aventuras y exploracion, conoce tu pais con ReyAi transport de manerta efectiva y ordenada.
 
 ---
 
@@ -13,8 +13,8 @@
 
 ## Usuarios y Claves de Acceso:
 - User:
-  - 👤: User@example.com
-  - 🔑: User1234
+  - 👤: User1_@gmail
+  - 🔑: Usuario2024@
 
 - Admin:
   - 👤: garciaalaina01@gmail.com
@@ -49,4 +49,4 @@
 - **Base de datos**: Sql Server.
 ---
 ##  Links de pruebas:
-Link Azure: 
+Link Azure: https://reyaitransport.azurewebsites.net
