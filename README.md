@@ -17,8 +17,10 @@
   - 🔑: User1234
 
 - Admin:
-  - 👤: Admin@example.com
-  - 🔑: Admin1234
+  - 👤: garciaalaina01@gmail.com
+  - 🔑: :jJxZv6NWE7WsD_
+  - 👤: reyphill06@gmail.com
+  - 🔑: Duarte0608_
 ---
 
 ## 📝 Funcionalidades Principales
@@ -47,4 +49,4 @@
 - **Base de datos**: Sql Server.
 ---
 ##  Links de pruebas:
-Link Azure: *****
+Link Azure: [*****](https://reyaitransport.azurewebsites.net/)
