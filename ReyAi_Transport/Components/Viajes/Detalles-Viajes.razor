@@ -8,7 +8,10 @@
 @inject CiudadServices CiudadesService
 @inject TaxistaServices taxistasService
 @inject EstadoServices EstadoServices
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
+@inject ToastService Toast
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 <div class="container">
 	<div class="overlay">
 		<div class="detalles-container">
@@ -38,7 +41,7 @@
 			</div>
 
 			<div class="informacion-adicional">
-				<p>Descripicion: <br/> @Viaje.Descripcion</p>
+				<p>Descripicion: <br /> @Viaje.Descripcion</p>
 				<p class="f small">
 					Fecha de inicio-Fecha de cierre <br />
 					@Viaje.FechaInicio.ToString("dd/MM/yyyy") --- @Viaje.FechaCierre.ToString("dd/MM/yyyy")
@@ -48,29 +51,30 @@
 				<p class="precio">Precio por persona:DOP  $<span>@Viaje.Precio.ToString("N2")</span> </p>
 			</div>
 			<div class="row">
-				<div class="col">
-					<button type="button" @onclick="AbrirModalDespedir" class="button">
-						<i class="bi bi-trash"></i>
-						<span class="lable">Eliminar</span>
-					</button>
-				</div>
-				<div class="col">
-					<button type="button" @onclick="() => Editar(Viaje.ViajeId)" class="text-white btn btn-info" style="color:#00b7c5;">
-						<i class="bi bi-pencil-square"></i>
-						<span class="lable">Editar</span>
-					</button>
-				</div>
-
+				<AuthorizeView Roles="Admin">
+					<div class="col">
+						<button type="button" @onclick="AbrirModalDespedir" class="button">
+							<i class="bi bi-trash"></i>
+							<span class="lable">Eliminar</span>
+						</button>
+					</div>
+					<div class="col">
+						<button type="button" @onclick="() => Editar(Viaje.ViajeId)" class="text-white btn btn-info" style="color:#00b7c5;">
+							<i class="bi bi-pencil-square"></i>
+							<span class="lable">Editar</span>
+						</button>
+					</div>
+				</AuthorizeView>
 				<div class="col">
 					<button type="button" @onclick="() => Reservar(Viaje.ViajeId)" class="button">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none" class="svg-icon"><g stroke-width="2" stroke-linecap="round" stroke="#fff"><rect y="5" x="4" width="16" rx="2" height="16"></rect><path d="m8 3v4"></path><path d="m16 3v4"></path><path d="m4 11h16"></path></g></svg>
 						<span class="lable">Reservar</span>
 					</button>
 				</div>
-				
+
 			</div>
-		
-			
+
+
 		</div>
 	</div>
 </div>
@@ -106,6 +110,16 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+
+		if (user.Identity == null && !user.Identity.IsAuthenticated)
+		{
+			Toast.Notify(new(ToastType.Danger, $"Usuario no autenticado"));
+			await Task.Delay(2000);
+			NavigationManager.NavigateTo("/Account/Login");
+		}
+		
 		Viaje = await ViajeService.Buscar(ViajeId);
 		CiudadDto = await CiudadesService.Buscar(Viaje.Destino);
 		TaxistaDto = await taxistasService.Buscar(Viaje.TaxistaId);
@@ -134,6 +148,7 @@
 	{
 		if (Viaje != null)
 		{
+			Toast.Notify(new(ToastType.Danger, $"Viaje desactivado"));
 			await ViajeService.ActualizarEstado(Viaje, 4);
 		}
 		CerrarModal();

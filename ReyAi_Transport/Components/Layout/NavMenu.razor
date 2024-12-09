@@ -33,16 +33,11 @@
 							Gestion
 						</a>
 						<ul class="dropdown-menu">
-
-							<li><a class="dropdown-item" href="/Viajes/Create">Crear Viajes</a></li>
-							<li><a class="dropdown-item" href="/Taxista/Crear">Agregar un conductor</a></li>
-							<li><a class="dropdown-item" href="/ListaReservaciones">Lista de Reservaciones</a></li>
 							<li><a class="dropdown-item" href="/Taxistas/Listado">Conductores</a></li>
 							<li><a class="dropdown-item" href="/ListaPagos">Lista de Pagos</a></li>
 							<li><a class="dropdown-item" href="/Articulos">Articulos</a></li>
 							<li><a class="dropdown-item" href="/Ciudades">Ciudades</a></li>
 							<li><a class="dropdown-item" href="/DestinoCercano">Destinos Cercanos</a></li>
-
 						</ul>
 					</li>
 				</AuthorizeView>
@@ -59,13 +54,10 @@
 							<li><a class="dropdown-item" href="/ListaViajesRapidos/User">Mis Viajes Rapidos</a></li>
 						</AuthorizeView>
 						<AuthorizeView Roles="Admin">
-							<li><a class="dropdown-item" href="/ListaViajesRapidos">ViajesRapidos</a></li>
+							<li><a class="dropdown-item" href="/ListaViajesRapidos">Viajes Rapidos</a></li>
 							<li><a class="dropdown-item" href="/Viajes">Viajes</a></li>
 						</AuthorizeView>
 					</ul>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link disabled" aria-disabled="true">Disabled</a>
 				</li>
 			</ul>
 			<AuthorizeView>
