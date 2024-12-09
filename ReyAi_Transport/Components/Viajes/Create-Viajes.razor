@@ -131,7 +131,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		ListTaxista = await TaxistaService.Listar(T => true);
+		ListTaxista = await TaxistaService.Listar(T => T.NickName != null);
 		Viajes.FechaCierre = DateTime.Now;
 		Viajes.FechaInicio = DateTime.Now;
 		ListCiudades = await CiudadService.Listar(c => c.EstadoId != 2);
