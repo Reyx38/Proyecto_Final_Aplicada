@@ -49,4 +49,4 @@
 - **Base de datos**: Sql Server.
 ---
 ##  Links de pruebas:
-Link Azure: [*****](https://reyaitransport.azurewebsites.net/)
+Link Azure: 
