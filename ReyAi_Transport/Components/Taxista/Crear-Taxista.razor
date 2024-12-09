@@ -85,7 +85,7 @@
 		{
 			Toast.Notify(new(ToastType.Success, $"Nuevo taxista agregado correctamente."));
 			await Task.Delay(3000);
-			NavigationManager.NavigateTo("/");
+			NavigationManager.NavigateTo("/Taxistas/Listado");
 		}
 		else
 		{

@@ -47,6 +47,7 @@
 
 	public async Task Guardar()
 	{
+		CiudadesDto.EstadoId = 1;
 		var guardado = await CiudadService.Guardar(CiudadesDto);
 
 		if (guardado)
