@@ -24,9 +24,9 @@
 				</div>
 			</div>
 			<div class="row">
-				<label class="form-label">Destino</label>
+				<label class="form-label">Ciudad</label>
 				<InputSelect class="form-select" @bind-Value="@destinoCercaDto.CiudadId">
-					<option selected disabled value="0">-- Seleccione un Destino --</option>
+					<option selected disabled value="0">-- Seleccione una ciudad --</option>
 					@foreach (var ciudad in ListCiudades)
 					{
 						<option value="@ciudad.CiudadId">@ciudad.Nombre</option>
